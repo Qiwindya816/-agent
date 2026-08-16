@@ -2,3 +2,7 @@
 outputs/
 __pycache__/
 *.pyc
+logs/
+memory/*.json
+memory/*state*.json
+memory_data/

@@ -1,56 +1,36 @@
-from pathlib import Path
-from agent import decide_tool
-from travel_tools import (
-    recommend_destination,
-    plan_itinerary,
-    estimate_budget
-)
+from agent.workflow import TravelWorkflow
+from utils.ids import validate_user_id
 
 
-def run_tool(tool_name: str, user_request: str) -> str:
-    if tool_name == "recommend_destination":
-        return recommend_destination(user_request)
+def main() -> None:
+    """TravelMind 命令行入口。"""
+    print("欢迎使用 TravelMind。")
+    while True:
+        try:
+            user_id = validate_user_id(input("请输入用户 ID 登录：\n"))
+            break
+        except ValueError as exc:
+            print(exc)
 
-    if tool_name == "plan_itinerary":
-        return plan_itinerary(user_request)
-
-    if tool_name == "estimate_budget":
-        return estimate_budget(user_request)
-
-    return "Unknown tool."
-
-
-def main():
-    print("欢迎使用 Travel Assistant Agent")
-    print("你可以输入：帮我推荐目的地 / 帮我规划行程 / 帮我估算预算")
-    print("输入 q 退出")
+    workflow = TravelWorkflow(user_id=user_id)
+    print(f"登录成功：{user_id}")
+    print(f"本次会话 ID：{workflow.session_id}")
+    print("你可以输入旅行需求、要求修改行程、估算预算、查询天气或换算汇率。")
+    print("输入 q、quit 或 exit 退出。")
 
     while True:
-        user_request = input("\n请输入你的旅行需求：\n")
+        user_input = input("\n请输入旅行需求：\n").strip()
 
-        if user_request.lower() == "q":
+        if user_input.lower() in {"q", "quit", "exit"}:
+            print("已退出 TravelMind。")
             break
 
-        decision = decide_tool(user_request)
+        if not user_input:
+            print("请输入有效的旅行需求。")
+            continue
 
-        print("\nAgent 选择的工具：")
-        print(decision)
-
-        result = run_tool(
-            tool_name=decision["tool_name"],
-            user_request=user_request
-        )
-
-        print("\n最终结果：")
-        print(result)
-
-        output_dir = Path("outputs")
-        output_dir.mkdir(exist_ok=True)
-
-        output_path = output_dir / "travel_result.md"
-        output_path.write_text(result, encoding="utf-8")
-
-        print(f"\n结果已保存到：{output_path}")
+        response = workflow.run(user_input)
+        print("\n" + response)
 
 
 if __name__ == "__main__":
