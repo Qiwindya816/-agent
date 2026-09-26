@@ -8,6 +8,9 @@ def build_router_prompt(user_input: str, state) -> str:
     """结合用户输入和当前状态构建多步骤工具规划提示词。"""
     context = {
         "has_itinerary": bool(getattr(state, "current_itinerary", None)),
+        "user_profile": getattr(state, "user_profile", None).model_dump(exclude_none=True)
+        if getattr(state, "user_profile", None)
+        else {},
         "travel_request": getattr(state, "travel_request", None).model_dump(exclude_none=True)
         if getattr(state, "travel_request", None)
         else {},
@@ -33,6 +36,7 @@ def build_router_prompt(user_input: str, state) -> str:
 4. confidence 是 0 到 1 的判断把握度，每个步骤和整体都必须给出。
 5. 意图不明确或关键条件无法合理补全时，needs_clarification 为 true，并给出简短追问。
 6. missing_fields 只填写确实缺少且会阻止执行的字段。
+7. current state 中的 user_profile 就是用户已经保存的长期偏好；如果它非空，用户要求“根据以前的偏好”时必须直接使用，不能要求用户重复提供。
 
 只输出 JSON：
 {{

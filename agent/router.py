@@ -32,14 +32,14 @@ class TravelRouter:
                 system_prompt=ROUTER_SYSTEM_PROMPT,
                 temperature=0,
             )
-            plan = self._parse_plan(data, state)
+            plan = self._parse_plan(data, state, user_input)
             if plan is not None:
                 return plan
         except Exception:
             pass
         return self._route_with_rules(user_input, state)
 
-    def _parse_plan(self, data: dict[str, Any], state: AgentState) -> RoutePlan | None:
+    def _parse_plan(self, data: dict[str, Any], state: AgentState, user_input: str) -> RoutePlan | None:
         """校验模型工具名称、置信度和重复步骤，并兼容旧版单工具 JSON。"""
         raw_steps = data.get("steps")
         if not isinstance(raw_steps, list):
@@ -82,6 +82,13 @@ class TravelRouter:
             if not any(step.tool_name == "plan_itinerary" for step in steps):
                 needs_clarification = True
                 missing_fields = list(dict.fromkeys([*missing_fields, "current_itinerary"]))
+
+        # 用户明确要求使用已有偏好且本地确实有记录时，不能仅因模型低置信度重复询问画像。
+        if _requests_saved_preferences(user_input, state):
+            blocking_fields = [field for field in missing_fields if field not in _PROFILE_FIELD_NAMES]
+            if not blocking_fields:
+                needs_clarification = False
+                missing_fields = []
 
         question = data.get("clarification_question")
         if needs_clarification and not question:
@@ -176,3 +183,42 @@ def _normalize_step_order(steps: list[RouteResult]) -> list[RouteResult]:
             if step.tool_name == "estimate_budget" and itinerary_step not in step.depends_on:
                 step.depends_on.append(itinerary_step)
     return normalized
+
+
+_PROFILE_REFERENCE_WORDS = (
+    "以前的长期偏好",
+    "以前的偏好",
+    "之前的偏好",
+    "已有偏好",
+    "我的偏好",
+    "历史偏好",
+    "saved preference",
+    "previous preference",
+)
+
+_PROFILE_FIELD_NAMES = {
+    "user_profile",
+    "preferences",
+    "长期偏好",
+    "用户偏好",
+    "历史偏好",
+    "以前的偏好",
+    "interests",
+    "travel_style",
+    "avoid",
+    "accommodation_preference",
+    "food_preference",
+    "transport_preference",
+    "dietary_restrictions",
+    "mobility_constraints",
+    "visited_destinations",
+}
+
+
+def _requests_saved_preferences(user_input: str, state: AgentState) -> bool:
+    """判断本轮是否引用了已有偏好，并确认长期画像中存在至少一个有效值。"""
+    prompt_text = user_input.lower()
+    references_profile = any(word in prompt_text for word in _PROFILE_REFERENCE_WORDS)
+    profile_values = state.user_profile.model_dump(exclude_none=True).values()
+    has_saved_profile = any(value not in (None, "", []) for value in profile_values)
+    return references_profile and has_saved_profile
