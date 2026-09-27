@@ -22,6 +22,8 @@ class LLMService:
             self._client = OpenAI(
                 api_key=self.settings.deepseek_api_key,
                 base_url=self.settings.deepseek_base_url,
+                timeout=self.settings.api_timeout,
+                max_retries=self.settings.max_retries,
             )
         return self._client
 
