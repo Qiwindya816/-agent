@@ -56,6 +56,25 @@ API_TIMEOUT=10
 MAX_RETRIES=1
 ```
 
+可选的高德 MCP 使用 Streamable HTTP。先确认服务端实际暴露的工具名，再配置显式白名单映射：
+
+```env
+MCP_ENABLED=true
+AMAP_MCP_URL=https://your-mcp-server.example/mcp
+AMAP_MCP_TOKEN=
+AMAP_MCP_TOOL_MAP={"search_poi":"服务端POI工具名","geocode":"服务端地理编码工具名","plan_route":"服务端路线工具名"}
+MCP_TIMEOUT_SECONDS=30
+MCP_SSE_READ_TIMEOUT_SECONDS=300
+```
+
+`search_poi`、`geocode`、`plan_route` 是 TravelMind 内部稳定别名；映射值必须以目标 MCP Server 的 `tools/list` 结果为准。未设置 `MCP_ENABLED=true` 时不会建立 MCP 连接。
+
+配置 URL 后可先执行工具发现（该命令不会打印 Token）：
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.check_mcp
+```
+
 启动：
 
 ```powershell
@@ -87,11 +106,13 @@ MAX_RETRIES=1
 - 用户、会话和旅行 ID，以及本地 JSON 状态。
 - 长期画像与本次旅行约束分离。
 - 目的地、行程、预算、天气、汇率和导出工具。
+- Pydantic `Itinerary` 结构化生成、状态保存和确定性 Markdown 渲染。
+- 可配置的 MCP Streamable HTTP 客户端、远端工具白名单和统一错误结果。
 - LLM 失败时的部分规则回退。
 
 正在重构：
 
-- 结构化 `TripPlan` 全链路。
+- POI/路线 MCP 结果回填到结构化行程及确定性路线校验。
 - 持久化 LangGraph Checkpoint。
 - MCP 地图、天气和铁路 Gateway。
 - BM25、向量、地理和模板混合召回。

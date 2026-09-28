@@ -12,11 +12,13 @@ from multi_agent.summarizer import ResponseGenerator
 from memory.memory_manager import load_agent_state, save_agent_state, update_user_profile
 from multi_agent.state import TravelGraphState
 from schemas.agent_state import AgentState, ChatMessage
+from schemas.itinerary import Itinerary
 from schemas.route import RoutePlan, RouteResult
 from schemas.tool import ToolResult
 from schemas.travel_request import TravelRequest
 from schemas.user_profile import ProfileExtraction
 from tools.profile_tool import extract_profile_updates
+from services.itinerary_renderer import render_itinerary_markdown
 from utils.ids import new_request_id, new_trip_id
 
 
@@ -61,6 +63,7 @@ class FeedbackAgent:
             agent_state.trip_id = new_trip_id()
             agent_state.travel_request = TravelRequest()
             agent_state.current_itinerary = None
+            agent_state.structured_itinerary = None
             agent_state.budget_plan = None
             agent_state.weather_info = None
             agent_state.exchange_info = None
@@ -123,7 +126,9 @@ class ToolExecutionAgent:
                 return
             agent_state.last_error = None
             if route.tool_name in {"plan_itinerary", "refine_itinerary"}:
-                agent_state.current_itinerary = str(result.data)
+                itinerary = Itinerary.model_validate(result.data)
+                agent_state.structured_itinerary = itinerary
+                agent_state.current_itinerary = render_itinerary_markdown(itinerary)
             elif route.tool_name == "estimate_budget":
                 agent_state.budget_plan = str(result.data)
             elif route.tool_name == "check_weather":

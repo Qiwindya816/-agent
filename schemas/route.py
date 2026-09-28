@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -7,6 +9,9 @@ TOOL_STAGE_MAP = {
     "refine_itinerary": "refining_itinerary",
     "estimate_budget": "estimating_budget",
     "check_weather": "checking_weather",
+    "search_poi": "searching_places",
+    "geocode": "geocoding",
+    "plan_route": "planning_route",
     "convert_currency": "converting_currency",
     "finalize_plan": "finalizing_plan",
 }
@@ -22,6 +27,7 @@ class RouteResult(BaseModel):
     missing_fields: list[str] = Field(default_factory=list)
     requires_existing_itinerary: bool = False
     depends_on: list[str] = Field(default_factory=list)
+    arguments: dict[str, Any] = Field(default_factory=dict)
 
     @property
     def stage(self) -> str:

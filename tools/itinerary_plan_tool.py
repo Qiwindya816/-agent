@@ -1,6 +1,7 @@
 from typing import Any
 
 from prompts.itinerary_prompt import build_itinerary_prompt
+from schemas.itinerary import Itinerary
 from schemas.tool import ToolResult
 from services.llm_service import LLMService
 from tools.base import BaseTool
@@ -18,13 +19,18 @@ class ItineraryPlanTool(BaseTool):
         """根据用户需求调用语言模型生成新行程。"""
         try:
             request = tool_input.get("contextual_input") or tool_input["user_input"]
-            result = self.llm_service.generate_text(build_itinerary_prompt(request))
-            return ToolResult.ok(self.name, result)
+            raw = self.llm_service.generate_json(build_itinerary_prompt(request), temperature=0)
+            itinerary = Itinerary.model_validate(raw)
+            return ToolResult.ok(
+                self.name,
+                itinerary.model_dump(mode="json"),
+                {"schema": "Itinerary", "schema_version": itinerary.schema_version},
+            )
         except Exception as exc:
             return ToolResult.failure(self.name, "itinerary_plan_error", "行程规划失败。", details={"error": str(exc)})
 
 
-def plan_itinerary(travel_request: str) -> str:
-    """以简化接口规划旅行行程并直接返回文本。"""
+def plan_itinerary(travel_request: str) -> dict[str, Any] | str:
+    """以简化接口规划旅行行程并返回结构化数据。"""
     result = ItineraryPlanTool().run({"user_input": travel_request})
-    return str(result.data) if result.success else result.error.message
+    return result.data if result.success else result.error.message

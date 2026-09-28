@@ -3,6 +3,7 @@ import tempfile
 
 from config.settings import get_settings
 from schemas.agent_state import AgentState
+from services.itinerary_renderer import render_itinerary_markdown
 from utils.ids import validate_user_id
 
 
@@ -26,7 +27,9 @@ class ExportService:
         parts.append("## 长期用户偏好")
         parts.append(f"```json\n{state.user_profile.model_dump_json(indent=2, exclude_none=True)}\n```")
 
-        if state.current_itinerary:
+        if state.structured_itinerary:
+            parts.extend(["## 当前行程", render_itinerary_markdown(state.structured_itinerary)])
+        elif state.current_itinerary:
             parts.extend(["## 当前行程", state.current_itinerary])
         if state.budget_plan:
             parts.extend(["## 预算方案", state.budget_plan])

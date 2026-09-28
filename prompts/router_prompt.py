@@ -4,8 +4,12 @@ import json
 ROUTER_SYSTEM_PROMPT = "你是一个严格输出 JSON 的多任务规划器。"
 
 
-def build_router_prompt(user_input: str, state) -> str:
+def build_router_prompt(user_input: str, state, available_tools: set[str] | None = None) -> str:
     """结合用户输入和当前状态构建多步骤工具规划提示词。"""
+    available_tools = available_tools or {
+        "recommend_destination", "plan_itinerary", "refine_itinerary", "estimate_budget",
+        "check_weather", "convert_currency", "finalize_plan",
+    }
     context = {
         "has_itinerary": bool(getattr(state, "current_itinerary", None)),
         "user_profile": getattr(state, "user_profile", None).model_dump(exclude_none=True)
@@ -15,17 +19,26 @@ def build_router_prompt(user_input: str, state) -> str:
         if getattr(state, "travel_request", None)
         else {},
     }
+    tool_descriptions = {
+        "recommend_destination": "推荐旅行目的地",
+        "plan_itinerary": "制定新的旅行行程",
+        "refine_itinerary": "调整已有行程",
+        "estimate_budget": "估算旅行预算",
+        "check_weather": "查询天气",
+        "convert_currency": "换算货币",
+        "finalize_plan": "汇总并导出完整旅行方案",
+        "search_poi": "通过地图 MCP 搜索真实地点，arguments 使用 keyword、city 等服务端所需字段",
+        "geocode": "通过地图 MCP 将地址解析为坐标，arguments 使用 address、city 等服务端所需字段",
+        "plan_route": "通过地图 MCP 查询真实路线，arguments 使用 origin、destination、mode 等服务端所需字段",
+    }
+    tools_text = "\n".join(
+        f"- {name}：{tool_descriptions.get(name, '外部 MCP 工具')}。" for name in sorted(available_tools)
+    )
     return f"""
 你是 TravelMind 智能旅行规划 Agent 的任务规划器。一个请求可以包含多个任务，请按依赖顺序选择所有必要工具。
 
 可用工具：
-- recommend_destination：推荐旅行目的地。
-- plan_itinerary：制定新的旅行行程。
-- refine_itinerary：调整已有行程。
-- estimate_budget：估算旅行预算。
-- check_weather：查询天气。
-- convert_currency：换算货币。
-- finalize_plan：汇总并导出完整旅行方案。
+{tools_text}
 
 当前状态：{json.dumps(context, ensure_ascii=False)}
 
@@ -48,7 +61,8 @@ def build_router_prompt(user_input: str, state) -> str:
       "confidence": 0.9,
       "requires_existing_itinerary": false,
       "missing_fields": [],
-      "depends_on": []
+      "depends_on": [],
+      "arguments": {{}}
     }}
   ],
   "confidence": 0.9,

@@ -1,6 +1,7 @@
 from typing import Any
 
 from prompts.refine_prompt import build_refine_prompt
+from schemas.itinerary import Itinerary
 from schemas.tool import ToolResult
 from services.llm_service import LLMService
 from tools.base import BaseTool
@@ -17,7 +18,7 @@ class ItineraryRefineTool(BaseTool):
     def run(self, tool_input: dict[str, Any]) -> ToolResult:
         """读取当前行程，并根据用户反馈生成修改后的版本。"""
         state = tool_input.get("state")
-        current_itinerary = getattr(state, "current_itinerary", None)
+        current_itinerary = getattr(state, "structured_itinerary", None) or getattr(state, "current_itinerary", None)
         if not current_itinerary:
             return ToolResult.failure(
                 self.name,
@@ -26,20 +27,26 @@ class ItineraryRefineTool(BaseTool):
             )
 
         try:
-            result = self.llm_service.generate_text(
-                build_refine_prompt(current_itinerary, tool_input["user_input"])
+            raw = self.llm_service.generate_json(
+                build_refine_prompt(current_itinerary, tool_input["user_input"]),
+                temperature=0,
             )
-            return ToolResult.ok(self.name, result)
+            itinerary = Itinerary.model_validate(raw)
+            return ToolResult.ok(
+                self.name,
+                itinerary.model_dump(mode="json"),
+                {"schema": "Itinerary", "schema_version": itinerary.schema_version},
+            )
         except Exception as exc:
             return ToolResult.failure(self.name, "itinerary_refine_error", "行程修改失败。", details={"error": str(exc)})
 
 
-def refine_itinerary(current_itinerary: str | None, user_feedback: str) -> str:
-    """以简化接口修改给定行程并直接返回文本。"""
+def refine_itinerary(current_itinerary: str | None, user_feedback: str) -> dict[str, Any] | str:
+    """以简化接口修改给定行程并返回结构化数据。"""
     class _State:
         pass
 
     state = _State()
     state.current_itinerary = current_itinerary
     result = ItineraryRefineTool().run({"state": state, "user_input": user_feedback})
-    return str(result.data) if result.success else result.error.message
+    return result.data if result.success else result.error.message

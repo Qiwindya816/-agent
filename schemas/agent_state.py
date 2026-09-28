@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 from schemas.user_profile import UserProfile
 from schemas.travel_request import TravelRequest
+from schemas.itinerary import Itinerary
 from utils.ids import new_trip_id
 
 
@@ -16,6 +17,9 @@ AgentStage = Literal[
     "refining_itinerary",
     "estimating_budget",
     "checking_weather",
+    "searching_places",
+    "geocoding",
+    "planning_route",
     "converting_currency",
     "finalizing_plan",
 ]
@@ -38,6 +42,7 @@ class AgentState(BaseModel):
     last_tool_names: list[str] = Field(default_factory=list)
     route_confidence: float | None = None
     current_itinerary: str | None = None
+    structured_itinerary: Itinerary | None = None
     budget_plan: str | None = None
     weather_info: dict | None = None
     exchange_info: dict | None = None

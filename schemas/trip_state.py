@@ -3,11 +3,13 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 from schemas.travel_request import TravelRequest
+from schemas.itinerary import Itinerary
 
 
 class ItineraryVersion(BaseModel):
     version: int
     itinerary_markdown: str
+    structured_itinerary: Itinerary | None = None
     user_feedback: str | None = None
     changed_fields: list[str] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -21,6 +23,7 @@ class TripState(BaseModel):
     title: str | None = None
     travel_request: TravelRequest = Field(default_factory=TravelRequest)
     current_itinerary: str | None = None
+    structured_itinerary: Itinerary | None = None
     budget_plan: str | None = None
     weather_info: dict | None = None
     exchange_info: dict | None = None

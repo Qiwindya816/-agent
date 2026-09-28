@@ -16,6 +16,12 @@ class Settings(BaseSettings):
     llm_temperature: float = Field(default=0.3, alias="LLM_TEMPERATURE")
     api_timeout: int = Field(default=10, alias="API_TIMEOUT")
     max_retries: int = Field(default=1, alias="MAX_RETRIES")
+    mcp_enabled: bool = Field(default=False, alias="MCP_ENABLED")
+    amap_mcp_url: str | None = Field(default=None, alias="AMAP_MCP_URL")
+    amap_mcp_token: str | None = Field(default=None, alias="AMAP_MCP_TOKEN")
+    amap_mcp_tool_map: dict[str, str] = Field(default_factory=dict, alias="AMAP_MCP_TOOL_MAP")
+    mcp_timeout_seconds: float = Field(default=30, gt=0, alias="MCP_TIMEOUT_SECONDS")
+    mcp_sse_read_timeout_seconds: float = Field(default=300, gt=0, alias="MCP_SSE_READ_TIMEOUT_SECONDS")
     memory_dir: Path = PROJECT_ROOT / "memory_data"
     output_dir: Path = PROJECT_ROOT / "outputs"
     log_dir: Path = PROJECT_ROOT / "logs"

@@ -28,6 +28,7 @@ class ToolExecutor:
             "contextual_input": self._build_contextual_input(user_input, state),
             "state": state,
             "route": route,
+            "mcp_arguments": route.arguments,
         }
         return tool.run(tool_input)
 
@@ -38,7 +39,9 @@ class ToolExecutor:
             f"长期用户偏好：{state.user_profile.model_dump_json(exclude_none=True)}",
             f"当前旅行需求：{state.travel_request.model_dump_json(exclude_none=True)}",
         ]
-        if state.current_itinerary:
+        if state.structured_itinerary:
+            parts.append(f"当前结构化行程：\n{state.structured_itinerary.model_dump_json(exclude_none=True)}")
+        elif state.current_itinerary:
             parts.append(f"当前已有行程：\n{state.current_itinerary}")
         parts.append(f"用户本轮输入：{user_input}")
         return "\n\n".join(parts)

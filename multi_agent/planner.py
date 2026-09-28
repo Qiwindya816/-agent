@@ -4,9 +4,11 @@ from prompts.router_prompt import ROUTER_SYSTEM_PROMPT, build_router_prompt
 from schemas.agent_state import AgentState
 from schemas.route import RoutePlan, RouteResult
 from services.llm_service import LLMService
+from config.settings import get_settings
+from tools.mcp_tool import MCP_TOOL_ALIASES
 
 
-SUPPORTED_TOOLS = {
+CORE_TOOLS = {
     "recommend_destination",
     "plan_itinerary",
     "refine_itinerary",
@@ -23,12 +25,16 @@ class TravelRouter:
     def __init__(self, llm_service: LLMService | None = None) -> None:
         """初始化路由器；未传入服务时创建默认 LLM 服务。"""
         self.llm_service = llm_service or LLMService()
+        settings = get_settings()
+        configured_mcp_tools = set(settings.amap_mcp_tool_map) & MCP_TOOL_ALIASES
+        mcp_tools = configured_mcp_tools if settings.mcp_enabled and settings.amap_mcp_url else set()
+        self.supported_tools = CORE_TOOLS | mcp_tools
 
     def route(self, user_input: str, state: AgentState) -> RoutePlan:
         """优先使用 LLM 规划任务，输出不合法或调用失败时回退到规则规划。"""
         try:
             data = self.llm_service.generate_json(
-                build_router_prompt(user_input, state),
+                build_router_prompt(user_input, state, self.supported_tools),
                 system_prompt=ROUTER_SYSTEM_PROMPT,
                 temperature=0,
             )
@@ -51,7 +57,7 @@ class TravelRouter:
             if not isinstance(raw, dict):
                 continue
             tool_name = raw.get("tool_name")
-            if tool_name not in SUPPORTED_TOOLS or tool_name in seen:
+            if tool_name not in self.supported_tools or tool_name in seen:
                 continue
             seen.add(tool_name)
             confidence = _as_confidence(raw.get("confidence"), default=0.6)
@@ -66,6 +72,7 @@ class TravelRouter:
                         raw.get("requires_existing_itinerary", tool_name == "refine_itinerary")
                     ),
                     depends_on=_string_list(raw.get("depends_on")),
+                    arguments=raw.get("arguments") if isinstance(raw.get("arguments"), dict) else {},
                 )
             )
         if not steps:
@@ -112,11 +119,14 @@ class TravelRouter:
             ("check_weather", "weather_query", ["weather", "forecast", "天气", "气温", "下雨", "降雨", "预报"]),
             ("convert_currency", "currency_conversion", ["convert", "exchange", "currency", "汇率", "换算", "兑换"]),
             ("finalize_plan", "finalize_plan", ["export", "final", "download", "导出", "最终", "保存", "总结"]),
+            ("search_poi", "poi_search", ["poi", "地点搜索", "搜索景点", "附近景点", "附近餐厅"]),
+            ("geocode", "geocoding", ["geocode", "地理编码", "经纬度", "地址坐标"]),
+            ("plan_route", "route_planning", ["导航", "怎么走", "步行路线", "驾车路线", "公交路线", "路线耗时"]),
         ]
         steps = [
             RouteResult(intent=intent, tool_name=tool, reason="关键词规则识别到该任务。", confidence=0.82)
             for tool, intent, keywords in definitions
-            if any(keyword in text for keyword in keywords)
+            if tool in self.supported_tools and any(keyword in text for keyword in keywords)
         ]
 
         # “修改行程”只执行修改，不再额外把“行程”识别为新建任务。
@@ -170,6 +180,9 @@ def _normalize_step_order(steps: list[RouteResult]) -> list[RouteResult]:
         "refine_itinerary": 20,
         "estimate_budget": 30,
         "check_weather": 40,
+        "search_poi": 35,
+        "geocode": 36,
+        "plan_route": 37,
         "convert_currency": 50,
         "finalize_plan": 90,
     }

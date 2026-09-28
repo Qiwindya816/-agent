@@ -1,5 +1,9 @@
+import json
+
 from schemas.route import RouteResult
 from schemas.tool import ToolResult
+from schemas.itinerary import Itinerary
+from services.itinerary_renderer import render_itinerary_markdown
 
 
 class ResponseGenerator:
@@ -8,8 +12,12 @@ class ResponseGenerator:
     def generate(self, route: RouteResult, result: ToolResult) -> str:
         """将工具成功数据或错误信息转换为可展示的回复文本。"""
         if result.success:
+            if result.metadata.get("schema") == "Itinerary" and isinstance(result.data, dict):
+                return render_itinerary_markdown(Itinerary.model_validate(result.data))
             if isinstance(result.data, str):
                 return result.data
+            if isinstance(result.data, (dict, list)):
+                return f"```json\n{json.dumps(result.data, ensure_ascii=False, indent=2)}\n```"
             return str(result.data)
 
         if result.error:

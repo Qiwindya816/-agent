@@ -175,6 +175,7 @@ def _sync_trip_state(state: AgentState) -> None:
         session_id=state.session_id,
         travel_request=state.travel_request,
         current_itinerary=state.current_itinerary,
+        structured_itinerary=state.structured_itinerary,
         budget_plan=state.budget_plan,
         weather_info=state.weather_info,
         exchange_info=state.exchange_info,
