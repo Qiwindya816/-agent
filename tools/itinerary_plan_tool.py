@@ -4,6 +4,7 @@ from prompts.itinerary_prompt import build_itinerary_prompt
 from schemas.itinerary import Itinerary
 from schemas.tool import ToolResult
 from services.llm_service import LLMService
+from validators.itinerary_validator import ItineraryValidator
 from tools.base import BaseTool
 
 
@@ -21,10 +22,15 @@ class ItineraryPlanTool(BaseTool):
             request = tool_input.get("contextual_input") or tool_input["user_input"]
             raw = self.llm_service.generate_json(build_itinerary_prompt(request), temperature=0)
             itinerary = Itinerary.model_validate(raw)
+            validation = ItineraryValidator().validate(itinerary)
             return ToolResult.ok(
                 self.name,
                 itinerary.model_dump(mode="json"),
-                {"schema": "Itinerary", "schema_version": itinerary.schema_version},
+                {
+                    "schema": "Itinerary",
+                    "schema_version": itinerary.schema_version,
+                    "validation": validation.model_dump(mode="json"),
+                },
             )
         except Exception as exc:
             return ToolResult.failure(self.name, "itinerary_plan_error", "行程规划失败。", details={"error": str(exc)})

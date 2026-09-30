@@ -19,6 +19,7 @@ from schemas.travel_request import TravelRequest
 from schemas.user_profile import ProfileExtraction
 from tools.profile_tool import extract_profile_updates
 from services.itinerary_renderer import render_itinerary_markdown
+from services.memory_pipeline import MemoryPipeline
 from utils.ids import new_request_id, new_trip_id
 
 
@@ -43,13 +44,15 @@ class CoordinatorAgent:
 
 
 class FeedbackAgent:
-    """识别当前旅行约束、长期偏好以及开始新旅行的反馈。"""
+    """识别当前旅行约束、长期偏好、长期记忆以及开始新旅行的反馈。"""
 
     def __init__(
         self,
         extractor: Callable[..., ProfileExtraction] | None = None,
+        memory_pipeline: MemoryPipeline | None = None,
     ) -> None:
         self.extractor = extractor or extract_profile_updates
+        self.memory_pipeline = memory_pipeline or MemoryPipeline()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
         agent_state = AgentState.model_validate(state["agent_state"])
@@ -78,6 +81,27 @@ class FeedbackAgent:
             clear_fields=updates.clear_trip_fields,
             remove_items=updates.remove_trip_items,
         )
+        try:
+            memory_result = self.memory_pipeline.ingest_candidates(
+                updates.memory_candidates,
+                user_id=agent_state.user_id,
+                session_id=agent_state.session_id,
+                trip_id=agent_state.trip_id,
+            )
+        except Exception:
+            memory_result = None
+        memory_summary = (
+            {
+                "created": memory_result.created,
+                "merged": memory_result.merged,
+                "deferred": memory_result.deferred,
+                "rejected": memory_result.rejected,
+                "errors": memory_result.errors,
+            }
+            if memory_result is not None
+            else {}
+        )
+        agent_state.last_memory_result = memory_summary
         return {
             "agent_state": agent_state.model_dump(mode="json"),
             "current_node": "feedback",

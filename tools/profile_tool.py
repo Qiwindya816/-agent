@@ -169,3 +169,41 @@ def _normalize_currency(value: str) -> str:
     }
     upper = value.upper()
     return mapping.get(value, mapping.get(upper, upper))
+
+
+def extract_memory_candidates_from_text(
+    user_input: str,
+    *,
+    session_id: str | None = None,
+    trip_id: str | None = None,
+) -> list[dict[str, Any]]:
+    """Deterministic fallback extraction for explicit long-term memories."""
+    text = user_input.strip()
+    candidates: list[dict[str, Any]] = []
+
+    if any(phrase in text for phrase in ("请记住", "记住我", "以后都", "以后请")):
+        statement = text
+        category = "preference"
+        if "喜欢" in text:
+            category = "interests"
+        elif "不要" in text or "不喜欢" in text:
+            category = "avoid"
+        elif "先" in text and ("预算" in text or "行程" in text):
+            category = "workflow"
+        candidates.append(
+            {
+                "memory_type": "explicit",
+                "category": category,
+                "statement": statement,
+                "structured_value": {},
+                "scope": "global",
+                "polarity": "negative" if any(word in text for word in ("不要", "不喜欢")) else "positive",
+                "importance": 0.8,
+                "confidence": 0.98,
+                "evidence_text": text,
+                "evidence_type": "explicit_statement",
+                "session_id": session_id,
+                "trip_id": trip_id,
+            }
+        )
+    return candidates

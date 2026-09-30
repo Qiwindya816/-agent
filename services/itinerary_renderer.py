@@ -33,6 +33,25 @@ def render_itinerary_markdown(itinerary: Itinerary) -> str:
         if day.estimated_daily_cost is not None:
             lines.append(f"- 当日预计费用：{day.estimated_daily_cost:g} {itinerary.currency}")
 
+    if itinerary.transport_options:
+        lines.extend(["", "## 城际交通"])
+        for option in itinerary.transport_options:
+            route = " → ".join(part for part in [option.from_station, option.to_station] if part)
+            basic = f"- {option.train_no or option.transport_type} {route}".strip()
+            details = []
+            if option.date:
+                details.append(option.date)
+            if option.departure_time and option.arrival_time:
+                details.append(f"{option.departure_time}–{option.arrival_time}")
+            if option.duration:
+                details.append(f"历时 {option.duration}")
+            if details:
+                basic += f"（{'，'.join(details)}）"
+            lines.append(basic)
+            if option.seats:
+                seat_text = "，".join(f"{name} {value}" for name, value in option.seats.items())
+                lines.append(f"  - 座席：{seat_text}")
+
     if itinerary.total_estimated_cost is not None:
         lines.extend(["", "## 预计总费用", f"{itinerary.total_estimated_cost:g} {itinerary.currency}"])
     if itinerary.general_transport_advice:

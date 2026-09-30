@@ -1,4 +1,4 @@
-.env
+﻿.env
 .venv/
 .pytest_cache/
 .test-tmp/
@@ -9,3 +9,16 @@ logs/
 memory/*.json
 memory/*state*.json
 memory_data/
+
+# Local database
+*.db
+*.sqlite
+*.sqlite3
+travelmind.db
+
+# Checkpoint test artifacts
+memory_data_checkpoint_test/
+memory_data_pg_test/
+
+# RAG raw data
+rag_data/

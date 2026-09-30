@@ -51,3 +51,5 @@ class AgentState(BaseModel):
     travel_request: TravelRequest = Field(default_factory=TravelRequest)
     chat_history: list[ChatMessage] = Field(default_factory=list)
     output_version: int = 0
+    last_memory_result: dict | None = None
+    active_memories: list[dict] = Field(default_factory=list)

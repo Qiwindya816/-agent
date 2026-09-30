@@ -7,11 +7,17 @@ TOOL_STAGE_MAP = {
     "recommend_destination": "recommending_destination",
     "plan_itinerary": "planning_itinerary",
     "refine_itinerary": "refining_itinerary",
+    "edit_itinerary_activity": "editing_itinerary_activity",
     "estimate_budget": "estimating_budget",
     "check_weather": "checking_weather",
     "search_poi": "searching_places",
     "geocode": "geocoding",
     "plan_route": "planning_route",
+    "search_train_stations": "searching_train_stations",
+    "query_train_tickets": "querying_train_tickets",
+    "query_train_price": "querying_train_price",
+    "query_train_transfer": "querying_train_transfer",
+    "query_train_route": "querying_train_route",
     "convert_currency": "converting_currency",
     "finalize_plan": "finalizing_plan",
 }
@@ -28,6 +34,18 @@ class RouteResult(BaseModel):
     requires_existing_itinerary: bool = False
     depends_on: list[str] = Field(default_factory=list)
     arguments: dict[str, Any] = Field(default_factory=dict)
+
+    @property
+    def origin_activity_id(self) -> str | None:
+        """Optional explicit origin activity ID for route binding."""
+        value = self.arguments.get("origin_activity_id")
+        return str(value) if value else None
+
+    @property
+    def destination_activity_id(self) -> str | None:
+        """Optional explicit destination activity ID for route binding."""
+        value = self.arguments.get("destination_activity_id")
+        return str(value) if value else None
 
     @property
     def stage(self) -> str:

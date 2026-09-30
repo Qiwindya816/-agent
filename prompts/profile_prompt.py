@@ -68,6 +68,11 @@ def build_profile_prompt(
 6. 用户只删除列表中的某一项时，写入对应 remove_*_items，例如 {{"interests": ["购物"]}}。
 7. 用户明确表示“新旅行、另一次旅行、换一个旅行计划”时设置 start_new_trip=true；普通纠正目的地不算新旅行。
 8. 未知普通字段用 null，未知列表字段用 []；currency 使用 ISO 代码。
+9. memory_candidates 只保存跨旅行有效或值得复盘的信息，不要把本次目的地、日期、预算写入长期记忆。
+10. 用户明确说“记住/以后/请记住”时，memory_type 使用 explicit。
+11. 稳定偏好使用 semantic；具体接受、拒绝、修改、反馈使用 episodic；流程或输出格式偏好使用 procedural。
+12. 单次模糊猜测不要生成 memory_candidates。
+13. memory_candidates 中 confidence 取 0 到 1；用户明确表达的 explicit 使用 0.98。
 
 当前长期画像：
 {json.dumps(profile_data, ensure_ascii=False)}
@@ -86,7 +91,22 @@ def build_profile_prompt(
   "clear_trip_fields": [],
   "remove_profile_items": {{}},
   "remove_trip_items": {{}},
-  "start_new_trip": false
+  "start_new_trip": false,
+  "memory_candidates": [
+    {{
+      "memory_type": "semantic",
+      "category": "interests",
+      "statement": "用户喜欢博物馆",
+      "structured_value": {{}},
+      "scope": "global",
+      "polarity": "positive",
+      "importance": 0.5,
+      "confidence": 0.9,
+      "evidence_text": "用户明确表示喜欢博物馆",
+      "evidence_type": "explicit_statement"
+    }}
+  ],
+  "memory_extraction_status": "completed"
 }}
 
 用户本轮输入：

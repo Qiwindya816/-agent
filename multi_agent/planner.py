@@ -1,3 +1,4 @@
+import re
 from typing import Any
 
 from prompts.router_prompt import ROUTER_SYSTEM_PROMPT, build_router_prompt
@@ -5,13 +6,14 @@ from schemas.agent_state import AgentState
 from schemas.route import RoutePlan, RouteResult
 from services.llm_service import LLMService
 from config.settings import get_settings
-from tools.mcp_tool import MCP_TOOL_ALIASES
+from tools.mcp_tool import MCP_TOOL_ALIASES, RAILWAY_MCP_TOOL_ALIASES
 
 
 CORE_TOOLS = {
     "recommend_destination",
     "plan_itinerary",
     "refine_itinerary",
+    "edit_itinerary_activity",
     "estimate_budget",
     "check_weather",
     "convert_currency",
@@ -28,7 +30,13 @@ class TravelRouter:
         settings = get_settings()
         configured_mcp_tools = set(settings.amap_mcp_tool_map) & MCP_TOOL_ALIASES
         mcp_tools = configured_mcp_tools if settings.mcp_enabled and settings.amap_mcp_url else set()
-        self.supported_tools = CORE_TOOLS | mcp_tools
+        configured_railway_tools = set(settings.railway_mcp_tool_map) & RAILWAY_MCP_TOOL_ALIASES
+        railway_tools = (
+            configured_railway_tools
+            if settings.railway_mcp_enabled and settings.railway_mcp_url
+            else set()
+        )
+        self.supported_tools = CORE_TOOLS | mcp_tools | railway_tools
 
     def route(self, user_input: str, state: AgentState) -> RoutePlan:
         """优先使用 LLM 规划任务，输出不合法或调用失败时回退到规则规划。"""
@@ -71,7 +79,7 @@ class TravelRouter:
                     requires_existing_itinerary=bool(
                         raw.get("requires_existing_itinerary", tool_name == "refine_itinerary")
                     ),
-                    depends_on=_string_list(raw.get("depends_on")),
+                    depends_on=_valid_dependencies(_string_list(raw.get("depends_on")), steps),
                     arguments=raw.get("arguments") if isinstance(raw.get("arguments"), dict) else {},
                 )
             )
@@ -115,6 +123,7 @@ class TravelRouter:
             ("recommend_destination", "destination_recommendation", ["recommend", "where", "destination", "推荐", "去哪"]),
             ("plan_itinerary", "itinerary_planning", ["plan", "itinerary", "行程", "规划", "安排", "攻略"]),
             ("refine_itinerary", "itinerary_refinement", ["too tired", "lighter", "relax", "第三天", "太累", "轻松", "修改", "调整", "优化"]),
+            ("edit_itinerary_activity", "itinerary_local_edit", ["删除活动", "调整时间", "改时间", "更换活动", "重排活动", "activity_id"]),
             ("estimate_budget", "budget_estimation", ["budget", "cost", "price", "费用", "预算", "花费", "多少钱"]),
             ("check_weather", "weather_query", ["weather", "forecast", "天气", "气温", "下雨", "降雨", "预报"]),
             ("convert_currency", "currency_conversion", ["convert", "exchange", "currency", "汇率", "换算", "兑换"]),
@@ -122,6 +131,11 @@ class TravelRouter:
             ("search_poi", "poi_search", ["poi", "地点搜索", "搜索景点", "附近景点", "附近餐厅"]),
             ("geocode", "geocoding", ["geocode", "地理编码", "经纬度", "地址坐标"]),
             ("plan_route", "route_planning", ["导航", "怎么走", "步行路线", "驾车路线", "公交路线", "路线耗时"]),
+            ("search_train_stations", "searching_train_stations", ["车站搜索", "火车站搜索", "查车站"]),
+            ("query_train_tickets", "querying_train_tickets", ["火车票", "高铁票", "余票", "车次", "动车票"]),
+            ("query_train_price", "querying_train_price", ["火车票价", "高铁票价", "票价"]),
+            ("query_train_transfer", "querying_train_transfer", ["火车换乘", "中转火车", "铁路中转"]),
+            ("query_train_route", "querying_train_route", ["经停站", "列车时刻表", "火车路线"]),
         ]
         steps = [
             RouteResult(intent=intent, tool_name=tool, reason="关键词规则识别到该任务。", confidence=0.82)
@@ -132,6 +146,8 @@ class TravelRouter:
         # “修改行程”只执行修改，不再额外把“行程”识别为新建任务。
         if any(step.tool_name == "refine_itinerary" for step in steps):
             steps = [step for step in steps if step.tool_name != "plan_itinerary"]
+        if any(step.tool_name == "plan_route" for step in steps) and "geocode" in self.supported_tools:
+            steps = _ensure_geocode_for_route(steps, user_input)
         if not steps:
             steps = [
                 RouteResult(
@@ -155,6 +171,63 @@ class TravelRouter:
             if needs_clarification
             else None,
         )
+
+
+def _ensure_geocode_for_route(steps: list[RouteResult], user_input: str) -> list[RouteResult]:
+    """路线工具要求坐标；当路线参数还不是坐标时，自动前置地理编码步骤。"""
+    route_step = next((step for step in steps if step.tool_name == "plan_route"), None)
+    if route_step is None:
+        return steps
+
+    arguments = route_step.arguments
+    if _is_coordinate(arguments.get("origin")) and _is_coordinate(arguments.get("destination")):
+        return steps
+    if not arguments.get("origin") or not arguments.get("destination"):
+        arguments = {**arguments, **_extract_route_locations(user_input)}
+
+    if "geocode" not in route_step.depends_on:
+        route_step.depends_on.append("geocode")
+    geocode_step = RouteResult(
+        intent="geocoding_for_route",
+        tool_name="geocode",
+        reason="先解析路线起终点地名，再调用需要坐标的路线工具。",
+        confidence=max(route_step.confidence, 0.7),
+        arguments={"addresses": [arguments.get("origin", ""), arguments.get("destination", "")]},
+    )
+    return [step for step in steps if step.tool_name not in {"geocode", "plan_route"}] + [geocode_step, route_step]
+
+
+def _extract_route_locations(user_input: str) -> dict[str, str]:
+    """从“从A到B”的路线请求中提取起终点地名。"""
+    text = user_input.strip()
+    for pattern in (
+        r"从(.+?)到(.+?)(?:的)?(?:公交|步行|骑行|驾车|导航|路线)",
+        r"从(.+?)到(.+)$",
+    ):
+        match = re.search(pattern, text)
+        if match:
+            return {"origin": match.group(1).strip(), "destination": match.group(2).strip()}
+    return {}
+
+
+def _is_coordinate(value: Any) -> bool:
+    """判断值是否为高德路线工具要求的“经度,纬度”格式。"""
+    if not isinstance(value, str):
+        return False
+    parts = value.split(",")
+    if len(parts) != 2:
+        return False
+    try:
+        longitude, latitude = float(parts[0]), float(parts[1])
+    except ValueError:
+        return False
+    return -180 <= longitude <= 180 and -90 <= latitude <= 90
+
+
+def _valid_dependencies(dependencies: list[str], previous_steps: list[RouteResult]) -> list[str]:
+    """只保留指向前置工具名的依赖，忽略模型误输出的数字或未知值。"""
+    valid_names = {step.tool_name for step in previous_steps}
+    return [name for name in dependencies if name in valid_names]
 
 
 def _as_confidence(value: Any, *, default: float) -> float:

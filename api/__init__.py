@@ -1,0 +1,1 @@
+﻿"""TravelMind FastAPI package."""

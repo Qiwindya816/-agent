@@ -20,6 +20,7 @@ def build_refine_prompt(current_itinerary: Any, user_feedback: str) -> str:
 - 不要生成一份与原行程无关的新行程。
 - 只输出符合给定 Schema 的完整 JSON 对象，不要输出解释、Markdown 或代码围栏。
 - 未经外部服务核验的事实必须保持 unknown，不得虚构 POI、坐标或路线。
+- 如果上下文包含“检索到的参考知识”，只能引用其中明确给出的信息，不得编造来源。
 
 当前行程：
 {current}

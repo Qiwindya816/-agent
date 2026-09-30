@@ -18,7 +18,9 @@ def build_itinerary_prompt(user_input: str) -> str:
 4. 如果用户信息不足，可以采用合理假设，并写入 assumptions。
 5. 未经外部服务核验的 POI、坐标、路线、营业时间和价格不得编造；相关字段留空。
 6. 未核验活动的 verification_status 使用 unknown，模型估算的数据使用 estimated。
-7. 只输出符合下方 JSON Schema 的 JSON 对象，不要输出 Markdown、解释或代码围栏。
+7. “检索到的参考知识”中带有来源和更新时间；只能将其作为已知依据，不得编造来源。
+8. 如果参考知识与用户当前需求冲突，以当前用户需求为准。
+9. 只输出符合下方 JSON Schema 的 JSON 对象，不要输出 Markdown、解释或代码围栏。
 
 JSON Schema：
 {schema}

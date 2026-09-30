@@ -33,7 +33,9 @@ def test_itinerary_tool_returns_validated_structured_data() -> None:
     result = ItineraryPlanTool(FakeStructuredLLM()).run({"user_input": "规划成都两日游"})
 
     assert result.success is True
-    assert result.metadata == {"schema": "Itinerary", "schema_version": "3.0"}
+    assert result.metadata["schema"] == "Itinerary"
+    assert result.metadata["schema_version"] == "3.0"
+    assert result.metadata["validation"]["is_valid"] is True
     itinerary = Itinerary.model_validate(result.data)
     assert itinerary.destination == "成都"
     assert itinerary.days[0].activities[0].activity_id.startswith("activity_")

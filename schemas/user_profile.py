@@ -75,7 +75,7 @@ class UserProfile(BaseModel):
 
 
 class ProfileExtraction(BaseModel):
-    """描述一轮对话对长期画像和当前旅行分别产生的增量更新。"""
+    """描述一轮对话对长期画像、当前旅行和长期记忆分别产生的增量更新。"""
 
     profile_updates: UserProfile = Field(default_factory=UserProfile)
     trip_updates: TravelRequest = Field(default_factory=TravelRequest)
@@ -84,3 +84,5 @@ class ProfileExtraction(BaseModel):
     remove_profile_items: dict[str, list[Any]] = Field(default_factory=dict)
     remove_trip_items: dict[str, list[Any]] = Field(default_factory=dict)
     start_new_trip: bool = False
+    memory_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    memory_extraction_status: str = "completed"

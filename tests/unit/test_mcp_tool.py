@@ -1,4 +1,4 @@
-from typing import Any
+﻿from typing import Any
 
 from exceptions.external_api import ExternalAPIError
 from services.mcp_client import MCPClient
@@ -14,6 +14,8 @@ class FakeMCPClient:
 
     def call_tool(self, name: str, arguments: dict[str, Any]) -> tuple[Any, dict[str, Any]]:
         self.calls.append((name, arguments))
+        if name == "maps_geo":
+            return {"results": [{"city": "北京", "location": f"116.{100 + len(self.calls):06d},39.909187"}]}, {"provider": "mcp"}
         if self.error:
             raise self.error
         return {"pois": [{"id": "B001", "name": "人民公园"}]}, {"provider": "mcp"}
@@ -92,3 +94,85 @@ def test_registry_rejects_mcp_alias_that_overrides_core_tool() -> None:
             assert "plan_itinerary" in str(exc)
     finally:
         settings.mcp_enabled, settings.amap_mcp_url, settings.amap_mcp_tool_map = old_values
+
+
+def test_remote_mcp_tool_normalizes_geocode_multiple_addresses() -> None:
+    client = FakeMCPClient()
+    tool = RemoteMCPTool("geocode", "maps_geo", client)
+
+    result = tool.run({"mcp_arguments": {"addresses": ["天安门", "故宫"]}})
+
+    assert result.success is True
+    assert client.calls == [
+        ("maps_geo", {"address": "天安门", "city": ""}),
+        ("maps_geo", {"address": "故宫", "city": ""}),
+    ]
+
+
+def test_remote_mcp_tool_normalizes_route_arguments() -> None:
+    client = FakeMCPClient()
+    tool = RemoteMCPTool("plan_route", "maps_direction_transit_integrated", client)
+
+    result = tool.run(
+        {
+            "mcp_arguments": {
+                "origin": "116.397463,39.909187",
+                "destination": "116.397428,39.90923",
+                "mode": "transit",
+            }
+        }
+    )
+
+    assert result.success is True
+    assert client.calls == [
+        (
+            "maps_direction_transit_integrated",
+            {
+                "origin": "116.397463,39.909187",
+                "destination": "116.397428,39.90923",
+                "city": "北京",
+                "cityd": "北京",
+            },
+        )
+    ]
+
+
+def test_registry_registers_configured_railway_mcp_tools() -> None:
+    settings = get_settings()
+    old_values = (
+        settings.railway_mcp_enabled,
+        settings.railway_mcp_url,
+        settings.railway_mcp_tool_map,
+    )
+    settings.railway_mcp_enabled = True
+    settings.railway_mcp_url = "https://example.invalid/mcp"
+    settings.railway_mcp_tool_map = {
+        "search_train_stations": "search-stations",
+        "query_train_tickets": "query-tickets",
+    }
+    try:
+        registry = build_default_registry()
+        assert "search_train_stations" in registry.list_tools()
+        assert "query_train_tickets" in registry.list_tools()
+    finally:
+        settings.railway_mcp_enabled, settings.railway_mcp_url, settings.railway_mcp_tool_map = old_values
+
+
+def test_registry_rejects_invalid_railway_alias() -> None:
+    settings = get_settings()
+    old_values = (
+        settings.railway_mcp_enabled,
+        settings.railway_mcp_url,
+        settings.railway_mcp_tool_map,
+    )
+    settings.railway_mcp_enabled = True
+    settings.railway_mcp_url = "https://example.invalid/mcp"
+    settings.railway_mcp_tool_map = {"plan_itinerary": "malicious_override"}
+    try:
+        try:
+            build_default_registry()
+            raise AssertionError("invalid railway alias should have been rejected")
+        except ValueError as exc:
+            assert "railway" in str(exc).lower() or "铁路" in str(exc)
+    finally:
+        settings.railway_mcp_enabled, settings.railway_mcp_url, settings.railway_mcp_tool_map = old_values

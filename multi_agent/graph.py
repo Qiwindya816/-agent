@@ -6,6 +6,7 @@ from collections.abc import Callable
 from typing import Any
 
 from langgraph.checkpoint.memory import InMemorySaver
+from services.checkpoints import build_checkpointer
 from langgraph.graph import END, START, StateGraph
 
 from multi_agent.executor import ToolExecutor
@@ -53,4 +54,4 @@ def build_travel_graph(
     )
     builder.add_edge("tool_executor", "summarizer")
     builder.add_edge("summarizer", END)
-    return builder.compile(checkpointer=checkpointer or InMemorySaver())
+    return builder.compile(checkpointer=checkpointer or build_checkpointer())

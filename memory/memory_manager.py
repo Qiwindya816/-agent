@@ -11,15 +11,34 @@ from config.settings import get_settings
 from schemas.agent_state import AgentState
 from schemas.trip_state import TripState
 from schemas.user_profile import UserProfile
+from repositories.agent_state_repository import AgentStateRepository
 from utils.ids import new_session_id, new_trip_id, validate_user_id
 
 
 T = TypeVar("T", bound=BaseModel)
 
+# Phase 1 storage adapter. Database is the source of truth; JSON remains as a
+# migration and offline fallback until PostgreSQL/pgvector is fully deployed.
+_database_state_store: AgentStateRepository | None = None
+
+
+def _state_store() -> AgentStateRepository:
+    """Return the database-backed state store, creating it lazily."""
+    global _database_state_store
+    if _database_state_store is None:
+        _database_state_store = AgentStateRepository()
+    return _database_state_store
+
+
+def use_database_state_store(store: AgentStateRepository | None) -> None:
+    """Switch memory persistence between the database and legacy JSON backend."""
+    global _database_state_store
+    _database_state_store = store
+
 
 def _memory_root() -> Path:
     """获取记忆存储根目录，并确保用户、会话和行程目录存在。"""
-    root = get_settings().memory_dir
+    root = Path(get_settings().memory_dir)
     (root / "users").mkdir(parents=True, exist_ok=True)
     (root / "sessions").mkdir(parents=True, exist_ok=True)
     (root / "trips").mkdir(parents=True, exist_ok=True)
@@ -64,12 +83,12 @@ def _profile_path(user_id: str = "default_user") -> Path:
 
 
 def _session_path(session_id: str = "default_session") -> Path:
-    """生成指定会话状态的 JSON 文件路径。"""
-    if session_id != "default_session" and (
-        not session_id.startswith("session_") or not session_id.removeprefix("session_").isalnum()
-    ):
+    """生成指定会话状态的 JSON 文件路径，并对文件名做安全处理。"""
+    forbidden = set('<>:"/\\|?*')
+    if not session_id or any(character in forbidden for character in session_id):
         raise ValueError("无效的会话 ID。")
-    return _memory_root() / "sessions" / f"{session_id}.json"
+    safe_name = session_id.replace(" ", "_")
+    return _memory_root() / "sessions" / f"{safe_name}.json"
 
 
 def _trip_dir(trip_id: str) -> Path:
@@ -80,13 +99,22 @@ def _trip_dir(trip_id: str) -> Path:
 
 
 def load_user_profile(user_id: str = "default_user") -> UserProfile:
-    """加载指定用户的长期旅行画像。"""
-    return _load_model(_profile_path(user_id), UserProfile)
+    """加载指定用户的长期旅行画像；数据库优先，JSON 存档兜底。"""
+    store = _state_store()
+    try:
+        return store.load_user_profile(user_id)
+    except LookupError:
+        return _load_model(_profile_path(user_id), UserProfile)
 
 
 def save_user_profile(profile: UserProfile, user_id: str = "default_user") -> None:
-    """保存指定用户的长期旅行画像。"""
+    """保存指定用户的长期旅行画像，并同步到 JSON 兼容存档。"""
     _save_model(_profile_path(user_id), profile)
+    try:
+        _state_store().save_user_profile(profile, user_id)
+    except LookupError:
+        # New users are created by initialize_session/save_agent_state.
+        return
 
 
 def update_user_profile(
@@ -107,20 +135,26 @@ def update_user_profile(
 
 
 def load_agent_state(session_id: str = "default_session", user_id: str | None = None) -> AgentState:
-    """加载指定会话；新会话会绑定显式用户 ID，已有会话禁止跨用户读取。"""
+    """加载数据库中的会话状态；数据库不可用时回退到 JSON 存档。"""
+    normalized_user_id = validate_user_id(user_id or "default_user")
+    try:
+        return _state_store().load_agent_state(session_id, normalized_user_id)
+    except (LookupError, ValueError, ValidationError, OSError):
+        pass
+    return _load_legacy_agent_state(session_id, user_id)
+
+
+def _load_legacy_agent_state(session_id: str, user_id: str | None) -> AgentState:
+    """从旧 JSON 存档加载会话并保留 1.x 字段迁移逻辑。"""
     path = _session_path(session_id)
     if path.exists():
         state = _load_model(path, AgentState)
         if user_id is not None and state.user_id != validate_user_id(user_id):
             raise ValueError("该会话不属于当前用户。")
     else:
-        if user_id is None:
-            user_id = "default_user"
-        state = AgentState(user_id=validate_user_id(user_id), session_id=session_id)
+        state = AgentState(user_id=validate_user_id(user_id or "default_user"), session_id=session_id)
 
     state.session_id = session_id
-
-    # 兼容 1.x 存档：把曾经混在 UserProfile 中的本次旅行字段迁移到 TravelRequest。
     legacy_profile = state.user_profile
     legacy_values = {
         field: getattr(legacy_profile, field, None)
@@ -150,9 +184,10 @@ def initialize_session(user_id: str, session_id: str | None = None) -> AgentStat
 
 
 def save_agent_state(state: AgentState) -> None:
-    """分别持久化会话中的用户画像和 Agent 状态。"""
+    """以数据库为主存，JSON 存档作为迁移与离线兜底。"""
     state.user_id = validate_user_id(state.user_id)
-    save_user_profile(state.user_profile, state.user_id)
+    _state_store().save_agent_state(state)
+    _save_model(_profile_path(state.user_id), state.user_profile)
     _save_model(_session_path(state.session_id), state)
     _sync_trip_state(state)
 

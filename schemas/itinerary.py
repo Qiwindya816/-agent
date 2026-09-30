@@ -65,6 +65,22 @@ class Activity(BaseModel):
     verification_status: Literal["verified", "estimated", "unknown"] = "unknown"
 
 
+class TransportOption(BaseModel):
+    """A verified cross-city transportation option."""
+
+    option_id: str = Field(default_factory=lambda: _new_id("transport"))
+    transport_type: Literal["train", "flight", "bus", "car", "unknown"] = "unknown"
+    date: str | None = None
+    from_station: str | None = None
+    to_station: str | None = None
+    train_no: str | None = None
+    departure_time: str | None = None
+    arrival_time: str | None = None
+    duration: str | None = None
+    seats: dict[str, str] = Field(default_factory=dict)
+    verification_status: Literal["verified", "estimated", "unknown"] = "unknown"
+
+
 class DailyItinerary(BaseModel):
     day: int = Field(ge=1)
     date: str | None = None
@@ -82,6 +98,7 @@ class Itinerary(BaseModel):
     travel_days: int | None = Field(default=None, ge=1)
     currency: str = Field(default="CNY", min_length=3, max_length=3)
     days: list[DailyItinerary] = Field(default_factory=list)
+    transport_options: list[TransportOption] = Field(default_factory=list)
     total_estimated_cost: float | None = Field(default=None, ge=0)
     assumptions: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
