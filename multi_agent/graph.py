@@ -24,6 +24,7 @@ from schemas.user_profile import ProfileExtraction
 
 
 def _after_planner(state: TravelGraphState) -> str:
+    """根据规划结果决定进入工具执行还是直接请求用户澄清。"""
     return "summarizer" if state.get("needs_clarification") else "tool_executor"
 
 

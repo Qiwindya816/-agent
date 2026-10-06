@@ -1,4 +1,4 @@
-"""Enrich structured itineraries with normalized external tool results."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `itinerary_enricher` 相关实现。"""
 
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ from schemas.tool_outputs import (
 
 
 class ItineraryEnricher:
-    """Attach verified provider facts to activities and daily route segments."""
+    """封装 `ItineraryEnricher` 的核心数据与行为。"""
 
     def enrich_from_poi(self, itinerary: Itinerary, result: ToolResult, detail_tool: Any | None = None) -> Itinerary:
-        """Match POI search results by name and attach provider references."""
+        """丰富 `enrich_from_poi` 对应的数据和流程，返回该步骤的处理结果。"""
         pois = parse_poi_response(result.data, provider=str(result.metadata.get("provider", "amap")))
         if detail_tool is not None and pois and pois[0].longitude is None:
             detail = detail_tool.run({"mcp_arguments": {"id": pois[0].poi_id}})
@@ -41,7 +41,7 @@ class ItineraryEnricher:
         return itinerary
 
     def enrich_from_route(self, itinerary: Itinerary, result: ToolResult, day_number: int = 1, route: Any | None = None) -> Itinerary:
-        """Attach a verified route to consecutive activities in a day when names align."""
+        """丰富 `enrich_from_route` 对应的数据和流程，返回该步骤的处理结果。"""
         route = parse_route_response(result.data, provider=str(result.metadata.get("provider", "amap")))
         if route is None or not itinerary.days:
             return itinerary
@@ -54,8 +54,8 @@ class ItineraryEnricher:
         origin_activity = next((item for item in day.activities if item.activity_id == origin_id), None)
         destination_activity = next((item for item in day.activities if item.activity_id == destination_id), None)
         if origin_activity is None or destination_activity is None:
-            # Route response contains coordinates, not activity names. Until Planner
-            # supplies explicit IDs, bind to the first two ordered activities.
+            # 路线响应只有坐标而没有活动名称。在 Planner 提供明确活动 ID 前，
+            # 暂时将路线绑定到排序后的前两个活动。
             origin_activity = day.activities[0]
             destination_activity = day.activities[1]
 
@@ -71,7 +71,7 @@ class ItineraryEnricher:
         return itinerary
 
     def add_transport_options(self, itinerary: Itinerary, result: ToolResult, train_date: str | None = None) -> Itinerary:
-        """Attach verified railway options to the itinerary."""
+        """添加 `add_transport_options` 对应的数据和流程，返回该步骤的处理结果。"""
         from schemas.tool_outputs import parse_train_ticket_response
 
         tickets = parse_train_ticket_response(result.data, provider=str(result.metadata.get("provider", "railway-12306")))
@@ -93,7 +93,7 @@ class ItineraryEnricher:
         return itinerary
 
     def add_weather_warning(self, itinerary: Itinerary, result: ToolResult, day_number: int = 1) -> Itinerary:
-        """Append a provider-backed weather advisory to a day's theme/notes."""
+        """添加 `add_weather_warning` 对应的数据和流程，返回该步骤的处理结果。"""
         weather = parse_weather_markdown(str(result.data))
         if weather is None or not itinerary.days:
             return itinerary
@@ -105,10 +105,12 @@ class ItineraryEnricher:
 
     @staticmethod
     def _activities(itinerary: Itinerary) -> list[Activity]:
+        """遍历行程中的全部活动。"""
         return [activity for day in itinerary.days for activity in day.activities]
 
     @staticmethod
     def _poi_reference(poi: NormalizedPoi) -> POIReference:
+        """从工具结果中提取可关联到活动的 POI 引用。"""
         return POIReference(
             provider=poi.source.provider,
             poi_id=poi.poi_id,

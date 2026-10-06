@@ -27,6 +27,7 @@ CURRENCY_ALIASES = {
 
 
 class ExchangeTool(BaseTool):
+    """实现 exchange 能力的统一工具接口。"""
     name = "convert_currency"
     description = "根据实时汇率换算货币。"
 

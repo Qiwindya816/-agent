@@ -27,6 +27,7 @@ class MCPClient:
         sse_read_timeout_seconds: float = 300,
         server: Any | None = None,
     ) -> None:
+        """初始化 MCPClient 及其运行依赖。"""
         self.url = url
         self.token = token
         self.timeout_seconds = timeout_seconds
@@ -49,6 +50,7 @@ class MCPClient:
         return _run_async(lambda: self._call_tool(name, arguments))
 
     async def _list_tools(self) -> list[dict[str, Any]]:
+        """列出工具列表并返回符合当前作用域的结果。"""
         async with self._connect() as client:
             result = await client.list_tools()
             return [
@@ -61,6 +63,7 @@ class MCPClient:
             ]
 
     async def _call_tool(self, name: str, arguments: dict[str, Any]) -> tuple[Any, dict[str, Any]]:
+        """调用工具的完整业务流程并返回执行结果。"""
         async with self._connect() as client:
             result = await client.call_tool(name, arguments)
             if getattr(result, "is_error", False):
@@ -77,6 +80,7 @@ class MCPClient:
 
     @asynccontextmanager
     async def _connect(self):
+        """建立 MCP 会话，执行回调并负责连接资源清理。"""
         try:
             from mcp import Client
         except ImportError as exc:
@@ -121,10 +125,12 @@ def _run_async(factory: Callable[[], Awaitable[Any]]) -> Any:
 
 
 def _content_text(content: list[Any]) -> str:
+    """从 MCP 内容块中提取纯文本。"""
     return "\n".join(str(item.text) for item in content if getattr(item, "text", None))
 
 
 def _content_value(content: list[Any]) -> Any:
+    """从 MCP 内容块中提取可解析的数据值。"""
     text = _content_text(content)
     if text:
         return text

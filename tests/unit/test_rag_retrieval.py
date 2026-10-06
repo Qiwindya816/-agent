@@ -32,6 +32,15 @@ def test_rrf_fuses_multiple_recall_lists() -> None:
     assert dict(fused)["a"] > dict(fused)["c"]
 
 
+def test_chinese_search_tokens_keep_location_and_travel_intent() -> None:
+    tokens = RagRetrievalService._search_tokens("北京有哪些适合散步、亲近自然的公园")
+
+    assert "北京" in tokens
+    assert "散步" in tokens
+    assert "自然" in tokens
+    assert "公园" in tokens
+
+
 def test_public_and_private_chunks_are_isolated(database: DatabaseEngine, source) -> None:
     ingestion = RagIngestionService(database)
     ingestion.ingest_document(

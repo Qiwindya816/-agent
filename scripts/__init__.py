@@ -1,1 +1,1 @@
-"""TravelMind maintenance scripts."""
+"""提供 项目维护和命令行操作；本文件负责 `__init__` 相关实现。"""

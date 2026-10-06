@@ -1,1 +1,1 @@
-"""Configuration package."""
+"""提供 项目运行配置；本文件负责 `__init__` 相关实现。"""

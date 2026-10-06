@@ -1,4 +1,4 @@
-"""Checkpoint factory for development and PostgreSQL deployments."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `checkpoints` 相关实现。"""
 
 from __future__ import annotations
 
@@ -10,11 +10,7 @@ from config.settings import get_settings
 
 
 def build_checkpointer(*, setup: bool = True) -> Any:
-    """Create a configured LangGraph checkpointer.
-
-    SQLite development deployments currently fall back to the in-memory saver.
-    PostgreSQL deployments use PostgresSaver and create checkpoint tables once.
-    """
+    """根据配置创建 LangGraph checkpoint 保存器。"""
     settings = get_settings()
     backend = settings.checkpoint_backend.lower()
 

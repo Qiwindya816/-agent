@@ -4,12 +4,14 @@ from schemas.budget import BudgetPlan
 
 
 class BudgetValidationResult(BaseModel):
+    """承载 预算、校验 的结构化结果。"""
     is_valid: bool
     errors: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 
 
 class BudgetValidator:
+    """集中校验 预算 的业务约束。"""
     def validate(self, budget: BudgetPlan, budget_limit: float | None = None) -> BudgetValidationResult:
         """检查预算金额是否为负，并提示中等方案是否超出预算上限。"""
         errors = []

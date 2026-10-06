@@ -3,7 +3,7 @@ from typing import Any
 
 
 class JSONParseError(ValueError):
-    """Raised when an LLM response cannot be parsed as JSON."""
+    """封装 `JSONParseError` 的核心数据与行为。"""
 
 
 def clean_json(text: str) -> str:

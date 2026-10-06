@@ -1,1 +1,1 @@
-"""Local long-term memory storage for TravelMind."""
+"""提供 旅行记忆的兼容存储与管理；本文件负责 `__init__` 相关实现。"""

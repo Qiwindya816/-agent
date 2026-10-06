@@ -1,4 +1,4 @@
-"""Schemas for explainable personalized recommendation ranking."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `personalization` 相关实现。"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 
 class RankingFeature(BaseModel):
-    """One normalized feature and its contribution to the final score."""
+    """承载 `RankingFeature` 对应的结构化结果及元数据。"""
 
     name: str
     value: float
@@ -18,7 +18,7 @@ class RankingFeature(BaseModel):
 
 
 class RankedActivity(BaseModel):
-    """A ranked candidate with an explainable score."""
+    """承载 `RankedActivity` 对应的结构化结果及元数据。"""
 
     activity_id: str | None = None
     name: str

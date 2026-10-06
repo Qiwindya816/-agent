@@ -1,1 +1,1 @@
-"""Tool modules used by the TravelMind agent."""
+"""提供 工作流可调用工具；本文件负责 `__init__` 相关实现。"""

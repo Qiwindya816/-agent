@@ -2,6 +2,7 @@
 .venv/
 .pytest_cache/
 .test-tmp/
+pytest-run-*/
 outputs/
 __pycache__/
 *.pyc
@@ -22,3 +23,8 @@ memory_data_pg_test/
 
 # RAG raw data
 rag_data/
+
+# Local Xiaohongshu MCP sessions, cookies, logs, and downloads
+.xhs-mcp/
+integrations/xhs-mcp-runtime/node_modules/
+integrations/xhs-mcp-runtime/.downloads/

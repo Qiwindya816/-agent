@@ -1,4 +1,4 @@
-﻿"""Core ORM models for user, session, trip, memory, RAG, and tool data."""
+﻿"""提供 数据库模型、连接与初始化；本文件负责 `models` 相关实现。"""
 
 from datetime import date, datetime
 from typing import Any
@@ -6,6 +6,7 @@ from typing import Any
 from sqlalchemy import (
     JSON,
     Boolean,
+    BigInteger,
     Date,
     DateTime,
     Float,
@@ -24,6 +25,7 @@ from db.base import Base, TimestampMixin, utc_now
 
 
 class User(Base, TimestampMixin):
+    """表示 用户 的数据库持久化实体。"""
     __tablename__ = "users"
 
     user_id: Mapped[str] = mapped_column(String(64), primary_key=True)
@@ -44,6 +46,7 @@ class User(Base, TimestampMixin):
 
 
 class ChatSession(Base, TimestampMixin):
+    """表示 聊天、会话 的数据库持久化实体。"""
     __tablename__ = "chat_sessions"
     __table_args__ = (Index("ix_chat_sessions_user_session", "user_id", "session_id", unique=True),)
 
@@ -64,6 +67,7 @@ class ChatSession(Base, TimestampMixin):
 
 
 class ChatMessage(Base):
+    """表示 聊天、消息 的数据库持久化实体。"""
     __tablename__ = "chat_messages"
     __table_args__ = (
         Index("ix_chat_messages_user_session_message", "user_id", "session_id", "message_id", unique=True),
@@ -86,6 +90,7 @@ class ChatMessage(Base):
 
 
 class Trip(Base, TimestampMixin):
+    """表示 旅行 的数据库持久化实体。"""
     __tablename__ = "trips"
     __table_args__ = (Index("ix_trips_user_session_trip", "user_id", "session_id", "trip_id", unique=True),)
 
@@ -112,6 +117,7 @@ class Trip(Base, TimestampMixin):
 
 
 class TripPlanVersion(Base):
+    """表示 旅行、计划、版本 的数据库持久化实体。"""
     __tablename__ = "trip_plan_versions"
     __table_args__ = (
         UniqueConstraint("trip_id", "version_number", name="uq_trip_plan_version"),
@@ -135,6 +141,7 @@ class TripPlanVersion(Base):
 
 
 class TripFeedback(Base):
+    """表示 旅行、反馈 的数据库持久化实体。"""
     __tablename__ = "trip_feedback"
     __table_args__ = (Index("ix_trip_feedback_user_trip", "user_id", "trip_id"),)
 
@@ -153,6 +160,7 @@ class TripFeedback(Base):
 
 
 class MemoryItem(Base, TimestampMixin):
+    """表示 记忆、记录 的数据库持久化实体。"""
     __tablename__ = "memory_items"
     __table_args__ = (Index("ix_memory_items_user_memory", "user_id", "memory_id", unique=True),)
 
@@ -187,6 +195,7 @@ class MemoryItem(Base, TimestampMixin):
 
 
 class MemoryEvidence(Base):
+    """表示 记忆、证据 的数据库持久化实体。"""
     __tablename__ = "memory_evidence"
     __table_args__ = (Index("ix_memory_evidence_user_memory", "user_id", "memory_id"),)
 
@@ -209,6 +218,7 @@ class MemoryEvidence(Base):
 
 
 class RagSource(Base, TimestampMixin):
+    """表示 RAG、知识来源 的数据库持久化实体。"""
     __tablename__ = "rag_sources"
 
     source_id: Mapped[str] = mapped_column(String(64), primary_key=True)
@@ -226,6 +236,7 @@ class RagSource(Base, TimestampMixin):
 
 
 class RagDocument(Base, TimestampMixin):
+    """表示 RAG、文档 的数据库持久化实体。"""
     __tablename__ = "rag_documents"
     __table_args__ = (Index("ix_rag_documents_owner_document", "owner_user_id", "document_id", unique=True),)
 
@@ -248,11 +259,12 @@ class RagDocument(Base, TimestampMixin):
 
 
 class RagChunk(Base):
+    """表示 RAG、切片 的数据库持久化实体。"""
     __mapper_args__ = {"eager_defaults": False}
 
     @classmethod
     def __declare_last__(cls) -> None:
-        """Mark PostgreSQL generated columns as read-only for ORM persistence."""
+        """将 PostgreSQL 生成列标记为 ORM 只读字段。"""
         cls.__table__.c.tsv._create_rule = lambda: None
         cls.__table__.c.tsv.server_onupdate = None
     __tablename__ = "rag_chunks"
@@ -277,16 +289,19 @@ class RagChunk(Base):
     price_level: Mapped[str | None] = mapped_column(String(32))
     metadata_json: Mapped[dict[str, Any] | None] = mapped_column(JSON)
     document: Mapped[RagDocument] = relationship(back_populates="chunks")
-    # PostgreSQL uses vector(1024); SQLite tests use a portable JSON representation.
+    # PostgreSQL 使用 vector(1024)，SQLite 测试则使用可移植的 JSON 表示。
     embedding: Mapped[Any | None] = mapped_column(
         Vector(1024).with_variant(JSON, "sqlite"),
         nullable=True,
     )
-    tsv: Mapped[Any | None] = mapped_column(Text, nullable=True)
+    # PostgreSQL 将该字段定义为 GENERATED ALWAYS tsvector 列。SQLite 测试中保留
+    # 可移植的 Text 声明，但 ORM 的查询和写入语句不得包含它；全文检索通过原生 SQL 访问。
+    tsv: Mapped[Any | None] = mapped_column(Text, nullable=True, _omit_from_statements=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
 
 
 class RagIngestionJob(Base):
+    """表示 RAG、导入、任务 的数据库持久化实体。"""
     __tablename__ = "rag_ingestion_jobs"
 
     job_id: Mapped[str] = mapped_column(String(64), primary_key=True)
@@ -298,7 +313,54 @@ class RagIngestionJob(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class SocialNote(Base):
+    """封装 `SocialNote` 的核心数据与行为。"""
+
+    __tablename__ = "social_notes"
+    __table_args__ = (
+        UniqueConstraint("platform", "external_note_id", name="uq_social_note_platform_external"),
+        Index("ix_social_notes_city_platform", "city", "platform"),
+    )
+
+    social_note_id: Mapped[str] = mapped_column(String(96), primary_key=True)
+    platform: Mapped[str] = mapped_column(String(32), nullable=False, default="xiaohongshu")
+    external_note_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    document_id: Mapped[str] = mapped_column(
+        String(64), ForeignKey("rag_documents.document_id", ondelete="CASCADE"), nullable=False, unique=True
+    )
+    canonical_url: Mapped[str | None] = mapped_column(Text)
+    author_hash: Mapped[str | None] = mapped_column(String(128))
+    note_type: Mapped[str | None] = mapped_column(String(32))
+    tags: Mapped[list[str] | None] = mapped_column(JSON)
+    image_urls: Mapped[list[str] | None] = mapped_column(JSON)
+    city: Mapped[str | None] = mapped_column(String(64), index=True)
+    themes: Mapped[list[str] | None] = mapped_column(JSON)
+    crawl_query: Mapped[str | None] = mapped_column(String(255))
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+
+class SocialMetricSnapshot(Base):
+    """定义 `SocialMetricSnapshot` 使用的结构化数据。"""
+
+    __tablename__ = "social_metric_snapshots"
+    __table_args__ = (
+        Index("ix_social_metric_note_captured", "social_note_id", "captured_at"),
+    )
+
+    snapshot_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    social_note_id: Mapped[str] = mapped_column(
+        String(96), ForeignKey("social_notes.social_note_id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    likes: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
+    collects: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
+    comments: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
+    shares: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
+    captured_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+
 class ToolCall(Base):
+    """表示 工具、调用记录 的数据库持久化实体。"""
     __tablename__ = "tool_calls"
     __table_args__ = (Index("ix_tool_calls_user_session_trip", "user_id", "session_id", "trip_id"),)
 
@@ -319,6 +381,7 @@ class ToolCall(Base):
 
 
 class ProviderHealth(Base, TimestampMixin):
+    """表示 服务提供方、健康状态 的数据库持久化实体。"""
     __tablename__ = "provider_health"
 
     provider_name: Mapped[str] = mapped_column(String(64), primary_key=True)

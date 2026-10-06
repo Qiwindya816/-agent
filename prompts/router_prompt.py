@@ -60,6 +60,8 @@ def build_router_prompt(user_input: str, state, available_tools: set[str] | None
 8. current state 中的 user_profile 就是用户已经保存的长期偏好；如果它非空，用户要求“根据以前的偏好”时必须直接使用，不能要求用户重复提供。
 9. current state 中的 long_term_memory 是用户明确确认过的长期记忆；其中 procedural 记忆描述用户偏好的工作流程，可在不违背用户本轮明确要求时调整工具顺序或输出方式。
 10. 当前用户输入优先级最高；如果 long_term_memory 与用户本轮要求冲突，必须遵循用户本轮要求。
+11. 用户已经给出城市或片区并询问附近景点时，可以使用 search_poi；keywords 必须同时包含片区名和景点类型，不能只传宽泛地名。例如“亦庄附近自然景点”应使用“亦庄 公园”而不是“亦庄”。
+12. search_poi 的原始结果只是事实候选，不是最终答复；不要为了展示地图原始字段而添加无关工具。
 
 只输出 JSON：
 {{

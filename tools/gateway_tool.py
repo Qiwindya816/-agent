@@ -1,4 +1,4 @@
-"""Registry adapter that gives BaseTool callers access to the Tool Gateway."""
+"""提供 工作流可调用工具；本文件负责 `gateway_tool` 相关实现。"""
 
 from __future__ import annotations
 
@@ -11,15 +11,16 @@ from tools.base import BaseTool
 
 
 class GatewayTool(BaseTool):
-    """Expose a ToolGateway through the existing BaseTool interface."""
+    """实现 `GatewayTool` 对应能力的工作流工具。"""
 
     def __init__(self, gateway: ToolGateway) -> None:
+        """初始化 GatewayTool 及其运行依赖。"""
         self.gateway = gateway
         self.name = gateway.name
         self.description = gateway.description
 
     def run(self, tool_input: dict[str, Any]) -> ToolResult:
-        """Run through the gateway, using ownership data from AgentState."""
+        """执行 `run` 对应的数据和流程，返回该步骤的处理结果。"""
         raw_context = tool_input.get("context")
         context = raw_context if isinstance(raw_context, GatewayCallContext) else None
         if context is None:
@@ -35,6 +36,7 @@ class GatewayTool(BaseTool):
         return result
 
     def _attach_freshness(self, result: ToolResult) -> None:
+        """向工具结果附加获取时间和有效期等新鲜度元数据。"""
         from datetime import datetime
 
         from schemas.tool_gateway import expiry_from_now

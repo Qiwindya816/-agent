@@ -7,6 +7,7 @@ from tools.base import BaseTool
 
 
 class BudgetTool(BaseTool):
+    """实现 预算 能力的统一工具接口。"""
     name = "estimate_budget"
     description = "估算旅行预算。"
 

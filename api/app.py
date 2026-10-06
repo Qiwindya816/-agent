@@ -1,4 +1,4 @@
-"""TravelMind FastAPI application factory."""
+"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `app` 相关实现。"""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from api.trips import router as trips_router
 
 
 def create_app() -> FastAPI:
-    """Create the FastAPI application with all API routers."""
+    """创建并配置包含全部路由的 FastAPI 应用。"""
     app = FastAPI(
         title="TravelMind API",
         version="1.0.0",
@@ -33,6 +33,7 @@ def create_app() -> FastAPI:
 
     @app.middleware("http")
     async def request_middleware(request: Request, call_next):
+        """执行请求限流并注入请求级追踪上下文。"""
         try:
             limiter.check(request.headers.get("X-User-ID", "anonymous"))
             return await request_context_middleware(request, call_next)

@@ -1,0 +1,56 @@
+{
+  "description": "TravelMind 小红书旅游攻略 RAG 试点采集矩阵",
+  "cities": [
+    {
+      "name": "北京",
+      "themes": [
+        {"id": "history_culture", "label": "历史人文", "keywords": ["北京 历史人文 旅游攻略", "北京 古建筑 胡同 攻略"]},
+        {"id": "food", "label": "特色美食", "keywords": ["北京 美食 旅游攻略", "北京 本地小吃 攻略"]},
+        {"id": "citywalk", "label": "城市漫步", "keywords": ["北京 citywalk 路线", "北京 胡同 漫步"]},
+        {"id": "relaxed_nature", "label": "休闲自然", "keywords": ["北京 休闲 自然 旅游攻略", "北京 公园 徒步"]},
+        {"id": "art_museums", "label": "博物馆与艺术", "keywords": ["北京 艺术馆 展览 攻略", "北京 博物馆 看展 攻略"]},
+        {"id": "family", "label": "亲子旅行", "keywords": ["北京 亲子游 攻略", "北京 带娃 室内 景点"]},
+        {"id": "night_tour", "label": "夜游与夜生活", "keywords": ["北京 夜游 攻略", "北京 夜景 夜生活"]},
+        {"id": "budget_tips", "label": "省钱与避坑", "keywords": ["北京 旅游 省钱 避坑", "北京 交通 住宿 攻略"]},
+        {"id": "photo_spots", "label": "摄影打卡", "keywords": ["北京 拍照 打卡 机位", "北京 小众 出片 地点"]},
+        {"id": "nearby_trip", "label": "周边短途", "keywords": ["北京 周边 一日游 攻略", "北京 周边 两日游"]}
+      ]
+    },
+    {
+      "name": "上海",
+      "themes": [
+        {"id": "history_culture", "label": "历史人文", "keywords": ["上海 历史人文 旅游攻略", "上海 老建筑 租界 攻略"]},
+        {"id": "food", "label": "特色美食", "keywords": ["上海 美食 旅游攻略", "上海 本帮菜 小吃"]},
+        {"id": "citywalk", "label": "城市漫步", "keywords": ["上海 citywalk 路线", "上海 梧桐区 漫步"]},
+        {"id": "relaxed_nature", "label": "休闲自然", "keywords": ["上海 休闲 自然 旅游攻略", "上海 公园 郊游"]},
+        {"id": "art_museums", "label": "博物馆与艺术", "keywords": ["上海 美术馆 展览 攻略", "上海 博物馆 看展 攻略"]},
+        {"id": "family", "label": "亲子旅行", "keywords": ["上海 亲子游 攻略", "上海 带娃 室内 景点"]},
+        {"id": "night_tour", "label": "夜游与夜生活", "keywords": ["上海 夜游 攻略", "上海 夜景 夜生活"]},
+        {"id": "budget_tips", "label": "省钱与避坑", "keywords": ["上海 旅游 省钱 避坑", "上海 交通 住宿 攻略"]},
+        {"id": "photo_spots", "label": "摄影打卡", "keywords": ["上海 拍照 打卡 机位", "上海 小众 出片 地点"]},
+        {"id": "nearby_trip", "label": "周边短途", "keywords": ["上海 周边 一日游 攻略", "上海 周边 两日游 古镇"]}
+      ]
+    },
+    {
+      "name": "成都",
+      "themes": [
+        {"id": "history_culture", "label": "历史人文", "keywords": ["成都 历史人文 旅游攻略", "成都 古镇 古建筑 攻略"]},
+        {"id": "food", "label": "特色美食", "keywords": ["成都 美食 旅游攻略", "成都 本地小吃 火锅"]},
+        {"id": "citywalk", "label": "城市漫步", "keywords": ["成都 citywalk 路线", "成都 老街 漫步"]},
+        {"id": "relaxed_nature", "label": "休闲自然", "keywords": ["成都 休闲 自然 旅游攻略", "成都 公园 徒步"]},
+        {"id": "art_museums", "label": "博物馆与艺术", "keywords": ["成都 美术馆 展览 攻略", "成都 博物馆 看展 攻略"]},
+        {"id": "family", "label": "亲子旅行", "keywords": ["成都 亲子游 攻略", "成都 带娃 室内 景点"]},
+        {"id": "night_tour", "label": "夜游与夜生活", "keywords": ["成都 夜游 攻略", "成都 夜景 夜生活"]},
+        {"id": "budget_tips", "label": "省钱与避坑", "keywords": ["成都 旅游 省钱 避坑", "成都 交通 住宿 攻略"]},
+        {"id": "photo_spots", "label": "摄影打卡", "keywords": ["成都 拍照 打卡 机位", "成都 小众 出片 地点"]},
+        {"id": "nearby_trip", "label": "周边短途", "keywords": ["成都 周边 一日游 攻略", "成都 周边 两日游 徒步"]}
+      ]
+    }
+  ],
+  "search": {
+    "sort_by": ["general", "most_collected"],
+    "note_type": "all",
+    "publish_time": "half_year",
+    "timeout_ms": 120000
+  }
+}

@@ -1,4 +1,4 @@
-"""Input schemas for tools exposed by the unified gateway."""
+"""提供 工作流可调用工具；本文件负责 `schemas` 相关实现。"""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Any
 
 
 def object_schema(properties: dict[str, dict[str, Any]], required: list[str] | None = None) -> dict[str, Any]:
-    """Create a minimal JSON Schema object."""
+    """处理 `object_schema` 对应的数据和流程，返回该步骤的处理结果。"""
     return {
         "type": "object",
         "properties": properties,
@@ -109,4 +109,5 @@ TOOL_OUTPUT_SCHEMAS: dict[str, dict[str, Any]] = {
 
 
 def tool_output_schema(name: str) -> dict[str, Any]:
+    """返回指定工具对应的结构化输出 JSON Schema。"""
     return TOOL_OUTPUT_SCHEMAS.get(name, {})

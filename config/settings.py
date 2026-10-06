@@ -10,24 +10,33 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class Settings(BaseSettings):
+    """集中声明并校验项目运行配置。"""
     deepseek_api_key: str | None = Field(default=None, alias="DEEPSEEK_API_KEY")
     deepseek_base_url: str = Field(default="https://api.deepseek.com", alias="DEEPSEEK_BASE_URL")
     deepseek_model: str = Field(default="deepseek-v4-flash", alias="DEEPSEEK_MODEL")
     llm_temperature: float = Field(default=0.3, alias="LLM_TEMPERATURE")
-    api_timeout: int = Field(default=10, alias="API_TIMEOUT")
-    max_retries: int = Field(default=1, alias="MAX_RETRIES")
+    api_timeout: int = Field(default=180, alias="API_TIMEOUT")
+    max_retries: int = Field(default=3, alias="MAX_RETRIES")
     mcp_enabled: bool = Field(default=False, alias="MCP_ENABLED")
     amap_mcp_url: str | None = Field(default=None, alias="AMAP_MCP_URL")
     amap_mcp_token: str | None = Field(default=None, alias="AMAP_MCP_TOKEN")
     amap_mcp_tool_map: dict[str, str] = Field(default_factory=dict, alias="AMAP_MCP_TOOL_MAP")
-    mcp_timeout_seconds: float = Field(default=30, gt=0, alias="MCP_TIMEOUT_SECONDS")
-    mcp_sse_read_timeout_seconds: float = Field(default=300, gt=0, alias="MCP_SSE_READ_TIMEOUT_SECONDS")
+    mcp_timeout_seconds: float = Field(default=120, gt=0, alias="MCP_TIMEOUT_SECONDS")
+    mcp_sse_read_timeout_seconds: float = Field(default=900, gt=0, alias="MCP_SSE_READ_TIMEOUT_SECONDS")
     railway_mcp_enabled: bool = Field(default=False, alias="RAILWAY_MCP_ENABLED")
     railway_mcp_url: str | None = Field(default=None, alias="RAILWAY_MCP_URL")
     railway_mcp_token: str | None = Field(default=None, alias="RAILWAY_MCP_TOKEN")
     railway_mcp_tool_map: dict[str, str] = Field(default_factory=dict, alias="RAILWAY_MCP_TOOL_MAP")
-    railway_mcp_timeout_seconds: float = Field(default=30, gt=0, alias="RAILWAY_MCP_TIMEOUT_SECONDS")
-    railway_mcp_sse_read_timeout_seconds: float = Field(default=300, gt=0, alias="RAILWAY_MCP_SSE_READ_TIMEOUT_SECONDS")
+    railway_mcp_timeout_seconds: float = Field(default=120, gt=0, alias="RAILWAY_MCP_TIMEOUT_SECONDS")
+    railway_mcp_sse_read_timeout_seconds: float = Field(default=900, gt=0, alias="RAILWAY_MCP_SSE_READ_TIMEOUT_SECONDS")
+    xhs_mcp_enabled: bool = Field(default=False, alias="XHS_MCP_ENABLED")
+    xhs_mcp_url: str = Field(default="http://127.0.0.1:18060/mcp", alias="XHS_MCP_URL")
+    xhs_mcp_port: int = Field(default=18060, gt=0, le=65535, alias="XHS_MCP_PORT")
+    xhs_mcp_data_dir: Path = Field(default=PROJECT_ROOT / ".xhs-mcp", alias="XHS_MCP_DATA_DIR")
+    xhs_mcp_headless: bool = Field(default=False, alias="XHS_MCP_HEADLESS")
+    xhs_mcp_request_interval_ms: int = Field(default=5000, ge=2000, alias="XHS_MCP_REQUEST_INTERVAL")
+    xhs_mcp_timeout_seconds: float = Field(default=120, gt=0, alias="XHS_MCP_TIMEOUT_SECONDS")
+    xhs_mcp_sse_read_timeout_seconds: float = Field(default=900, gt=0, alias="XHS_MCP_SSE_READ_TIMEOUT_SECONDS")
     database_url: str = Field(default="sqlite+pysqlite:///./travelmind.db", alias="DATABASE_URL")
     database_echo: bool = Field(default=False, alias="DATABASE_ECHO")
     db_pool_size: int = Field(default=5, gt=0, alias="DB_POOL_SIZE")
@@ -49,6 +58,8 @@ class Settings(BaseSettings):
     rag_template_top_k: int = Field(default=20, gt=0, alias="RAG_TEMPLATE_TOP_K")
     rag_rrf_top_k: int = Field(default=15, gt=0, alias="RAG_RRF_TOP_K")
     rag_min_relevance: float = Field(default=0.0, ge=0, le=1, alias="RAG_MIN_RELEVANCE")
+    xhs_pilot_user_id: str = Field(default="demo_traveler", alias="XHS_PILOT_USER_ID")
+    xhs_pilot_notes_per_cell: int = Field(default=10, gt=0, le=50, alias="XHS_PILOT_NOTES_PER_CELL")
     memory_retrieval_top_k: int = Field(default=8, gt=0, alias="MEMORY_RETRIEVAL_TOP_K")
     memory_injection_top_k: int = Field(default=5, gt=0, alias="MEMORY_INJECTION_TOP_K")
     memory_min_relevance: float = Field(default=0.70, ge=0, le=1, alias="MEMORY_MIN_RELEVANCE")
@@ -59,6 +70,9 @@ class Settings(BaseSettings):
         default="http://localhost:5173,http://127.0.0.1:5173",
         alias="API_CORS_ORIGINS",
     )
+    log_level: str = Field(default="INFO", alias="LOG_LEVEL")
+    log_json: bool = Field(default=True, alias="LOG_JSON")
+    log_to_stdout: bool = Field(default=True, alias="LOG_TO_STDOUT")
     memory_dir: Path = PROJECT_ROOT / "memory_data"
     output_dir: Path = PROJECT_ROOT / "outputs"
     log_dir: Path = PROJECT_ROOT / "logs"

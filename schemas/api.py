@@ -1,4 +1,4 @@
-"""Request and response schemas for the TravelMind FastAPI service."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `api` 相关实现。"""
 
 from __future__ import annotations
 
@@ -9,16 +9,18 @@ from pydantic import BaseModel, Field
 
 
 class UserContext(BaseModel):
-    """Current user identity used for API isolation."""
+    """定义 `UserContext` 使用的结构化数据。"""
 
     user_id: str
 
 
 class SessionCreateRequest(BaseModel):
+    """定义创建聊天会话时允许提交的字段。"""
     title: str | None = None
 
 
 class SessionResponse(BaseModel):
+    """定义 会话 响应的数据结构。"""
     session_id: str
     user_id: str
     title: str | None = None
@@ -29,10 +31,12 @@ class SessionResponse(BaseModel):
 
 
 class MessageCreateRequest(BaseModel):
+    """定义发送一条用户消息时的请求结构。"""
     message: str = Field(min_length=1, max_length=8000)
 
 
 class MessageResponse(BaseModel):
+    """定义 消息 响应的数据结构。"""
     message_id: str
     session_id: str
     user_id: str
@@ -42,6 +46,7 @@ class MessageResponse(BaseModel):
 
 
 class WorkflowResponse(BaseModel):
+    """定义 工作流 响应的数据结构。"""
     session_id: str
     request_id: str | None
     response: str
@@ -51,6 +56,7 @@ class WorkflowResponse(BaseModel):
 
 
 class TripResponse(BaseModel):
+    """定义 旅行 响应的数据结构。"""
     trip_id: str
     user_id: str
     session_id: str
@@ -64,6 +70,7 @@ class TripResponse(BaseModel):
 
 
 class TripVersionResponse(BaseModel):
+    """定义 旅行、版本 响应的数据结构。"""
     version_id: str
     trip_id: str
     user_id: str
@@ -75,6 +82,7 @@ class TripVersionResponse(BaseModel):
 
 
 class MemoryResponse(BaseModel):
+    """定义 记忆 响应的数据结构。"""
     memory_id: str
     memory_type: str
     category: str
@@ -89,15 +97,18 @@ class MemoryResponse(BaseModel):
 
 
 class MemoryUpdateRequest(BaseModel):
+    """定义用户修改长期记忆陈述时的请求结构。"""
     statement: str
 
 
 class MemorySettingsRequest(BaseModel):
+    """定义 记忆、设置 请求的数据结构。"""
     personalization_enabled: bool | None = None
     long_term_memory_enabled: bool | None = None
 
 
 class HealthResponse(BaseModel):
+    """定义 健康状态 响应的数据结构。"""
     status: str = "ok"
     service: str = "travelmind-api"
     database: bool = False

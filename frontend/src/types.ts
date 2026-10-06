@@ -1,0 +1,13 @@
+export interface SessionItem { session_id:string; user_id:string; title:string|null; current_trip_id:string|null; status:string; created_at:string|null; updated_at:string|null }
+export interface MessageItem { message_id?:string; session_id:string; user_id:string; role:string; content:string; created_at?:string|null; pending?:boolean; trace?:string[]; errors?:Array<Record<string,unknown>> }
+export interface TripItem { trip_id:string; user_id:string; session_id:string; destination:string|null; start_date:string|null; end_date:string|null; status:string; current_version:number; created_at:string|null; updated_at:string|null }
+export interface Activity { activity_id:string; name:string; category?:string; start_time?:string; end_time?:string; location?:string; estimated_cost?:number; notes?:string; transport_method?:string; verification_status?:string; poi?:{ location?:{ longitude:number; latitude:number }; address?:string } }
+export interface ItineraryDay { day:number; date?:string; theme?:string; activities:Activity[]; estimated_daily_cost?:number; routes?:Array<Record<string,unknown>> }
+export interface Itinerary { title?:string; destination?:string; departure_city?:string; travel_days?:number; currency?:string; days:ItineraryDay[]; total_estimated_cost?:number; warnings?:string[]; assumptions?:string[]; accommodation_area?:string; general_transport_advice?:string }
+export interface TripVersion { version_id:string; trip_id:string; user_id:string; version_number:number; itinerary:Itinerary; change_reason:string|null; source_agent:string|null; created_at:string|null }
+export interface MemoryItem { memory_id:string; memory_type:string; category:string; statement:string; scope:string; polarity:string; importance:number; confidence:number; evidence_count:number; status:string; has_embedding:boolean }
+export interface RagSource { source_id:string; source_type:string; name:string; url?:string; authorization_status:string; owner_user_id:string|null }
+export interface RagDocument { document_id:string; source_id:string; title:string; status:string; owner_user_id:string|null; created_at:string; is_public:boolean; can_delete:boolean; chunk_count:number }
+export interface DailyWeather { date:string; weather:string; min_temperature:number|null; max_temperature:number|null; precipitation_sum:number|null }
+export interface WeatherForecast { location:string; source:string; days:DailyWeather[]; unavailable:boolean; message?:string|null }
+export interface ToolInvokeResult { success:boolean; tool_name:string; data?:unknown; error?:{code:string;message:string}; metadata?:Record<string,any> }

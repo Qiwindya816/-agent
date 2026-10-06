@@ -1,10 +1,10 @@
-"""Unified Tool Gateway with audit, cache, health, and metadata."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `tool_gateway` 相关实现。"""
 
 from __future__ import annotations
 
 import time
 from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Any
 from uuid import uuid4
 
@@ -13,11 +13,13 @@ from db.models import ProviderHealth, ToolCall
 from schemas.tool import ToolResult
 from schemas.tool_gateway import GatewayCallContext, ToolDescriptor
 from tools.base import BaseTool
+from utils.logger import get_logger
 
 
+logger = get_logger("tools")
 
 def classify_error(exc: Exception) -> tuple[str, bool]:
-    """Classify provider exceptions into stable gateway error codes."""
+    """把外部服务异常归类为稳定的网关错误码。"""
     message = str(exc).lower()
     if "timeout" in message or "timed out" in message:
         return "timeout", True
@@ -47,7 +49,7 @@ DEFAULT_TOOL_TTL_SECONDS = {
 
 
 class ToolGateway:
-    """Wrap a BaseTool with auditing, cache, timeout metadata, and provider health."""
+    """封装 `ToolGateway` 的核心数据与行为。"""
 
     def __init__(
         self,
@@ -62,6 +64,7 @@ class ToolGateway:
         retry_count: int = 0,
         retry_delay_seconds: float = 0.0,
     ) -> None:
+        """初始化 ToolGateway 及其运行依赖。"""
         self.tool = tool
         self.provider = provider
         self.database = database or get_database_engine()
@@ -79,13 +82,16 @@ class ToolGateway:
 
     @property
     def name(self) -> str:
+        """返回被网关包装的本地工具名称。"""
         return self.tool.name
 
     @property
     def description(self) -> str:
+        """返回被网关包装的工具说明。"""
         return self.tool.description
 
     def descriptor(self) -> ToolDescriptor:
+        """构建包含 Provider、Schema 和缓存策略的工具描述。"""
         from tools.schemas import TOOL_INPUT_SCHEMAS, tool_output_schema
 
         return ToolDescriptor(
@@ -99,7 +105,7 @@ class ToolGateway:
         )
 
     def run(self, tool_input: dict[str, Any], context: GatewayCallContext | None = None) -> ToolResult:
-        """Execute a tool, cache stable calls, and persist an audit snapshot."""
+        """执行 `run` 对应的数据和流程，返回该步骤的处理结果。"""
         if self._is_circuit_open():
             return ToolResult.failure(
                 self.tool.name,
@@ -128,7 +134,7 @@ class ToolGateway:
                 break
             except Exception as exc:
                 last_error = exc
-                # Only retry when the classified error is retryable.
+                # 只有被归类为可重试的错误才进入下一次尝试。
                 code, _ = classify_error(exc)
                 if code not in {"timeout", "rate_limited", "provider_error"} or attempt == self.retry_count:
                     break
@@ -163,15 +169,30 @@ class ToolGateway:
         return result
 
     def _is_circuit_open(self) -> bool:
-        """Read provider circuit state; open circuits reject calls without retry."""
+        """判断 `_is_circuit_open` 对应的数据和流程，返回该步骤的处理结果。"""
         try:
             with self.database.session() as session:
                 health = session.get(ProviderHealth, self.provider)
-                return bool(health and health.circuit_state == "open" and health.success_rate < self.failure_threshold)
+                if not health or health.circuit_state != "open" or health.success_rate >= self.failure_threshold:
+                    return False
+                failed_at = health.last_failure_at
+                if failed_at is None:
+                    return True
+                if failed_at.tzinfo is None:
+                    failed_at = failed_at.replace(tzinfo=timezone.utc)
+                # Provider 暂时故障不能永久锁死本地开发环境；短暂冷却后，
+                # 下一次调用将作为恢复探测。
+                elapsed = datetime.now(timezone.utc) - failed_at
+                if elapsed.total_seconds() < 0:
+                    # 旧版本曾把本地墙上时间按 UTC 保存。遇到时钟偏移记录时将其视为过期，
+                    # 避免错误地持续锁定 Provider。
+                    return False
+                return elapsed < timedelta(seconds=30)
         except Exception:
             return False
 
     def _cache_key(self, arguments: dict[str, Any]) -> str:
+        """根据规范化工具参数生成稳定的进程内缓存键。"""
         return repr(sorted(arguments.items(), key=lambda item: str(item[0])))
 
     def _record(
@@ -183,6 +204,24 @@ class ToolGateway:
         retries: int,
         cache_hit: bool,
     ) -> None:
+        """记录结构化工具日志，并在有上下文时写入审计表。"""
+        logger.info(
+            "tool_call_completed",
+            extra={
+                "event_name": "tool_call_completed",
+                "request_id": context.request_id if context else None,
+                "user_id": context.user_id if context else None,
+                "session_id": context.session_id if context else None,
+                "trip_id": context.trip_id if context else None,
+                "provider": self.provider,
+                "tool_name": self.tool.name,
+                "success": result.success,
+                "error_code": result.error.code if result.error else None,
+                "elapsed_ms": latency_ms,
+                "retries": retries,
+                "cache_hit": cache_hit,
+            },
+        )
         if context is None:
             return
         record = ToolCall(
@@ -204,13 +243,15 @@ class ToolGateway:
             with self.database.session() as session:
                 session.add(record)
         except Exception:
-            # Audit must never block the user-facing tool path.
+            # 审计写入失败绝不能阻断面向用户的工具调用主链路。
             return
 
     def _update_health(self, latency_ms: int, *, success: bool) -> None:
+        """更新健康状态，并保持相关状态或持久化数据一致。"""
         try:
             with self.database.session() as session:
                 health = session.get(ProviderHealth, self.provider)
+                is_new = health is None
                 if health is None:
                     health = ProviderHealth(provider_name=self.provider, status="healthy")
                     session.add(health)
@@ -227,14 +268,17 @@ class ToolGateway:
                 else:
                     health.success_rate = (health.success_rate + (1.0 if success else 0.0)) / 2
                 health.status = "healthy" if health.success_rate >= 0.5 else "degraded"
-                health.circuit_state = "open" if health.success_rate < 0.5 else "closed"
+                # 首次瞬时失败不足以触发熔断；连续失败仍会打开熔断器，
+                # 冷却后由 _is_circuit_open 放行恢复探测。
+                health.circuit_state = "open" if not is_new and health.success_rate < 0.5 else "closed"
                 if success:
-                    health.last_success_at = datetime.now()
+                    health.last_success_at = datetime.now(timezone.utc)
                 else:
-                    health.last_failure_at = datetime.now()
+                    health.last_failure_at = datetime.now(timezone.utc)
         except Exception:
             return
 
-    # BaseTool-compatible API so the gateway can live inside ToolRegistry.
+    # 保持 BaseTool 兼容接口，使网关可以注册到 ToolRegistry。
     def __call__(self) -> None:
+        """以可调用对象形式执行 ToolGateway。"""
         raise TypeError("Use ToolGateway.run(tool_input, context) instead.")

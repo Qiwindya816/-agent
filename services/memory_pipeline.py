@@ -1,4 +1,4 @@
-"""Extract, validate, and persist long-term memory candidates."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `memory_pipeline` 相关实现。"""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ SENSITIVE_MARKERS = ("身份证", "护照", "银行卡", "密码", "病历", "�
 
 @dataclass
 class MemoryPipelineResult:
-    """Summary of one memory ingestion batch."""
+    """承载 `MemoryPipelineResult` 对应的结构化结果及元数据。"""
 
     created: list[str] = field(default_factory=list)
     merged: list[str] = field(default_factory=list)
@@ -31,13 +31,14 @@ class MemoryPipelineResult:
 
 
 class MemoryPipeline:
-    """Convert raw extraction output into memory candidates and persist valid items."""
+    """封装 `MemoryPipeline` 的核心数据与行为。"""
 
     def __init__(
         self,
         database: DatabaseEngine | None = None,
         embedding_service: EmbeddingService | None = None,
     ) -> None:
+        """初始化 MemoryPipeline 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.embedding_service = embedding_service
 
@@ -50,6 +51,7 @@ class MemoryPipeline:
         trip_id: str | None = None,
         message_id: str | None = None,
     ) -> MemoryPipelineResult:
+        """解析、过滤并按写入策略持久化一批记忆候选。"""
         result = MemoryPipelineResult()
         if not raw_candidates:
             return result
@@ -99,6 +101,7 @@ class MemoryPipeline:
         trip_id: str | None,
         message_id: str | None,
     ) -> list[MemoryCandidate]:
+        """解析候选项，供后续流程使用。"""
         parsed: list[MemoryCandidate] = []
         for raw in raw_candidates:
             if not isinstance(raw, dict):
@@ -121,6 +124,7 @@ class MemoryPipeline:
         return parsed
 
     def _embedding(self, statement: str) -> list[float] | None:
+        """为记忆陈述生成向量；服务失败时安全返回空值。"""
         if self.embedding_service is None:
             return None
         try:
@@ -130,10 +134,12 @@ class MemoryPipeline:
 
     @staticmethod
     def _is_sensitive(candidate: MemoryCandidate) -> bool:
+        """判断记忆候选是否包含禁止长期保存的敏感信息。"""
         text = f"{candidate.statement}\n{candidate.evidence_text}"
         return any(marker in text for marker in SENSITIVE_MARKERS)
 
     def _memory_enabled(self, user_id: str) -> bool:
+        """查询用户是否允许写入长期记忆。"""
         from db.models import User
 
         try:

@@ -1,1 +1,1 @@
-"""Pydantic schemas used by TravelMind."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `__init__` 相关实现。"""

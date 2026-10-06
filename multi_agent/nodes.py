@@ -24,6 +24,7 @@ from utils.ids import new_request_id, new_trip_id
 
 
 def _trace(state: TravelGraphState, node: str) -> list[str]:
+    """在图状态中追加当前节点名称，形成可观测执行轨迹。"""
     return [*state.get("node_trace", []), node]
 
 
@@ -31,6 +32,7 @@ class CoordinatorAgent:
     """恢复会话、建立请求上下文并把工作交给下游节点。"""
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
+        """执行 CoordinatorAgent 节点并返回本轮状态更新。"""
         agent_state = load_agent_state(state["session_id"], state["user_id"])
         agent_state.request_id = state.get("request_id") or new_request_id()
         agent_state.chat_history.append(ChatMessage(role="user", content=state["user_input"]))
@@ -51,10 +53,12 @@ class FeedbackAgent:
         extractor: Callable[..., ProfileExtraction] | None = None,
         memory_pipeline: MemoryPipeline | None = None,
     ) -> None:
+        """初始化 FeedbackAgent 及其运行依赖。"""
         self.extractor = extractor or extract_profile_updates
         self.memory_pipeline = memory_pipeline or MemoryPipeline()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
+        """执行 FeedbackAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
         updates = self.extractor(
             state["user_input"],
@@ -113,9 +117,11 @@ class PlannerAgent:
     """把用户目标分解成有依赖关系的工具执行计划。"""
 
     def __init__(self, router: TravelRouter | None = None) -> None:
+        """初始化 PlannerAgent 及其运行依赖。"""
         self.router = router or TravelRouter()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
+        """执行 PlannerAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
         plan = self.router.route(state["user_input"], agent_state)
         agent_state.route_confidence = plan.confidence
@@ -136,14 +142,17 @@ class ToolExecutionAgent:
     """按依赖顺序调用白名单工具，并统一记录结果和耗时。"""
 
     def __init__(self, executor: ToolExecutor | None = None) -> None:
+        """初始化 ToolExecutionAgent 及其运行依赖。"""
         self.executor = executor or ToolExecutor()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
+        """执行 ToolExecutionAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
         plan = RoutePlan.model_validate(state["route_plan"])
         started = perf_counter()
 
         def update_after_each(route: RouteResult, result: ToolResult) -> None:
+            """在每个工具步骤结束后同步最新 AgentState。"""
             agent_state.current_stage = route.stage
             if not result.success:
                 agent_state.last_error = result.error.code if result.error else "tool_error"
@@ -196,9 +205,11 @@ class SummarizerAgent:
     """把多个工具结果合并成最终回复，并保存会话状态。"""
 
     def __init__(self, response_generator: ResponseGenerator | None = None) -> None:
+        """初始化 SummarizerAgent 及其运行依赖。"""
         self.response_generator = response_generator or ResponseGenerator()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
+        """执行 SummarizerAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
         if state.get("needs_clarification"):
             response = state.get("clarification_question") or "请补充更明确的旅行需求。"
@@ -210,7 +221,10 @@ class SummarizerAgent:
                 )
                 for item in state.get("tool_results", [])
             ]
-            response = self.response_generator.generate_many(completed)
+            response = self.response_generator.generate_many(
+                completed,
+                user_input=state["user_input"],
+            )
         agent_state.chat_history.append(ChatMessage(role="assistant", content=response))
         save_agent_state(agent_state)
         return {

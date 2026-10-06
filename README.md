@@ -91,11 +91,39 @@ MCP_SSE_READ_TIMEOUT_SECONDS=300
 .\.venv\Scripts\python.exe -m pip check
 ```
 
+阶段 9 的本地评测（不会修改业务数据）：
+
+```powershell
+# 纯关键词/模板召回基线
+.\.venv\Scripts\python.exe -m scripts.manage_evals --no-embedding
+
+# 包含 DashScope 向量召回的完整基线
+.\.venv\Scripts\python.exe -m scripts.manage_evals
+```
+
+报告输出到 `outputs/evaluations/`，黄金集格式和指标口径见
+[evaluation/README.md](evaluation/README.md)。RAG 黄金集在人工复核并标记为
+`approved` 前只作为试运行基线，不应作为上线结论。
+
 在线模型评测会产生 API 用量：
 
 ```powershell
 .\.venv\Scripts\python.exe tests/run_model_evals.py --limit 3
 ```
+
+## Docker Compose 部署
+
+复制生产配置模板并填写自己的密钥，随后启动 PostgreSQL、Redis、FastAPI 和 Nginx 前端：
+
+```powershell
+Copy-Item .env.production.example .env
+docker compose up --build -d
+docker compose ps
+```
+
+默认页面地址为 `http://localhost:8080`。`.env.production.example` 只包含占位值；真实 Secret 只能保存在未提交的 `.env` 或部署平台的 Secret 管理中。小红书 MCP 依赖浏览器登录态，默认不进入生产 Compose，需要在授权且合规的独立运行环境中接入。
+
+运行日志以 JSON Lines 写入 `logs/runtime.jsonl`，包含 request/session/trip ID、请求延迟以及模型 Token 用量，不记录 Prompt、模型正文或明文密钥。
 
 ## 当前边界
 

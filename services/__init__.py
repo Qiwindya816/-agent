@@ -1,1 +1,1 @@
-"""External service adapters."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `__init__` 相关实现。"""

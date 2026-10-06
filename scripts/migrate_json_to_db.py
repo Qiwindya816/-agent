@@ -1,4 +1,4 @@
-﻿"""Migrate existing JSON user/session/trip files into the database."""
+﻿"""提供 项目维护和命令行操作；本文件负责 `migrate_json_to_db` 相关实现。"""
 
 import argparse
 import json
@@ -14,11 +14,13 @@ from utils.ids import new_request_id
 
 
 def read_json(path: Path) -> dict:
+    """读取JSON并返回符合当前作用域的结果。"""
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
 
 def migrate(memory_dir: Path, database_url: str | None, *, dry_run: bool = False) -> int:
+    """将旧版 JSON 用户、会话和旅行状态迁移到数据库。"""
     engine = DatabaseEngine(database_url)
     engine.create_all()
     migrated = {"users": 0, "sessions": 0, "trips": 0}
@@ -72,13 +74,14 @@ def migrate(memory_dir: Path, database_url: str | None, *, dry_run: bool = False
         print(json.dumps(migrated, ensure_ascii=False))
         return 0
     except Exception:
-        # DatabaseEngine.session context performs rollback on exception.
+        # DatabaseEngine.session 上下文会在异常时自动回滚。
         raise
     finally:
         engine.dispose()
 
 
 def main() -> int:
+    """解析命令行参数并执行 migrate_json_to_db 的主流程。"""
     parser = argparse.ArgumentParser(description="Migrate legacy JSON storage to the database")
     parser.add_argument("--memory-dir", default="memory_data")
     parser.add_argument("--url", default=None)

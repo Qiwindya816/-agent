@@ -1,4 +1,4 @@
-"""Deterministic itinerary validation for time, budget, routes, and intensity."""
+"""提供 确定性业务校验；本文件负责 `itinerary_validator` 相关实现。"""
 
 from __future__ import annotations
 
@@ -10,15 +10,17 @@ from schemas.itinerary import Activity, Itinerary
 
 
 class ItineraryValidationResult(BaseModel):
+    """承载 行程、校验 的结构化结果。"""
     is_valid: bool
     errors: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 
 
 class ItineraryValidator:
-    """Validate an itinerary with deterministic rules, without LLM involvement."""
+    """集中实现 `ItineraryValidator` 对应的确定性业务逻辑。"""
 
     def validate(self, itinerary: Itinerary) -> ItineraryValidationResult:
+        """汇总检查行程的时间、预算、强度和路线可行性。"""
         errors: list[str] = []
         warnings: list[str] = []
 
@@ -49,6 +51,7 @@ class ItineraryValidator:
 
     @staticmethod
     def _validate_time_sequence(day: int, activities: list[Activity], errors: list[str], warnings: list[str]) -> None:
+        """检查每日活动起止时间是否合法且不存在重叠。"""
         previous_end: time | None = None
         previous_name: str | None = None
         for activity in activities:
@@ -70,6 +73,7 @@ class ItineraryValidator:
         errors: list[str],
         warnings: list[str],
     ) -> None:
+        """检查活动间路线引用是否完整且指向有效活动。"""
         activity_ids = {activity.activity_id for activity in activities}
         for route in routes:
             if route.origin_activity_id not in activity_ids or route.destination_activity_id not in activity_ids:
@@ -81,6 +85,7 @@ class ItineraryValidator:
 
     @staticmethod
     def _validate_intensity(day: int, activities: list[Activity], warnings: list[str]) -> None:
+        """校验intensity并返回校验结果。"""
         count = len(activities)
         if count > 5:
             warnings.append(f"第 {day} 天主要活动数量为 {count} 个，节奏可能过紧。")
@@ -95,6 +100,7 @@ class ItineraryValidator:
 
     @staticmethod
     def _validate_budget(itinerary: Itinerary, warnings: list[str]) -> None:
+        """校验预算并返回校验结果。"""
         activity_total = sum(
             activity.estimated_cost or 0 for day in itinerary.days for activity in day.activities
         )
@@ -108,6 +114,7 @@ class ItineraryValidator:
 
     @staticmethod
     def _validate_route_feasibility(itinerary: Itinerary, warnings: list[str]) -> None:
+        """根据交通耗时和活动间隔检查路线是否可执行。"""
         for day in itinerary.days:
             for activity in day.activities:
                 if activity.verification_status == "unknown" and activity.poi is None:
@@ -115,6 +122,7 @@ class ItineraryValidator:
 
 
 def _parse_time(value: str | None) -> time | None:
+    """解析time，供后续流程使用。"""
     if not value:
         return None
     try:

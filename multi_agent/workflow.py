@@ -18,6 +18,7 @@ class MultiAgentTravelWorkflow:
         *,
         graph: Any | None = None,
     ) -> None:
+        """初始化 MultiAgentTravelWorkflow 及其运行依赖。"""
         self.user_id = validate_user_id(user_id)
         self.session_id = session_id or (
             "default_session" if self.user_id == "default_user" else new_session_id()

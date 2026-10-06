@@ -1,4 +1,4 @@
-"""Schemas for long-term memory candidates, retrieval, and conflict resolution."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `memory` 相关实现。"""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ EvidenceType = Literal[
 
 
 class MemoryCandidate(BaseModel):
-    """A candidate extracted from a user turn before write policy evaluation."""
+    """封装 `MemoryCandidate` 的核心数据与行为。"""
 
     user_id: str
     memory_type: MemoryType
@@ -39,7 +39,7 @@ class MemoryCandidate(BaseModel):
 
 
 class RetrievedMemory(BaseModel):
-    """A retrieved memory item with relevance and provenance."""
+    """承载 `RetrievedMemory` 对应的结构化结果及元数据。"""
 
     memory_id: str
     user_id: str
@@ -60,7 +60,7 @@ class RetrievedMemory(BaseModel):
 
 
 class MemoryDecision(BaseModel):
-    """Result of memory conflict resolution for prompt injection."""
+    """承载 `MemoryDecision` 对应的结构化结果及元数据。"""
 
     memory: RetrievedMemory
     priority: float
@@ -69,7 +69,7 @@ class MemoryDecision(BaseModel):
 
 
 class MemoryWriteDecision(BaseModel):
-    """Decision returned by MemoryWritePolicy."""
+    """承载 `MemoryWriteDecision` 对应的结构化结果及元数据。"""
 
     action: Literal["create", "merge", "reject", "defer"]
     memory_id: str | None = None

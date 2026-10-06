@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 # 定义天气信息的统一数据结构，包含位置、经纬度、数据源、每日天气列表、不可用标志和消息等信息。
 class DailyWeather(BaseModel):
+    """定义 每日、天气 的结构化数据模型。"""
     date: str
     weather: str
     min_temperature: float | None = None
@@ -10,6 +11,7 @@ class DailyWeather(BaseModel):
 
 # 定义每日天气信息的数据结构，里面包含日期、天气描述、最低温度、最高温度和降水总量等字段。
 class WeatherResult(BaseModel):
+    """承载 天气 的结构化结果。"""
     location: str
     latitude: float | None = None
     longitude: float | None = None

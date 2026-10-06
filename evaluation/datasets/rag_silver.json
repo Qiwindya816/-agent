@@ -1,0 +1,3657 @@
+{
+  "metadata": {
+    "name": "TravelMind 自有小红书语料 RAG 银集",
+    "version": "1.0.0",
+    "created_at": "2026-10-05T14:50:32.060366+00:00",
+    "calibration_status": "synthetic_validated",
+    "owner_user_id": "demo_traveler",
+    "source_id": "src_d23778c1f7004413",
+    "case_count": 113,
+    "coverage": {
+      "上海": {
+        "art_museums": 6,
+        "budget_tips": 6,
+        "citywalk": 6,
+        "family": 6,
+        "food": 6,
+        "history_culture": 6,
+        "nearby_trip": 1,
+        "night_tour": 6,
+        "photo_spots": 4,
+        "relaxed_nature": 6
+      },
+      "北京": {
+        "art_museums": 6,
+        "budget_tips": 6,
+        "citywalk": 6,
+        "family": 6,
+        "food": 6,
+        "history_culture": 6,
+        "nearby_trip": 6,
+        "night_tour": 6,
+        "photo_spots": 6,
+        "relaxed_nature": 6
+      }
+    },
+    "warnings": [],
+    "annotation_note": "问题由语料自动生成，证据、文档 ID 和来源已程序校验；不能替代人工金集。"
+  },
+  "cases": [
+    {
+      "id": "SILVER-SH-ART-01",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“上海美术馆 中华艺术宫”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_31948aefa4db4f4d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "总体而言是不满意的\n首先巨巨巨大的馆 大到夸张\n入口呢 就很迷惑 先乘电梯上行 进去后再做电梯下到1楼 我不明白这样设计的意义是什么 存包处设计在出口处 我也是去过博物馆第一次见在出口处存包 虽然下到一楼拐角就是出口 但这种设计我依然感觉很愚蠢\n内容方面 我都感觉是过于空洞 上层只有一个儿童展加一个中西方名画对比的展 再就没有了 整整12层 就设计了两个不大的展 剩下的地方你们留着生孩子吗",
+      "provenance": {
+        "document_id": "doc_31948aefa4db4f4d",
+        "chunk_id": "chunk_535166296bf340ef",
+        "title": "上海美术馆 中华艺术宫",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 19,
+          "collects": 6,
+          "comments": 14,
+          "shares": 6
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-ART-02",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“来之前怎么没人告诉我看莫兰迪要注意这些‼️”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_38b77bfd6d3f4404",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "分享几个全网没什么人提的点：\n▪️划重点：检完票首先去1楼纪念品店‼️\n我买了冰箱贴和帆布包\n看展时正好可以当拍照道具！\n莫兰迪周边的颜色风格和展厅、画作都很搭~\n带着周边看展拍照📸更有参与感🦦\n\t\n▫️然后上二楼看莫兰迪展\n展厅会根据客流限流\n暑期工作日12点多基本不用排\n3点左右入口排队就很长了\n⚠️2楼展厅出口有卖莫兰迪周边的快闪店\n千万不要在这儿买❌这儿货少且没有满赠❗️\n这儿的产品1楼纪念品店全都有\n1楼商品多的多，还有满赠活动‼️\n\t\n▪️展厅光线柔和很舒服\n不只有熟悉的瓶瓶罐罐\n还有花卉 风景 自画像 水彩和版画\n现场扫码可以🆓听语音讲解\n记得自带耳机🎧\n\t\n▫️展厅出口有可以自己画画的区域\n现场提供莫兰迪色彩铅",
+      "provenance": {
+        "document_id": "doc_38b77bfd6d3f4404",
+        "chunk_id": "chunk_4dfe72af789a4fe4",
+        "title": "来之前怎么没人告诉我看莫兰迪要注意这些‼️",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 327,
+          "collects": 257,
+          "comments": 14,
+          "shares": 179
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-ART-03",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“国庆上海必看6个展 | 3个预约+3个免费”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_38c8145d5b9e49dc",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "国庆在上海，别只逛外滩人挤人。\n这6个展，千万别错过！预约、免费、截止时间都整理好了👇\n\t\n【3个必看】\n\t\n1️⃣ 中华艺术宫《千金之家》马王堆汉墓\n📍地址：上海市浦东新区上南路205号\n辛追夫人的起居用品，几乎都搬来了。\n重点看那幅两米三十几的帛画，天上、人间、地下三层。\n⏰10.7截止｜🎫需预约｜📍中华艺术宫\n\t\n2️⃣ 上海博物馆 美洲古代文明大展\n📍地址：上海市黄浦区人民大道201号\n1000+件文物，黄金打得跟纸一样薄。\n上博东馆还有《金冠之下》，韩国新罗金冠，真金镶玉。\n🎫建议提前预约｜📍上海博物馆/上博东馆\n\t\n3️⃣ 闵行博物馆 康雍乾文物展\n📍地址：上海市闵行区新镇路1538号",
+      "provenance": {
+        "document_id": "doc_38c8145d5b9e49dc",
+        "chunk_id": "chunk_effcaaff47a043e4",
+        "title": "国庆上海必看6个展 | 3个预约+3个免费",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 111,
+          "collects": 171,
+          "comments": 6,
+          "shares": 135
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-ART-04",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“上海值得一去的12个看展必逛美术馆合集”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_3d6b50cd36ed4f2c",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "这里是城市的文艺之地，一个充满故事的地方，文艺文化与拍照打卡爱好者的文化艺术之旅赏析好去处！周末节假日旅行在上海值得去逛逛这些文艺美术馆，尽展艺术的空间！一起约上伙伴找寻共鸣的作品；还可以拍拍出片的照片，记录一下美好！攻略小助手整理了上海12处看展美术馆合集推荐！\n1、上海美术馆（中华艺术宫）\n时间：10:00 - 18:00（周一闭馆）\n地址：上海市浦东新区上南路205号\n2、浦东美术馆（MAP）\n时间：10:00–21:00\n地址：上海市浦东新区滨江大道2777号\n3、上海当代艺术博物馆\n时间：11:00–19:00（周一闭馆）\n地址：上海市黄浦区苗江路678号\n4、西岸美术馆\n时间： 11:00–18:00（周一闭馆）",
+      "provenance": {
+        "document_id": "doc_3d6b50cd36ed4f2c",
+        "chunk_id": "chunk_3c96a08852224b3c",
+        "title": "上海值得一去的12个看展必逛美术馆合集",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 892,
+          "collects": 912,
+          "comments": 6,
+          "shares": 344
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-ART-05",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“接下来的上海简直是看展天花板（9月-11月）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_cf196e3ba2324557",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海、上海周末去哪儿、展览、看展、上海展览、上海新展、9月、周末去哪玩、周末去哪儿、上海博物馆",
+      "provenance": {
+        "document_id": "doc_cf196e3ba2324557",
+        "chunk_id": "chunk_57fcff3fe2d1450c",
+        "title": "接下来的上海简直是看展天花板（9月-11月）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 3330,
+          "collects": 4887,
+          "comments": 75,
+          "shares": 2432
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-ART-06",
+      "query": "去上海安排艺术馆和博物馆行程时，关于“上海女生为了date，半年去浦东美术馆43次”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_cfe383d63f8a4b4f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "半年内\n看展场次 43次\n约会人数 43位\n牵手次数 1次\n主动买单特调和简餐 86份\n在徐冰的巨大装置艺术前假装沉思 129分钟\n被问你觉得艺术家想表达什么 43次\n\t\n这是一个极其高效的筛选机制：\n1、在绝美镜厅前只顾着疯狂自拍却连艺术家名字都不看一眼的，大概率缺乏深度。\n2、能倒背如流三个以上冷门先锋艺术家名字的，可能真的难搞。\n3、看完展主动AA门票，或者提议去吃一家人均50的本帮面馆的，重点关注。\n\t\n当两个人站在一幅谁也看不懂的画前，沉默就不再尴尬。这比在静安嘉里中心的咖啡馆里干巴巴地互查户口要体面得多。\n\t\n43次看展，我见过的男生类型\n\t\n纯粹出片型 18位",
+      "provenance": {
+        "document_id": "doc_cfe383d63f8a4b4f",
+        "chunk_id": "chunk_e5d922d348464c72",
+        "title": "上海女生为了date，半年去浦东美术馆43次",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2842,
+          "collects": 571,
+          "comments": 318,
+          "shares": 2224
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-01",
+      "query": "去上海安排省钱攻略行程时，关于“小红书旅行笔记 69c2c11d000000002102c2e7”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_5aa380f24c584795",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海生存指南，第一集：\n不要为省那一两百块钱，而搭乘10点之后抵达上海的航班，因为上海的公共交通，11点以后都停掉了，最后省掉的机票钱会体现在打车费上，还会再添点。\n上海夜间出租车起步价，汽油车是18块，新能源车是21块，网约车得加钱。我坐汽油车出租车，18km花了111，等个红绿灯就往上跳点钱。",
+      "provenance": {
+        "document_id": "doc_5aa380f24c584795",
+        "chunk_id": "chunk_b459b367bcff431f",
+        "title": "小红书旅行笔记 69c2c11d000000002102c2e7",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 13,
+          "collects": 6,
+          "comments": 9,
+          "shares": 1
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-02",
+      "query": "去上海安排省钱攻略行程时，关于“上海旅游避坑指南”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_6a376ad8fef74431",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "刚从上海回来，踩了一肚子坑才明白：上海不是不好玩，是玩法不对！本地人私藏的避坑指南，看完直接省几千，别再当冤种了😭\n🏨住宿避坑\n别住南京东路/人民广场，又贵又吵人还多，旺季普通连锁600-800一晚。选天潼路、陕西南路，交通便利物价亲民，地铁直达各景点。不用盲目追求江景房，普通临街房间性价比更高。\n🏯景点避坑\n豫园白天别去，晚上灯光璀璨才出片。外滩观光隧道50块纯智商税别坐。田子坊像义乌小商品市场别去，想去石库门就去新天地、张园。外滩别挤主观景台，北外滩滨江人少景美。\n🍜美食避坑\n别在南京东路主街吃饭，专坑游客。步行几百米去天津路、黄河路、浙江中路，本地人爱吃的馆子味道好排队少。莱莱小笼的蟹粉小笼必点，米其林必比登推荐。",
+      "provenance": {
+        "document_id": "doc_6a376ad8fef74431",
+        "chunk_id": "chunk_4f1e69f70fc74dd9",
+        "title": "上海旅游避坑指南",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 6,
+          "collects": 6,
+          "comments": 0,
+          "shares": 1
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-03",
+      "query": "去上海安排省钱攻略行程时，关于“来上海旅游一定要提前了解这些（避坑指南）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_74c8841bd5314d8a",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海周末去哪儿、上海新地标、逛街好去处、网红打卡地、上海旅游、上海避坑指南、上海怎么玩、上海吃喝玩乐、上海一切皆有可能、上海超有料",
+      "provenance": {
+        "document_id": "doc_74c8841bd5314d8a",
+        "chunk_id": "chunk_70b1ad3e728c443e",
+        "title": "来上海旅游一定要提前了解这些（避坑指南）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 18,
+          "collects": 33,
+          "comments": 0,
+          "shares": 11
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-04",
+      "query": "去上海安排省钱攻略行程时，关于“别当冤种！上海七大必避天坑看完省大几千”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_80bd42f72e4244b5",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "别当冤种！上海7大必避天坑看完省大几千🙌\n1. 外滩拍照换北外滩滨江\n2. 静安寺打卡换延安路人行天桥\n3. 田子坊换新天地/张园看石库门\n4. 南京东路吃饭换周边本地老街\n5. 东方明珠换朵云书院瞰江\n6. 豫园改晚上去拍夜景",
+      "provenance": {
+        "document_id": "doc_80bd42f72e4244b5",
+        "chunk_id": "chunk_ff90dcba1cfe46b6",
+        "title": "别当冤种！上海七大必避天坑看完省大几千！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 529,
+          "collects": 957,
+          "comments": 14,
+          "shares": 301
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-05",
+      "query": "去上海安排省钱攻略行程时，关于“听劝！去田子坊&琉璃艺术馆前先看这篇省钱”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_b6093b4dc638437d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "⚠️去上海田子坊和琉璃艺术馆，劝你先看完这篇！ 今天刚去完，本地人带来最真实、无滤镜的体验！不做冤种，赶紧先收藏保存📌\n1️⃣ 田子坊：审美疲劳，同质化严重\n真实感受：弄堂确实很有老上海风味，小店装饰也好看。但逛了几条街就会发现，卖的香膏、文创、小饰品同质化极其严重！拍照点位也千篇一律。\n💡避坑建议：安排 0.5~1小时 感受下气氛、拍拍照即可，没必要花太多精力每一家店都逛，更不需要盲目买同质化小商品。\n2️⃣ 琉璃艺术馆三楼：性价比偏低\n真实感受：三楼是需要买门票的，但展品数量偏少，看完让人眼前一亮的精品真的不多，个人觉得这钱花得有点亏。\n💡避坑建议：如果预算有限或时间紧，三楼可以直接绕过！\n🟢 【红榜&隐藏玩法（重点省钱攻略！",
+      "provenance": {
+        "document_id": "doc_b6093b4dc638437d",
+        "chunk_id": "chunk_62fcb3444a1244ea",
+        "title": "听劝！去田子坊&琉璃艺术馆前先看这篇省钱",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 3,
+          "collects": 4,
+          "comments": 0,
+          "shares": 4
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-BUDGET-06",
+      "query": "去上海安排省钱攻略行程时，关于“国庆不要去上海太闹心了”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_fb460fc68778454e",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海外滩-南京路步行街避坑指南：\n奉劝大家，国庆真的不要去上海玩，太挤了了！简直人山人海，水泄不通！🙅🏻‍♂️\n✅要去的可以按照我这个小众路线来，可以避开大部队和围栏\n就是在南京东路步行街的主干道，进进入旁边的小路去！！\n✅九江路或者天津路，这两边很少的，之少比主路人少 大一半，能快速直接走去外滩万国建筑那边，真的很快很方便！",
+      "provenance": {
+        "document_id": "doc_fb460fc68778454e",
+        "chunk_id": "chunk_1af5ea70326043bb",
+        "title": "国庆不要去上海🤣太闹心了🛵",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 39,
+          "collects": 9,
+          "comments": 24,
+          "shares": 29
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-01",
+      "query": "去上海安排城市漫步行程时，关于“上海国庆如果只推荐一条citywalk路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_03d27fe70e2b43cf",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "每个来沪的朋友都会推荐长宁区这条citywalk路线!!国庆来上海，别只挤外滩了！这条路线从百年校园一路逛到花园洋房，全程梧桐树荫不晒不累，好逛又好拍，直接抄作业👇\n\t\n🚶推荐路线\n华东政法大学长宁校区→愚园路→长宁金融园→长宁区少年宫→翡悦里→上生新所→星期天公园→兴国宾馆\n\t\n1️⃣华东政法大学长宁校区\n前身是圣约翰大学，百年建筑和大草坪都很好拍\n\t\n2️⃣愚园路\n很多好逛的小店很热闹\n\t\n3️⃣长宁金融园\n愚园路上容易错过的百年洋房群，只在每周日和国定假日开放\n\t\n4️⃣长宁区少年宫\n哥特式“梦幻城堡”，内部草坪开放\n\t\n5️⃣翡悦里\n精致小众街区，大草坪配上红砖洋房超级出片\n\t\n6️⃣上生新所",
+      "provenance": {
+        "document_id": "doc_03d27fe70e2b43cf",
+        "chunk_id": "chunk_a97c3d59e86c4c85",
+        "title": "上海国庆如果只推荐一条citywalk路线",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 968,
+          "collects": 1493,
+          "comments": 62,
+          "shares": 756
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-02",
+      "query": "去上海安排城市漫步行程时，关于“个人认为上海很难超越的一条citywalk路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_09b75547012440c3",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "巨鹿路➡️富民路➡️长乐路➡️新乐路➡️延庆路\n沿街很多漂亮小店\n一整条路下来逛逛拍拍特别chill\n还有很多美食咖啡☕很值得打卡\n来上海这条路必逛✌🏻",
+      "provenance": {
+        "document_id": "doc_09b75547012440c3",
+        "chunk_id": "chunk_6c331547b4b4445e",
+        "title": "个人认为上海很难超越的一条citywalk路线",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1801,
+          "collects": 2284,
+          "comments": 17,
+          "shares": 1241
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-03",
+      "query": "去上海安排城市漫步行程时，关于“上海｜私藏！9条超适合Citywalk的马路”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_104329f024fc4dd8",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "来上海真的别只逛外滩、南京东路！\n如果你喜欢梧桐树、老洋房、咖啡店和街头光影，这9条马路更适合慢慢走、慢慢拍📷\n\t\n📍愚园路\n老洋房＋小店＋文艺街区，随便一个转角都很出片。适合边逛边喝咖啡。\n📍武康路\n上海Citywalk经典代表！武康大楼、梧桐树、老建筑，很有氛围感。\n📍安福路\n比武康路更年轻、更时髦，咖啡店、买手店、潮流小店一路逛，适合拍街拍。\n📍永嘉路\n喜欢安静一点的Citywalk要来！梧桐掩映下的老洋房，很有上海独有的松弛感。\n📍富民路\n法式老洋房＋精致小店＋生活气息，适合下午慢悠悠压马路。\n📍衡山路\n梧桐大道＋老建筑，氛围感很强。相比热门的武康路，这里更适合安静散步。\n📍思南路",
+      "provenance": {
+        "document_id": "doc_104329f024fc4dd8",
+        "chunk_id": "chunk_5f773f4a55c84d44",
+        "title": "上海｜私藏！9条超适合Citywalk的马路📷",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1083,
+          "collects": 1554,
+          "comments": 10,
+          "shares": 1127
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-04",
+      "query": "去上海安排城市漫步行程时，关于“上海会去一万次的citywalk路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_257b5b7584154645",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "在上海生活这么多年，推荐一条很值得Citywalk的路线：\n巨鹿路➡️富民路➡️长乐路➡️东湖路➡️延庆路\n这几条马路都离得不远 沿途都是好看的梧桐街道和有意思的小店\n比起行人众多的武康路 安静不喧闹 很适合一个人闲逛发呆\n\t\n一些个人比较喜欢的小店：\n🏡1937polo （很复古的洋房）\n👚Supreme（国内首家，每周有新品发售）\n👗Goodbai、MondaySleepingClub（潮流品牌）\n☕️Slab Town、Plusone （咖啡 brunch）\n🍧野人先生全球旗舰店（独栋的洋房好高级）\n吃到了新出的芭乐多多Sorbetto 还是上海和浙江限定\n新鲜西瓜红芭乐的清甜果香搭配养乐多的乳酸菌风味和青柠的清新微酸",
+      "provenance": {
+        "document_id": "doc_257b5b7584154645",
+        "chunk_id": "chunk_9f32e350b1ea48f0",
+        "title": "上海📍会去一万次的citywalk路线🚶🍃",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2616,
+          "collects": 2988,
+          "comments": 110,
+          "shares": 1297
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-05",
+      "query": "去上海安排城市漫步行程时，关于“上海已迎来最佳Citywalk期（假期人少版）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_4bb47daf89c94800",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "又到了上海最适合散步的季节\n如果想安静地citywalk，推荐一条人少景美的路线：\n建国西路➡️永嘉路➡️衡山路➡️太原路➡️汾阳路\n这几条马路有着完全不输武康路、安福路的花园洋房和梧桐光影\n且人少更安静 是我心目中的最佳散步地之一🚶\n\t\n🏡花园洋房\n📍太原路与永嘉路交口的绿野仙踪（p2）\n📍汾阳花园（p4 p5）\n📍夏衍旧居（p10 p11）\n📍瑞金宾馆（p14 p15）\n\t\n🏠宝藏小店：\n📍思远旧书店📚（p1）\n藏在居民楼下的复古旧书店\n📍LUMIMOON💍（p6 p7）\n光影和装置很美的意趣珍珠美学空间\n📍铁手珈啡制造局☕️ （p8）\n📍For Long🍰 （p13）\n📍gubigubi🍴（p12）",
+      "provenance": {
+        "document_id": "doc_4bb47daf89c94800",
+        "chunk_id": "chunk_c579a3df674d40dd",
+        "title": "上海已迎来最佳Citywalk期（假期人少版）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 484,
+          "collects": 643,
+          "comments": 43,
+          "shares": 302
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-CITY-06",
+      "query": "去上海安排城市漫步行程时，关于“上海2日游❗️懒人版不走冤枉路~逛吃攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_6e90373f584d420f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "⬇️行程安排​⬇️\nDay1：南京路步行街→东方明珠→陆家嘴→国金中心→外滩→外滩码头​\nDay2：武康路→新天地→愚园路→豫园→城隍庙​\n-\n🏨【住宿】\n✅南京路附近 可步行至外滩 较方便但贵\n✅静安寺 人民广场 江苏路地铁口附近 性价比高\n-\n🚇交通：\n飞机✈️\n主要落地上海浦东国际机场（离市区远，约1.5小时车程）、上海虹桥国际机场（近市区，约40分钟车程）\n高铁/动车🚄\n上海虹桥站：高铁主力站，直接连地铁2/10/17号线，到人民广场30分钟\n上海站：近市区，地铁1/3/4号线直达，到外滩仅20分钟\n-\n🍜美食\n🉑李百蟹·蟹黄面·临江餐厅（外滩·豫园店）\n🉑外滩家宴·上海菜（外滩南京路店/外滩豫园店）\n🉑沪公馆·上海菜\n-",
+      "provenance": {
+        "document_id": "doc_6e90373f584d420f",
+        "chunk_id": "chunk_01f6161ba9f343fa",
+        "title": "上海2日游❗️懒人版不走冤枉路~逛吃攻略",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 6022,
+          "collects": 5529,
+          "comments": 59,
+          "shares": 2082
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-01",
+      "query": "去上海安排亲子游行程时，关于“不要浪费大城市的资源(上海遛娃篇)”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_3706803502744796",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海0元遛娃清单！商场乐园，户外公园，科普场馆，地道美食全覆盖！低成本高质量带娃！！马上到来的中秋国庆就能用上！！速速🐴住！！\n\t\n[星R]关🐷我+[红色心形R] 带你了解更多旅游小帖士[害羞R]\n\t\n✅商场儿童乐园\n1️⃣大宁国际商业广场(地铁直达外广场免费无动力乐园，滑梯、沙坑、攀爬架齐全，场地开阔配套完善，家长轻松看护，低龄宝宝肆意跑跳放电)\n2️⃣西岸凤巢AI PLAZA(超火户外免费童趣乐园，巨型蜗牛沙坑、蚕蛹滑梯、温柔秋千，软垫防护超安全，颜值超高超适合亲子打卡)\n3️⃣南翔印象城MEGA(顶楼免费超大户外乐园，滑梯、攀爬网、沙池一应俱全，视野通风绝佳，空间宽敞，是周末带娃高频放电圣地)",
+      "provenance": {
+        "document_id": "doc_3706803502744796",
+        "chunk_id": "chunk_a00f9adc396d4129",
+        "title": "不要浪费大城市的资源(上海遛娃篇)",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 110,
+          "collects": 148,
+          "comments": 2,
+          "shares": 59
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-02",
+      "query": "去上海安排亲子游行程时，关于“上海这个沉浸式展览已经next level了”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_6666c3c419cd4ffd",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海国庆遛娃直接冲这个恐龙展！\n真的巨震撼！！裸眼360°巨幕，不用戴任何👓\n\t\n巨型恐龙🦕就在眼前走来走去\n沧龙、翼龙、巨型阿拉摩龙…\n巨物压迫感直接拉满，全程看呆不眨眼！\n\t\n全程室内！！太适合国庆出游了\n不怕下雨不怕晒，空调足",
+      "provenance": {
+        "document_id": "doc_6666c3c419cd4ffd",
+        "chunk_id": "chunk_c77e9b8c094745ed",
+        "title": "上海这个沉浸式展览已经next level了！！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 163,
+          "collects": 90,
+          "comments": 23,
+          "shares": 115
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-03",
+      "query": "去上海安排亲子游行程时，关于“上海小众博物馆指南，人少又好逛”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_6b3fd16e8c7146d0",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "这份小众上海博物馆清单，带你解锁不一样的上海👇\n\t\n1.中国证券博物馆（前身是著名的礼查饭店）\n⏰： 9:30-16:00\n🎫 ：免费\n\t\n2. 中国近现代新闻出版博物馆（复刻了克孜尔石窟第38窟）\n⏰：9:00-17:00\n🎫 ：免费\n\t\n3.上海交响音乐博物馆（国内首个交响乐主题博物馆）\n⏰ ：9:30-16:30（周一、周日闭馆）\n🎫 ：免费（需预约）\n\t\n4.上海邮政博物馆（门口有拍摄三件套的绝佳机位）\n⏰ ：9:00-17:00（周一、周二、周五闭馆）\n🎫 ：免费\n\t\n5.上海建筑模型博物馆（建筑师的乌托邦）\n⏰ ：周三—周五14:30-15:30，周六14:30—17:00（周一、周二及节假日闭馆）",
+      "provenance": {
+        "document_id": "doc_6b3fd16e8c7146d0",
+        "chunk_id": "chunk_afe49b7817524e2f",
+        "title": "上海小众博物馆指南，人少又好逛！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2075,
+          "collects": 3272,
+          "comments": 41,
+          "shares": 1266
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-04",
+      "query": "去上海安排亲子游行程时，关于“上海最好的地方都是免费的❗️室内遛娃篇”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_8c3b1ba9620f4f26",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "在上海室内能遛娃一整天的，这9个地方既好玩又长知识！适合带小朋友亲自游玩，也适合大人观赏\n\t\n1️⃣ 车恋半岛・汽车主题文化馆\n📍 嘉定区沪宜公路 2755 号 4 幢\n🎫免费免预约\n❤️共两层楼，全透明展柜，约 2000 台收藏级车模，小朋友能站着看半小时不挪步，而且非常出片\n\t\n2️⃣大来时间博物馆\n📍上海市嘉定区安亭镇和静路981号\n🎫免费免预约\n❤️以趣味性的时钟和音乐藏品为主，主打一个时间具象化\n\t\n3️⃣世界技能博物馆\n📍杨浦区杨树浦路1578号\n🎫免费免预约\n❤️由永安栈房改建而成，设有六大核心展区，体验各种职业，互动项目超多！\n\t\n4️⃣中国近现代新闻出版博物馆\n📍杨浦区周家嘴路3678号",
+      "provenance": {
+        "document_id": "doc_8c3b1ba9620f4f26",
+        "chunk_id": "chunk_e72644039d9d491d",
+        "title": "上海最好的地方都是免费的❗️室内遛娃篇🎪",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 10000,
+          "collects": 15000,
+          "comments": 155,
+          "shares": 6397
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-05",
+      "query": "去上海安排亲子游行程时，关于“在上海一定要体验一次贴地飞行”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_8f3eb12af9304b51",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🏎️ 上海国际赛车场\n·地址：上海市嘉定区伊宁路2000号。\n·交通：最便捷的方式是乘坐地铁11号线，在“上海赛车场”站下车即可。\n·开放时间：一般9:00-16:00开放，但具体项目的开放日期和时间可能有所不同，建议出行前通过官方渠道核实。\n\t\n🚥 必体验项目推荐\n1️⃣ 赛场休闲游  【图2-8】\n参观主看台、新闻中心、颁奖台和车库等核心区域，了解赛场后台故事。\n2️⃣卡丁车体验  【图9-15】\n在全长1.234公里的专业赛道上驾驶卡丁车，感受引擎轰鸣。体验时长约8分钟。\n\t\n💡 游玩建议\n1. 穿搭建议：\n建议穿着休闲运动风，搭配一双舒适的鞋子。",
+      "provenance": {
+        "document_id": "doc_8f3eb12af9304b51",
+        "chunk_id": "chunk_ed35ee398f614b22",
+        "title": "在上海一定要体验一次贴地飞行",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 820,
+          "collects": 698,
+          "comments": 46,
+          "shares": 926
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FAMILY-06",
+      "query": "去上海安排亲子游行程时，关于“上海景点值不值得去。。。（纯主观）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_c084a0de19ec4903",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "前段时间去上海玩啦！玩了好几天锐评一下这边的景点！\n吃到的一些上海好吃的：\n🦀李百蟹・蟹黄面（临江餐厅｜外滩豫园店）\n本来是冲着江景来的，结果蟹黄面更惊喜。趁热拌开后蟹黄蟹膏牢牢挂在面条上，鲜味很浓但不会腥。吃到后面再来份桂花酒酿软酪，清清甜甜的，刚好把蟹油的厚重感压下去\n🏮外滩家宴・上海菜（外滩南京路店 / 外滩豫园店）\n这家很适合第yi次来上海想吃本帮菜的人。认准外滩南京路店和外滩豫园店，白烧鳝背鲜嫩顺口，松鼠桂鱼外层酥脆，酸甜汁很开胃；桂花红烧肉炖得软烂，甜香里带一点桂花味。几道菜一起点，很有老上海家宴的感觉\n🍲沪公馆・上海菜\n如果喜欢浓油赤酱，这家会比较对胃口。",
+      "provenance": {
+        "document_id": "doc_c084a0de19ec4903",
+        "chunk_id": "chunk_23451c809e0a4757",
+        "title": "上海景点值不值得去。。。（纯主观）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 4334,
+          "collects": 4806,
+          "comments": 27,
+          "shares": 1256
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-01",
+      "query": "去上海安排本地美食行程时，关于“小红书旅行笔记 6a65d300000000000f008d88”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_1474eb975cb742a5",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "有没有好吃的上海本帮菜馆 求本地人安利！ ！#上海[话题]# #上海美食推荐[话题]# #本地爱吃的店铺[话题]# #当地人推荐[话题]# #上海必吃榜[话题]# #上海本帮菜[话题]#\n\n相关主题：上海、上海美食推荐、本地爱吃的店铺、当地人推荐、上海必吃榜、上海本帮菜",
+      "provenance": {
+        "document_id": "doc_1474eb975cb742a5",
+        "chunk_id": "chunk_19f60582331a4d3f",
+        "title": "小红书旅行笔记 6a65d300000000000f008d88",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 713,
+          "collects": 900,
+          "comments": 153,
+          "shares": 153
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-02",
+      "query": "去上海安排本地美食行程时，关于“上海2日游Citywalk轻松不绕路游玩攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_1e1fe252fd5b4922",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "三刷上海了，太懂大家来上海的顾虑了\n怕绕路、怕踩雷、怕人挤人\n所以熬夜整理了这份上海游玩攻略\n不管是和朋友、情侣还是家人，都能玩得舒服\n\t\n📅上海两日游玩路线🗺️\nDay1：南京路步行街➠东方明珠➠陆家嘴➠国金中心➠人民广场➠外滩\nDay2：武康路➠安福路➠静安寺➠淮海中路➠ 城隍庙&豫园\n\t\n🚅上海交通出行\n🚄城际交通：选上海站（离市区近），位于市中心，去外滩、南京路都很方便\n🚇市内交通：主打地铁+步行\n\t\n🏨上海住宿建议tips\n✔️南京路/人民广场附近：位于市中心，交通方便，周边景点也多！\n✔️田子坊附近：交通方便，美食选择多，传统与现代的结合\n\t\n🌟上海美食list分享",
+      "provenance": {
+        "document_id": "doc_1e1fe252fd5b4922",
+        "chunk_id": "chunk_816786f87664449c",
+        "title": "上海📍2日游Citywalk轻松不绕路游玩攻略",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1131,
+          "collects": 998,
+          "comments": 10,
+          "shares": 517
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-03",
+      "query": "去上海安排本地美食行程时，关于“强烈推荐‼️假期上海旅游bi吃的9⃣️家美食”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_849687e3d5c6430d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海美食、上海必吃美食、上海美食推荐、上海旅游、上海旅游必吃、上海本地人推荐、上海旅游攻略、上海citywalk、上海打卡攻略、本地人做的攻略",
+      "provenance": {
+        "document_id": "doc_849687e3d5c6430d",
+        "chunk_id": "chunk_147e789797e74be5",
+        "title": "强烈推荐‼️假期上海旅游bi吃的9⃣️家美食",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 544,
+          "collects": 548,
+          "comments": 14,
+          "shares": 222
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-04",
+      "query": "去上海安排本地美食行程时，关于“上海7⃣家好吃不贵漂亮饭！！（附价格）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_8de2302106e14f78",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "都是我实际打卡下来，环境出片、味道也不拉胯的店，有本帮菜、蟹黄面、甜品店、brunch 还有韩料，朋友聚餐、约会、生日都很合适去的餐厅🍴\n-\n📍外滩家宴·上海菜（外滩豫园店）\n💰人均：118-124r\n店里满满的老上海复古氛围感！靠窗观景位可以看到外滩和东方明珠，本帮菜用料扎实，口味地道，红烧肉炖得红亮软糯，肥肉入口即化，认准外滩豫园店和外滩南京路店，别跑错啦！\n-\n📍李百蟹·蟹黄面·临江餐厅(外滩·豫园店)\n💰人均：98-115r\n蟹黄面的料很扎实，满满一碗蟹黄蟹肉趁热拌匀一点也不腥，还有颜值很高的糯叽叽甜品：芋泥麻薯、小青团冰豆花...味道也在线\n-\n📍Ayang Handmade\n💰人均：55-70r",
+      "provenance": {
+        "document_id": "doc_8de2302106e14f78",
+        "chunk_id": "chunk_1a2487d0d5664e3c",
+        "title": "上海7⃣家好吃不贵漂亮饭！！（附价格）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 303,
+          "collects": 214,
+          "comments": 2,
+          "shares": 156
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-05",
+      "query": "去上海安排本地美食行程时，关于“上海的美食绝绝子”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_9ed4c6aa53db42d8",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "这次来上海，真的被美食狠狠拿捏了！\n从鲜到爆的蟹黄面、甜香到上头的年糕排骨，到必须吃的蟹黄汤包、小杨生煎……\n每一道都是上海人“温柔又精致”的味觉体现。\n\t\n🥟 蟹黄汤包\n一口爆汁！！金灿灿的蟹黄汤汁直接喷涌，鲜得一瞬间把人拿捏。\n汤汁干净、没有腥味，配上一点姜丝更绝。\n真正的“喝汤”汤包，不是噱头，而是实打实鲜甜、有层次、超满足！\n\t\n🥘 小杨生煎\n生煎皮薄汁多，底脆得噶噶响，老上海的经典味道🥰\n肉馅鲜、葱香浓，吃一个根本停不下来。\n还能点上几种蔬菜馅，一顿饭就把上海味道“生煎大合集”吃齐，性价比超高！\n\t\n🥩 年糕排骨\n年糕煮到特别入味，排骨炸得香，收汁后味道更浓郁、带点甜香，是甜口快乐！\n排骨外皮脆、中间嫩，年糕软糯又带嚼劲。",
+      "provenance": {
+        "document_id": "doc_9ed4c6aa53db42d8",
+        "chunk_id": "chunk_bbab646509df49d3",
+        "title": "上海的美食绝绝子！！😭",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1468,
+          "collects": 1207,
+          "comments": 11,
+          "shares": 521
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-FOOD-06",
+      "query": "去上海安排本地美食行程时，关于“来上海5天了，没有感受到魔都的魅力”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_b163130e6979491b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海宝藏小店、魔都穷游攻略、旅行上海、评价美食探店、沪上逛吃日常",
+      "provenance": {
+        "document_id": "doc_b163130e6979491b",
+        "chunk_id": "chunk_1f401be3d46a4255",
+        "title": "来上海5天了，没有感受到魔都的魅力",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1059,
+          "collects": 723,
+          "comments": 893,
+          "shares": 70
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-01",
+      "query": "去上海安排历史文化行程时，关于“小红书旅行笔记 68606f92000000002201f786”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_4e13bae10a474e62",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海博物馆是目前我去过大陆所有博物馆里排名第一！储物柜免费，可以手摸故宫金砖，明代青花瓷，钢琴爱好者可以演奏。零反光玻璃让文物细节纤毫毕现，拍照超清晰；馆藏丰富、珍品云集，场馆布局合理，展览动线流畅，逛展体验感满分！洗手间更是一尘不染！中午在宝鼎轩景观餐厅吃饭，视野开阔明亮，其他博物馆连个正经餐厅都没有，都是便餐吃吃，建议全国的博物馆都该好好学学人家上博，优等生标准作业照抄就行了。#上博[话题]# #上海citywalk[话题]# #上海[话题]##博物馆[话题]#",
+      "provenance": {
+        "document_id": "doc_4e13bae10a474e62",
+        "chunk_id": "chunk_9005c5331e9c4c41",
+        "title": "小红书旅行笔记 68606f92000000002201f786",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1805,
+          "collects": 874,
+          "comments": 474,
+          "shares": 613
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-02",
+      "query": "去上海安排历史文化行程时，关于“上海最值得逛1️⃣天的小众景点之一”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_60fd5a38e33e4201",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海松江广富林遗址太好逛了，每个角落都很美很出片，绝对是逛一天citywalk的好去处。\n🎫门票：\n🆓公共区域免费，展馆联票60元（含水下馆），真的值回票价！建议选择天气好的时间去，光线绝绝子，随手一拍都是大片！\n🚘交通：\n1️⃣自驾直接导航朱雀门，🅿️停车可以7号门进，门口问保安大叔，会很热情的帮你引导，停车免费！千万别停湖底停车场，10块一小时肉疼😭。\n2️⃣地铁坐🚊9号线到松江大学城，然后打车15块搞定，或者坐松江15路公车也很方便。\n🗺️必打卡路线：",
+      "provenance": {
+        "document_id": "doc_60fd5a38e33e4201",
+        "chunk_id": "chunk_3e747a4aece54cf5",
+        "title": "上海最值得逛1️⃣天的小众景点之一！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2636,
+          "collects": 2568,
+          "comments": 53,
+          "shares": 2449
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-03",
+      "query": "去上海安排历史文化行程时，关于“上海有哪些值得去的历史遗迹或者文化建筑呀”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_627117a7469c40e0",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海外滩、陆家嘴、永康路都逛过了，想去感受一下上海的当地人的生活，或是看看历史文化建筑，请问大家有什么推荐吗?如果可以再推荐的时候再给我介绍一下历史背景就更好了[举手R]",
+      "provenance": {
+        "document_id": "doc_627117a7469c40e0",
+        "chunk_id": "chunk_8344a49f67be4118",
+        "title": "上海有哪些值得去的历史遗迹或者文化建筑呀",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 33,
+          "collects": 36,
+          "comments": 25,
+          "shares": 7
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-04",
+      "query": "去上海安排历史文化行程时，关于“不要按部就班的去探索上海”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_c8fef5183d36492f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "小红书是个伟大的发明\n当之无愧的百科全书\n去哪里都需要用它来做攻略搜路线\n没有它我应该寸步难行\n但我们参考别人的攻略可以\n不要被别人的规划给局限了\n\t\n上海这么一座没什么自然风光的钢筋丛林\n从江南文化到新派文化\n人文风光远比的小洋楼和摩天大楼更值得探索\n一开始我们都是去武康大楼徐家汇西岸外滩陆家嘴\n但不要止于武康大楼徐家汇西岸外滩和陆家嘴\n不要为了多打卡几个机位\n而是要多走一段路\n尽管这段路没有在去打卡点的路上\n\t\n在上海这种城市\n生活在里面的人就是风景的一部分\n各种店铺 小洋楼 摩天大楼是一种景\n破败的居民楼晾晒的衣物也是一种景\n早餐店优雅得体的用餐阿姨是一种景\n一路上闯着红绿灯飞奔的外卖员也是一种景",
+      "provenance": {
+        "document_id": "doc_c8fef5183d36492f",
+        "chunk_id": "chunk_aa64f6d19c4e4237",
+        "title": "不要按部就班的去探索上海",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 817,
+          "collects": 261,
+          "comments": 20,
+          "shares": 35
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-05",
+      "query": "去上海安排历史文化行程时，关于“上海各区博物馆｜地址地铁一次性整理”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_f6cbe0aaa9144d7c",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海逛展党必存✨\n按行政区整理了上海大大小小博物馆\n每一家标注地址+地铁线路，出行直接对照，不用到处翻。\n💡出行小贴士\n▪️大部分博物馆周一闭馆，出发前记得去官方公众号确认开放、预约信息\n▪️免费馆居多，特展单独收费，看好预约要求，避免跑空\n▪️可以按片区规划citywalk，一次性打卡同区域多家博物馆。",
+      "provenance": {
+        "document_id": "doc_f6cbe0aaa9144d7c",
+        "chunk_id": "chunk_ade046cca94a4f4d",
+        "title": "上海各区博物馆｜地址地铁一次性整理",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 112,
+          "collects": 252,
+          "comments": 0,
+          "shares": 74
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-HIST-06",
+      "query": "去上海安排历史文化行程时，关于“✨上海必逛 6 大名人故居｜附路线地图”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_f7e6f1ec233343de",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "衡复与虹口散落着宝藏老洋房，打卡 6 处人文故居：\n📍柯灵故居：作家柯灵在此居住四十余年，一楼展出手稿、文人往来书信，二楼还原书房卧室旧貌徐汇文旅云\n\t\n📍鲁迅故居:藏在山阴路弄堂里的红砖新式里弄🏠，是鲁迅先生在上海最后的居所上海市人民...。屋内完整复原生活原貌，书桌、旧物悉数保留，在这里写下《且介亭杂文》等名篇\n\t\n📍宋庆龄故居:淮海中路闹中取静的欧式花园洋房🌿，被百年香樟树层层环抱，是宋庆龄口中 “可爱的家，需要购票预约，武康路 citywalk 顺路打卡\n\t\n📍孙中山故居:梧桐掩映下的欧式乡村小洋房🏡，是孙中山与宋庆龄在上海唯一共同居所，近距离触摸近代风云往事，需要购票预约",
+      "provenance": {
+        "document_id": "doc_f7e6f1ec233343de",
+        "chunk_id": "chunk_18dce89e466b4ec9",
+        "title": "✨上海必逛 6 大名人故居｜附路线地图",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 258,
+          "collects": 329,
+          "comments": 3,
+          "shares": 123
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NEARBY-01",
+      "query": "去上海安排周边游行程时，关于“上海周边1小时高铁直达9座城市！周末游推荐”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_53f7fc3c646d4c53",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海周边、上海周边游、上海周边1日游、上海周边周末、城市周边游、上海、上海citywalk、上海周末、上海周末去哪、上海周末遛娃",
+      "provenance": {
+        "document_id": "doc_53f7fc3c646d4c53",
+        "chunk_id": "chunk_1209b42f6f7045dc",
+        "title": "上海周边1小时高铁直达9座城市！周末游推荐",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 311,
+          "collects": 325,
+          "comments": 5,
+          "shares": 367
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-01",
+      "query": "去上海安排夜游行程时，关于“小红书旅行笔记 69a15f73000000002303ab7a”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_708a65d8cf284d4b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "上海凌晨一两点散步，到底危不危险？\n凌晨两点的外滩也太好看了吧！但好多人都在问，在上海散步到凌晨一两点，到底危不危险？网友们的评论真的又真实又好笑。\n先讲句实在的，上海",
+      "provenance": {
+        "document_id": "doc_708a65d8cf284d4b",
+        "chunk_id": "chunk_8771774b799c4cde",
+        "title": "小红书旅行笔记 69a15f73000000002303ab7a",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 471,
+          "collects": 91,
+          "comments": 455,
+          "shares": 69
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-02",
+      "query": "去上海安排夜游行程时，关于“分享一条经典低成本外滩打卡路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_73f62792a6b94073",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "作为一名外滩忠实爱好者，以前一年要来五六次（上学时候，每次看完外滩，回去学习劲头更足😆），已摸索出一套成熟路线。每次有朋友来上海，我都会带他们走这一趟，轻松解锁外滩绝美日夜双景。\n\t\n来上海，外滩夜景千万不要错过！\n⏰建议傍晚4‑5点出发\n1️⃣地铁到陆家嘴站1号口出站，直达东方明珠脚下，近距离打卡东方明珠与陆家嘴三件套。\n2️⃣如果肚子饿可以直接在正大广场解决晚餐。\n3️⃣继续步行到东昌路渡口，花2元坐轮渡横渡黄浦江到浦西，轮渡时间短也能观赏两岸风景，性价比非常高。\n4️⃣导航走到陈毅广场，就是外滩最佳观景位。赶上日落转夜幕，白天江景与亮灯夜景一次性尽收眼底，隔江眺望陆家嘴氛围感直接拉满。",
+      "provenance": {
+        "document_id": "doc_73f62792a6b94073",
+        "chunk_id": "chunk_d7e7167d51f5439c",
+        "title": "分享一条经典低成本外滩打卡路线📷",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 3638,
+          "collects": 4091,
+          "comments": 139,
+          "shares": 1128
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-03",
+      "query": "去上海安排夜游行程时，关于“2.19亲测‼️北外滩比外滩人少很多……”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_74162b390b38493a",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🏮春节来上海，昨晚大年初三亲测，北外滩和外滩的人流量，简直是两个不同的平行世界。\n🥹外滩：17-20点就像春运候车室，尤其南京路口，真的人挤人被推着走。上观景台还要绕路，到江边像沙丁鱼一样挤，带老人孩子来旅游的，真的太不方便了。灯光也很暗，拍人不好看……\n😃北外滩：同样的时间点，江边步道还能从容散步，风里都带着松弛感，连拍照都不用抢机位，灯光也恰到好处，把人脸照亮。\n-\n😚北外滩完胜的3个理由：\n✅人少景美：避开外滩的人潮，在北外滩航海公园-小巨蛋-世界会客厅-外白渡桥沿线，能独享开阔的江景和陆家嘴天际线，出片率直接拉满。\n✅Citywalk友好：沿江步道，人少路宽，吹着江风散步，比在人堆里挪步舒服太多。",
+      "provenance": {
+        "document_id": "doc_74162b390b38493a",
+        "chunk_id": "chunk_014070da41a94bb5",
+        "title": "2.19亲测‼️北外滩比外滩人少很多……",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 5257,
+          "collects": 4429,
+          "comments": 232,
+          "shares": 2334
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-04",
+      "query": "去上海安排夜游行程时，关于“在上海最适合夜晚拍摄的6个绝佳机位”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_7a2365a035a14be2",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "魔都夜景不只有灯光秀！这几个地方才是摄影党私藏的出片角落，亲测夜晚氛围感满分💯\n\t\n📍外滩\n万国建筑 + 黄浦江景，上海最经典的夜景没有之一。建议傍晚蓝调时刻去，天空的深蓝与建筑的暖光对比太绝了。周末游客偏多，工作日体验感翻倍～\n\t\n📍 陆家嘴\n摩天高楼 + 高空视角，随手一拍就是赛博朋克大片！2号线陆家嘴站出来，东方明珠、上海中心灯光变幻，特别有未来感。夜晚去，楼宇灯光全开，城市灯海超震撼🫶\n\t\n📍 南京路步行街\n霓虹招牌 + 烟火街拍，想拍都市感就来这里。2号线南京东路站直达，老建筑招牌和流动的人群交织，出片率爆表。夜晚人流如织，灯光璀璨，像走进了老电影画面🤩\n\t\n📍 豫园老街\n古风建筑 + 灯笼倒影，拍国风夜景别有韵味。",
+      "provenance": {
+        "document_id": "doc_7a2365a035a14be2",
+        "chunk_id": "chunk_4bd4042426744b72",
+        "title": "在上海📍最适合夜晚拍摄的6个绝佳机位",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 595,
+          "collects": 447,
+          "comments": 1,
+          "shares": 213
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-05",
+      "query": "去上海安排夜游行程时，关于“上海夜景不要只去外滩，这条citywalk超值❗”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_b39f13fdecbe4fc8",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "我是爱旅行的@二十四的旅行录 ，这里是上海夜晚的citywalk\n\t\n这条路线从夜晚宁静的武康路走到繁华的静安寺\n一路走着感受上海的惬意和繁华\n\t\n[清单R]旅游攻略：\n🏃🏻路线推荐：武康路—安福路—乌鲁木齐中路—乌鲁木齐北路—静安寺地铁站13号地铁口处天桥（静安寺超强机位❗️❗️）\n🕰时间：全程2.1km左右，慢慢走2个小时\n🏙武康大楼：晚上没有游客，特别适合慢悠悠的逛；",
+      "provenance": {
+        "document_id": "doc_b39f13fdecbe4fc8",
+        "chunk_id": "chunk_f1ab7e35ed484f1a",
+        "title": "上海夜景不要只去外滩，这条citywalk超值❗",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1850,
+          "collects": 1875,
+          "comments": 75,
+          "shares": 1276
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NIGHT-06",
+      "query": "去上海安排夜游行程时，关于“上海｜必去豫园，夜游的神”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_d1764931b6974592",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "中式美学真是太美了吧！\n豫园的夜景美的不像话\n\t\n漫步豫园\n红砖黛瓦，古韵悠然\n抬头看见不少外国友人身着雅致唐装、飘逸汉服\n流连亭台楼阁间驻足拍照\n一袭华裳尽显古典韵味\n跨越国界被欣赏\n看着传统文化走出国门\n被世界看见、认可与追捧，心底自是自豪\n\t\n一针一线皆是华夏风骨",
+      "provenance": {
+        "document_id": "doc_d1764931b6974592",
+        "chunk_id": "chunk_2c56b6db13274d38",
+        "title": "上海｜必去豫园，夜游的神",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 658,
+          "collects": 355,
+          "comments": 34,
+          "shares": 1385
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-PHOTO-01",
+      "query": "去上海安排拍照打卡行程时，关于“陆家嘴三件套 去拍照的人嘴真严啊”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_19da58c9f3aa4aa4",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "一开始蹲在地上和朋友拍了好多张 给我累成🐶了（见P4-P7的妖魔鬼怪版）\n\t\n后面我去找拍照的了 人家拍人是在旁边的台子上站着拍的 怪不得拍的视角那么好！！学到了呀 宝宝们也去试试叭！o(^▽^)o",
+      "provenance": {
+        "document_id": "doc_19da58c9f3aa4aa4",
+        "chunk_id": "chunk_7048652db6c6441f",
+        "title": "陆家嘴三件套 去拍照的人嘴真严啊",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 834,
+          "collects": 440,
+          "comments": 71,
+          "shares": 522
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-PHOTO-02",
+      "query": "去上海安排拍照打卡行程时，关于“人生建议❗️拍完这1️⃣8️⃣张图再离开上海”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_a7637aab3dc1404d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：上海citywalk、爱上海的十万个理由、上海拍照、0元出片机位、上海周末去哪、上海打卡、外滩、陆家嘴、北外滩、摄影、繁华都市霓虹、拍摄美丽的城市、上海小众景点、点亮城市之美、扫街、调色、视觉震撼、摄影机位、外白渡桥、魔都、治愈系风景、上海旅游、上海、上海网红机位打卡地、古今同框、魔都打卡",
+      "provenance": {
+        "document_id": "doc_a7637aab3dc1404d",
+        "chunk_id": "chunk_84b7154cab30423a",
+        "title": "人生建议❗️拍完这1️⃣8️⃣张图再离开上海",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2468,
+          "collects": 1965,
+          "comments": 91,
+          "shares": 479
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-PHOTO-03",
+      "query": "去上海安排拍照打卡行程时，关于“人生建议，国庆拍完这十个机位再离开上海”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_b88ce3464ea24dd9",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "国庆来上海，不想扎在人山人海里。\n整理了我自己🚶🏻‍♂️‍➡️逛出来的一组点位，不追求打卡特种兵，适合慢悠悠晃，感受上海新旧交织的质感。\n\t\n📍1️⃣2️⃣白玉兰观景台\n360°俯瞰上海，最强城市天际线！建议优先预约黄昏时段，日落+开灯一瞬间最值得。\n\t\n📍3️⃣苏州河·虹书舫\n苏州河边上的邮轮书局，二楼靠窗位置get上海小巴黎窗景，点杯咖啡等待蓝调时刻🏙️拍照最美！\n\t\n📍4️⃣城隍庙·豫园湖心亭\n老城厢的经典代表性建筑，红灯笼配古亭，是上海独有的市井古韵。想拍人少清净一点的画面尽量早到。\n\t\n📍5️⃣外滩源\n外滩万国建筑群历史源头，比外滩安静很多，适合慢慢欣赏建筑外立面细节，随手拍仿佛在国外！\n\t\n📍6️⃣上海老市府",
+      "provenance": {
+        "document_id": "doc_b88ce3464ea24dd9",
+        "chunk_id": "chunk_391856c43c524384",
+        "title": "人生建议，国庆拍完这十个机位再离开上海！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 157,
+          "collects": 132,
+          "comments": 6,
+          "shares": 39
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-PHOTO-04",
+      "query": "去上海安排拍照打卡行程时，关于“误入魔都现实版古巴比伦空中花园｜天安千树”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_f654add0789d4d9f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "📍𝑺𝒉𝒂𝒏𝒈 𝑯𝒂𝒊 /上海·天安千树🌳\n谁能想到上海藏着一座“悬浮森林”，踏入苏州河畔，瞬间被震撼！由托马斯·赫斯维克设计的天安千树，上千根白色立柱化身悬浮树桩，近1000棵绿植错落生长，极具秩序之美。先锋塔楼和百年红砖老厂房相遇，历史与未来激烈碰撞，河面倒映整片悬浮森林，晴天光影绝美。洞穴式中庭回廊曲折，宛如异次元秘境，足不出沪，邂逅现实版古巴比伦空中花园。\n\t\n📍地址：上海普陀区莫干山路600号",
+      "provenance": {
+        "document_id": "doc_f654add0789d4d9f",
+        "chunk_id": "chunk_83911e2fc4e44fde",
+        "title": "误入魔都现实版古巴比伦空中花园｜天安千树",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1630,
+          "collects": 1125,
+          "comments": 280,
+          "shares": 1480
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-01",
+      "query": "去上海安排自然休闲行程时，关于“上海旅游各区景点清单超全住”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_12df9bbafac1495a",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "✨在上海不知道周末去哪儿玩？！特地整理了各区景点大全，一人发呆、亲子遛娃、情侣约会、团建聚餐好去处一目了然！\n\t\n📍黄浦区：外滩、豫园、田子坊、上海博物馆等\n\t\n📍徐汇区：上海植物园、武康大楼、西岸美术馆等\n\t\n📍浦东新区：东方明珠、上海迪士尼乐园、世博文化公园、上海科技馆等\n\t\n📍松江区：广富林、辰山植物园、月湖雕塑公园、上海欢乐谷等\n\t\n📍静安区：静安寺、张园、自然博物馆、上海马戏城等\n\t\n📍长宁区：上海动物园、愚园路、刘海粟美术馆等\n\t\n📍虹口区：上海邮政博物馆、甜爱路、北外滩等\n\t\n📍宝山区：吴淞炮台湾湿地公园、顾村公园、美兰湖等\n\t\n📍杨浦区：共青森林公园、复兴岛、杨浦滨江等",
+      "provenance": {
+        "document_id": "doc_12df9bbafac1495a",
+        "chunk_id": "chunk_8842ab8757b848d2",
+        "title": "上海旅游各区景点清单🌈超全🐎住！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 11,
+          "collects": 12,
+          "comments": 0,
+          "shares": 3
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-02",
+      "query": "去上海安排自然休闲行程时，关于“国庆上海反向旅游！这 6 个宝藏点别错过”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_18d20ecc0b864947",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "国庆去外滩，真的不是“看风景”，而是“被风景看”。\n刚举起手机，前面的自拍杆已经入镜；想拍江景，最后拍到三顶帽子、两个娃和一只风筝。与其在人群里练凌波微步，不如换个方向，去这几个几乎包场的地方：阳光、黄昏、江风，全是你的。\n\t\n适合怕排队、爱拍照、想躲清净的人；\n不适合追求热闹网红打卡、吃喝一站式的人——这里真的很“空”，空到你会怀疑自己是不是走错城市。\n\t\n📍 黄浦江上唯一的内河岛｜\n复兴岛公园\n地址：杨浦区共青路386号。\n岛上保留老厂房、梧桐路和百年红楼“白庐”，工业感很足，拍照几乎不用躲人。\n交通：地铁12号线复兴岛站，出站步行上岛，离定海桥不远。\n\t\n📍 金山小镇里的良渚遗址｜\n广富林文化遗址",
+      "provenance": {
+        "document_id": "doc_18d20ecc0b864947",
+        "chunk_id": "chunk_b3b48b7877a9430f",
+        "title": "国庆上海反向旅游！这 6 个宝藏点别错过",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 15,
+          "collects": 20,
+          "comments": 0,
+          "shares": 16
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-03",
+      "query": "去上海安排自然休闲行程时，关于“本人在上海已进入纯过日子时代（附指南）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_2f55b462582944dc",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "认知觉醒了，不向上社交了，不拿大结果了，不关心股市AI了。每天下班，就是逛公园、在免费的地方发呆。\n至此本人在上海的纯过日子时代已来临！整理了一份“上海纯过日子指南”[吧唧R]\n\t\n🌳免费公园：\n1.共青森林公园​（适合早秋去逛逛）\n2.滨江森林公园​（江边大片芦苇随风摇曳）\n3.世纪公园​（芦苇荡、变黄的树叶、落日晚霞）\n4.复兴公园​（闹中取静）\n5.静安雕塑公园\n6.世博文化公园（大草坪）\n7.前滩休闲公园​（滨江骑行很舒适）\n8.鲁迅公园​（很绿）\n\t\n🏠博物馆\n1. 上海博物馆（东馆）\n2. 浦东美术馆（落地窗直面外滩与陆家嘴景观）\n3. 上海自然博物馆\n4.上海昆虫博物馆\n5.西岸美术馆（现当代艺术展览）",
+      "provenance": {
+        "document_id": "doc_2f55b462582944dc",
+        "chunk_id": "chunk_bc478e6495ad4b44",
+        "title": "本人在上海已进入纯过日子时代（附指南）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 27,
+          "collects": 28,
+          "comments": 1,
+          "shares": 4
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-04",
+      "query": "去上海安排自然休闲行程时，关于“howto|总有一个秋天之旅要留给上海|附攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_5f5ce0c1467a4f08",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "拍了三年上海，下面是本人私藏的6️⃣个超美必打卡的秋日公园，照片全部为2025年亲测实拍，并附上拍摄日期，直接上干货：\n.\n1️⃣共青森林公园（图1-3）\n🍁连续三年，每年秋天都来的地方。\n‼️赏秋路线攻略如下：\n南门→落羽杉林→蓼风亭→三联林→涛声桥→泓庄茶室→芦雪舍→烧烤区→水森林湿地→莫奈花园\n⏱️拍摄日期：2025.12.11\n.\n2️⃣花开海上生态园（图4-6）\n🍁魔都超美的500米枫叶隧道\n‼️赏枫路线：\n1️⃣进园→右转→步行350米→看到\"赏枫\"指示牌→左转进入赏枫小道\n2️⃣秋景园\n大片枫林集中在这块区域，还有杉树和水上栈道，非常出片！\n⏱️拍摄日期：2025.12.09\n.\n3️⃣辅德里公园（图7-9）",
+      "provenance": {
+        "document_id": "doc_5f5ce0c1467a4f08",
+        "chunk_id": "chunk_d8e981bcb398461d",
+        "title": "howto|总有一个秋天之旅要留给上海|附攻略",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1116,
+          "collects": 1129,
+          "comments": 66,
+          "shares": 570
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-05",
+      "query": "去上海安排自然休闲行程时，关于“上海五天四晚｜仇人见面版攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_bfda6d7e42e54fbc",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "这篇攻略不适合普通游客，非深仇大恨尽量别推荐，想挑战一下的除外。\n\t\n第一天\n虹桥落地✈️，先冲奉贤碧海金沙看海。看完还有时间就去海湾镇逛逛，然后早点休息——真正的旅程从第二天才开始。\n\t\n第二天\n一定要早起⏰，凌晨四点前赶到临港天空之境看日出。看完去滴水湖跑个环湖十公里，之后在临港新城自由活动，看看上海最新的城市建设。\n下午五点前赶到青浦淀山湖，在湖边看日落。看完去朱家角走走，感受上海的江南水乡一面。\n\t\n第三天\n去崇明岛，骑车绕岛一圈🚴，看看上海不为人知的自然风景。\n\t\n第四天\n早上去松江佘山爬爬山⛰️。爬完去金山海边的渔村吃顿海鲜，吃饱了去沙滩等一场烟花秀。\n\t\n第五天",
+      "provenance": {
+        "document_id": "doc_bfda6d7e42e54fbc",
+        "chunk_id": "chunk_0396cde6678f4f2d",
+        "title": "上海五天四晚｜仇人见面版攻略🌚",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 6,
+          "collects": 3,
+          "comments": 0,
+          "shares": 1
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-SH-NATURE-06",
+      "query": "去上海安排自然休闲行程时，关于“不要白白浪费大城市的资源（上海篇）✨”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "上海"
+      },
+      "target_city": "上海",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_e1d70dba7a724f09",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：周末去哪儿、不要浪费大城市的资源、上海旅游攻略、上海免费打卡、上海citywalk、上海文艺打卡、上海本地人攻略、上海吃喝玩乐、上海户外徒步、上海美食探店",
+      "provenance": {
+        "document_id": "doc_e1d70dba7a724f09",
+        "chunk_id": "chunk_441bb409bab84b8b",
+        "title": "不要白白浪费大城市的资源（上海篇）✨",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 11000,
+          "collects": 14000,
+          "comments": 333,
+          "shares": 3504
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-01",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“中国美术馆致敬巨匠——费欣”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_00cae24c00214bb6",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "1.第一次认识这位大师，看不懂，但艺术从来不需要懂才可以看\n2. Strong people are always simple.\n— Leo Tolstoy, Diary, Chinese translation by Cao Ying, People's Literature Publishing House, Tolstoy's Diary\n3. 每一位初学艺术的人都应当谨记：通往完美并无既定时限。在人的一生中，不存在真正的完美，只有对完美的不懈追求。在我看来，要在艺术中取得真正有价值的东西，仅凭人的一生是不够的。真正的艺术大师始终会把自己视为学生。获得的知识越多，他对自己的要求也就越高。",
+      "provenance": {
+        "document_id": "doc_00cae24c00214bb6",
+        "chunk_id": "chunk_f7e24cbb05444a46",
+        "title": "中国美术馆致敬巨匠——费欣",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 7,
+          "collects": 3,
+          "comments": 1,
+          "shares": 1
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-02",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“北京居然还藏着这种宝藏艺术馆”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_0e7b4c980d114e4f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京的秋天🍂从狂风大作开始[笑哭R] 有什么室内的地方可以遛娃或打发时间？如果你喜欢中国传统文化和非遗手工艺，那一定不要错过鸟巢旁边的这个美术馆！\n\t\n📍 中国工艺美术馆(中国非物质文化遗产馆)\n地址：朝阳区湖景东路16号\n📅开放时间：周二至周日，9:00-17:00（周一闭馆）\n🎫门票：免费，需通过官方公众号【中国工美馆 中国非遗馆】预约，可约当天场次，刷身份证入场\n\t\n📢免费志愿者讲解\n每天馆内都会提供志愿者免费讲解，可以在一楼咨询台了解当天免费讲解时间，讲解覆盖的是馆内最精华的展区。\n我听的是一位阿姨的讲解，非常细致！从历史背景，到手工技艺，引人入胜，小朋友也能学到很多知识。",
+      "provenance": {
+        "document_id": "doc_0e7b4c980d114e4f",
+        "chunk_id": "chunk_823b11d3b0f444e9",
+        "title": "北京居然还藏着这种宝藏艺术馆🤩",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2,
+          "collects": 1,
+          "comments": 0,
+          "shares": 0
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-03",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“北京10月看展指南｜文博、美术、自然”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_14f33b230cf44471",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京10月看展清单整理好了！📚✨\n\t\n这次把北京比较值得看的文博、美术、自然和亲子展览重新筛了一遍，重要的大展放前面，每个场馆也尽量不重复堆太多，逛起来更好安排。\n\t\n这期比较值得优先看的有：\n\t\n🏛️ 国博\n《叩问永恒——庞贝的探索与发掘》\n《了不起的汉字》\n《李静训和她的时代》\n\t\n🌎 首博\n《玉米·黄金·美洲豹——玛雅与安第斯古代文明大展》\n\t\n🎨 美术馆\n《致敬巨匠——尼古拉·费欣绘画精品展》\n《知画是心——丰子恺〈护生画集〉研究展》\n\t\n📜 故宫\n《典则：唐宋书画展》\n《玉出昆冈——清代宫廷和田玉文化特展》\n\t\n🐎 其他值得顺路看的\n恭王府《驭·鉴——中法马主题文化展》\n中国考古博物馆《玉文化与中华文明》",
+      "provenance": {
+        "document_id": "doc_14f33b230cf44471",
+        "chunk_id": "chunk_6f8225214ea8417b",
+        "title": "北京10月看展指南｜文博、美术、自然",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 181,
+          "collects": 205,
+          "comments": 1,
+          "shares": 73
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-04",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“北京10月全城展览合集攻略‼️108场免费看”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_1d9367fe00704cbc",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "📖这个月北京展览合集弄晚了\n📑恰逢十月假期黄金期\n‼️新展扎堆上新\n🌙熬了几个通宵整理汇总\n📋本次一共收录159场展览\n🎟️其中108场免费🆓参观\n👉左滑图片查看10月全部展览详情\n🔄后续上新展览✨还会一直持续更新\n⭐精选15个热门展览👇码住\n\t\n1️⃣ 汉代诸侯特展\n📆即日～12.27\n📍路县故城遗址博物馆\n✅汇集多地汉墓出土文物，呈现汉代诸侯国的历史面貌\n\t\n2️⃣ 藻饰华章\n📆即日～12.25\n📍北京古代建筑博物馆\n✅聚焦古建筑顶部藻井，呈现古代木构与装饰工艺\n\t\n3️⃣ 遇见肖邦\n📆即日～10.25\n📍国家大剧院\n✅展出肖邦相关手稿与遗物，记录音乐家的人生轨迹\n\t\n4️⃣ 知画是心\n📆即日～10.20\n📍中国国家画院美术馆",
+      "provenance": {
+        "document_id": "doc_1d9367fe00704cbc",
+        "chunk_id": "chunk_902cc00ca21346ae",
+        "title": "北京10月全城展览合集攻略‼️108场免费看",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 8,
+          "collects": 5,
+          "comments": 0,
+          "shares": 5
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-05",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“今天开幕！75件费欣真迹来北京”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_57a63d2a95b64758",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京今天又多了一场值得专程去看的大展。\n「致敬巨匠：尼古拉·费欣绘画精品展」今天起在中国美术馆正式展出，汇集费欣75件绘画、素描作品，创作时间跨越半个多世纪，是近年来全球范围内规模较大、展品较丰富的费欣专题展之一。纳摩克\n如果你第一次认识费欣，可以先记住一句话：\n他的画，远看是人，近看全是笔触。\n尼古拉·费欣曾就读于圣彼得堡皇家美术学院，并师从列宾。后来移居美国，他把俄罗斯学院派扎实的造型能力，与越来越自由、猛烈甚至近乎抽象的笔触揉在一起。尤其是画人物——脸部可以极其细腻，衣服、背景却像颜料在画布上直接爆开。北京市政府",
+      "provenance": {
+        "document_id": "doc_57a63d2a95b64758",
+        "chunk_id": "chunk_d502cd40f24d46e1",
+        "title": "今天开幕！75件费欣真迹来北京",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 85,
+          "collects": 60,
+          "comments": 4,
+          "shares": 123
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-ART-06",
+      "query": "去北京安排艺术馆和博物馆行程时，关于“国庆中国美术馆逛展攻略｜国庆重磅大展合集”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "art_museums",
+      "relevant": [
+        {
+          "document_id": "doc_faad9afdca204e9f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "✨ 国庆重磅福利\n今年国庆中国美术馆重磅升级，多场全新大展+经典馆藏同步上线，涵盖红色史诗、国际大师原作、非遗艺术等多元主题。兼顾免费公益展与高端付费特展，内容含金量拉满，是国庆美育打卡、休闲观展的绝佳去处。\n\t\n🚗 最优逛展路线（省力不绕路）\n优先选择从上往下的游览方式，全程无需折返，适配所有人群。推荐路线：6层馆藏经典陈列→5层馆藏作品展→4层主题艺术展→3层鲁迅与美术专题展→1层重磅特展，一站式解锁国风典藏、当代艺术与国际大师原作。\n\t\n🛗 4层直达电梯精准指南\n美术馆常规两侧电梯仅通达5、6层，无法直达4层。想要直达四层展厅，可乘坐馆内西侧电梯直达四层开渠厅；也可搭乘中央电梯至3层，从西侧楼梯步行抵达4层，避免无效绕路。",
+      "provenance": {
+        "document_id": "doc_faad9afdca204e9f",
+        "chunk_id": "chunk_534b6a0490a64985",
+        "title": "国庆中国美术馆逛展攻略｜国庆重磅大展合集",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 11,
+          "collects": 13,
+          "comments": 3,
+          "shares": 7
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-01",
+      "query": "去北京安排省钱攻略行程时，关于“国庆北京旅游必看‼️保姆级攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_1174f05517704e4b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "还好出发前看到了‼️国庆北京旅游必看📢\n准备国庆放假来北京旅游的姐妹们~~\n北京旅游景点、预约时间、预约方式、交通攻略、避坑指南等等，全都替你们整理好了~\n赶紧码住‼️国庆冲冲冲❗❗❗\n-\n✅北京景点排行榜（附预约&省钱重点）\n👑必须去（国庆顶流！务必提前抢）\n天安门广场/升旗、国家博物馆\n🌟一定去\n故宫博物院、八达岭长城、颐和园\n💎放心去\n圆明园、雍和宫、天坛公园、北海公园\n🏅可以去\n恭王府、景山公园、环球影城、什刹海、奥林匹克公园\n🥈考虑去\n前门大街、清华北大、世界公园、北京动物园 、大栅栏\n🥉有空去\n三里屯、香山公园、南锣鼓巷、798艺术区、纪晓岚故居\n⚠️国庆北京人流量爆炸！越早预约越好！\nsfz随身携带，全程刷证入园！",
+      "provenance": {
+        "document_id": "doc_1174f05517704e4b",
+        "chunk_id": "chunk_d04d8656667c4d86",
+        "title": "国庆北京旅游必看‼️保姆级攻略",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 27,
+          "collects": 41,
+          "comments": 0,
+          "shares": 26
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-02",
+      "query": "去北京安排省钱攻略行程时，关于“新中国没有苦日子，除非你报了北京的团”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_2aa245176ce1464b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "早餐一根火腿肠两个所谓的毛毛虫面包，一瓶最便宜的矿泉水。儿童还没有。\n\t\n一大早5点多起来就被带去购点，上车导游就开始说出门别抠门，别装穷，什么牛鬼蛇神的都说一下，不买的脸就拉的多长，黑着脸还扔东西，嘴里骂骂咧咧。\n\t\n中午吃的都是水煮的预制菜。反正就是坑，一句两句也说不清楚，主打提示各位看官，选好，慎重。",
+      "provenance": {
+        "document_id": "doc_2aa245176ce1464b",
+        "chunk_id": "chunk_43d383b5e38e4e38",
+        "title": "新中国没有苦日子，除非你报了北京的团",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 356,
+          "collects": 72,
+          "comments": 1429,
+          "shares": 552
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-03",
+      "query": "去北京安排省钱攻略行程时，关于“大家去北京最肉疼的一笔是什么”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_3fa90968af75497d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "马上要去北京，快说说让我避雷#北京旅行[话题]# #每日一问[话题]# #我的钱呢[话题]#\n\n相关主题：北京旅行、每日一问、我的钱呢",
+      "provenance": {
+        "document_id": "doc_3fa90968af75497d",
+        "chunk_id": "chunk_b6e35bcd23d642fe",
+        "title": "大家去北京最肉疼的一笔是什么",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1136,
+          "collects": 1011,
+          "comments": 1785,
+          "shares": 293
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-04",
+      "query": "去北京安排省钱攻略行程时，关于“国庆避坑指南｜北京这8个地方别去挤！冷门”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_4659fdcd96e64859",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "⚠️ 国庆七天假，北京日均进出京429万人次、打车需求涨21%、博物馆热度涨106%……热门景点人挤人？收好这份避坑指南，让你国庆玩得舒服十倍。#北京周末[话题]# #北京周末出游[话题]# #周末去哪玩[话题]# #北京[话题]#  #WeeklyPick[话题]#  #十一出游[话题]#",
+      "provenance": {
+        "document_id": "doc_4659fdcd96e64859",
+        "chunk_id": "chunk_2433b3708f794253",
+        "title": "国庆避坑指南｜北京这8个地方别去挤！冷门",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 35,
+          "collects": 46,
+          "comments": 1,
+          "shares": 24
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-05",
+      "query": "去北京安排省钱攻略行程时，关于“千万不要临时决定去北京”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_abcd013df4ab408e",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "去北京旅游请至少提前8天做攻略，并且准备好当一个特种兵的心态，有度假放松心态的别来。（这是一个去年11月去北京的经验帖，发现还存在草稿箱里，还是发出来，给大家避雷。）\n\t\n1️⃣没必要买地铁的一日票二日票等定期票！北京坐地铁要下载“亿通行”app，买定期票其实不回本，市区地铁挺便宜的。而且！地铁的机场线和市区线是分开的！！机场线要单独给25元！我以为我买了20元的一日地铁票就可以省钱，结果这个一日地铁票是不包机场线的！气死我了。\n\t\n2⃣北京大部分景点要预约！至少要提前7天预约和抢票，故宫、国家博物馆、天安门广场、天安门城楼、毛主席纪念堂、人民大会堂等通通要预约！颐和园、圆明园、天坛不用提前约也行。",
+      "provenance": {
+        "document_id": "doc_abcd013df4ab408e",
+        "chunk_id": "chunk_0a6beec14a254d84",
+        "title": "千万不要临时决定去北京",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2186,
+          "collects": 1931,
+          "comments": 101,
+          "shares": 412
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-BUDGET-06",
+      "query": "去北京安排省钱攻略行程时，关于“普通家庭真的不要带父母去北京”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "budget_tips",
+      "relevant": [
+        {
+          "document_id": "doc_deaf5cbe046c43f0",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "原本计划一天刷三四个热门景点，结果刚进第一个景区不到 40 分钟，老爸就频频找长椅，老妈揉着膝盖直喊 “腿像灌了铅”。看着他们瘫坐一旁无精打采的样子，我肠子都悔青了，特种兵式旅游真不适合带长辈💔 现在终于明白：陪父母出游，就得开启 “慢生活” 模式，一步一个脚印才是正解～\n\t\n整理了带父母玩Beijing的血泪经验！这些坑千万别踩💫\n🇨🇳 天安门升旗：根本不用半夜蹲点！提前查好日出时间，提前 1-2 h到场即可。后排视野反而更开阔，能让父母少受罪，没必要凌晨三四点就排队，最后累得直不起腰。\n.\n🏯 故宫游览：强烈建议买上午🎫！下午人挤人还逛不完，重点看太和殿、乾清宫等核心建筑，两三个小时轻松搞定，爸妈也不会过度劳累。\n.",
+      "provenance": {
+        "document_id": "doc_deaf5cbe046c43f0",
+        "chunk_id": "chunk_deb97451b9924e49",
+        "title": "普通家庭真的不要带父母去北京",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 622,
+          "collects": 805,
+          "comments": 29,
+          "shares": 82
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-01",
+      "query": "去北京安排城市漫步行程时，关于“我心目中排名前6的胡同Citywalk路线!附地图”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_30f91c47a4064b86",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "秋高气爽的北京太适合去胡同里溜达了🍂，分享几条在北京个人最喜欢去的6条胡同Citywalk路线，既有热闹的市井烟火，也有清净的古刹小街，大家快来码住慢慢逛～\n\t\n1️⃣地坛公园→五道营胡同→国子监/孔庙→雍和宫→雍和宫大街→簋街\n这条我最喜欢，没有之一。先去地坛公园打卡“余华和史铁生认领的那棵树”，再看一眼“地坛的海”。南门出来后先逛五道营胡同，沿街全是宝藏文艺小店。穿过箭厂胡同就到了孔庙国子监，参天古槐树、国子监牌楼，在北京算独一份。再走5分钟到雍和宫，北京最灵的祈福地之一，常年香火旺。逛完出来就是雍和宫大街，老字号小吃一路排开，晚上留点肚子去簋街撸小龙虾，一定要提前排号！",
+      "provenance": {
+        "document_id": "doc_30f91c47a4064b86",
+        "chunk_id": "chunk_4771537980fb489d",
+        "title": "我心目中排名前6的胡同Citywalk路线!附地图",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1045,
+          "collects": 1653,
+          "comments": 21,
+          "shares": 868
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-02",
+      "query": "去北京安排城市漫步行程时，关于“北京最值得N刷的Citywalk路线，没有之一”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_3a07c0843b99458b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "从红墙灰瓦老北京，到哥特式教堂、法式红砖邮局，拐个弯又进入老北京市井胡同，再走5分钟闯入江南水乡，最后慢悠悠坐在咖啡店里喝一杯咖啡！\n谁能想到！在北京二环，在故宫隔壁的胡同里，竟然藏着这么一条不同画风合成的Citywalk路线：\n-\n✅ 路线（全程3-4h，不走回头路）\n崇文门站 → 东交民巷（欧式）→ 西兴隆街（市井）→ 三里河公园（江南）→ 杨梅竹斜街（文艺）\n\t\n1️⃣东交民巷🌆欧式风格p1-p6\n刚从崇文门出来，一秒穿越民国租界\n哥特教堂、法式红砖、欧式路灯\n1.6公里藏着半部近代史📖\n2️⃣西兴隆街🍜老北京烟火气p7-p9\n拐个弯直接落地老北京胡同\n青砖灰瓦、大爷下棋、刚出锅的糖油饼香\n前一秒还在拍洋楼，下一秒啃锅贴",
+      "provenance": {
+        "document_id": "doc_3a07c0843b99458b",
+        "chunk_id": "chunk_a45a7c903dbd4796",
+        "title": "北京最值得N刷的Citywalk路线，没有之一！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2602,
+          "collects": 3691,
+          "comments": 48,
+          "shares": 2102
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-03",
+      "query": "去北京安排城市漫步行程时，关于“2026北京CityWalk保姆级攻略！8条路线逛吃玩乐全都有”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_5ee8ce90d57f48c9",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "之前发过2024和2025版，今年2026版终于来啦！我熬夜整理出了8条超好逛的CityWalk路线，直接照着走就行，不用动脑！\n\t\n🚶‍♀️路线一（雍和宫线）：五道营胡同→雍和宫/雍和宫大街→国子监/孔庙/国子监街/方家胡同→东四北大街→张自忠路/段褀瑞执政府旧址/和敬公主府/冰心故居/孙中山先生行馆。\n\t\n🚶‍♀️路线二（南锣鼓巷-什刹海线）：南锣鼓巷→鼓楼东大街→鼓楼（想多看点的可以顺路往北去钟楼和宏恩观）→烟袋斜街（里面有广福观）→后海酒吧街（可以沿后海溜达一圈，会路过宋庆龄故居等打卡点）→恭王府/荷花市坊/郭沫若故居/北京辅仁大学旧址→护国寺街/梅兰芳纪念馆。",
+      "provenance": {
+        "document_id": "doc_5ee8ce90d57f48c9",
+        "chunk_id": "chunk_d07b7cd20f4c40bb",
+        "title": "2026北京CityWalk保姆级攻略！8条路线逛吃玩乐全都有",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1012,
+          "collects": 1898,
+          "comments": 25,
+          "shares": 891
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-04",
+      "query": "去北京安排城市漫步行程时，关于“北京初秋7条封神Citywalk路线！错过等一年”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_7babefdca8144924",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京最美的秋天来了，趁着阳光正好，微风不燥，一起去逛逛吧！\n\t\n📍线路1：大吉巷→南半截胡同→烂缦胡同→七井胡同→宣南书店→法源寺→牛街\n必打卡：大吉巷集美食、购物与休闲于一体；三条胡同相邻，特色墙绘、各种卡通装饰必拍照；宣南书店水幕玻璃窗和屋顶金鱼；法源寺千年古寺安静清幽；牛街清真美食吃个够。\n\t\n📍线路2：虎坊桥→湖广会馆→京华印书局→韩家胡同→小安澜营胡同→铁树斜街→樱桃斜街→杨梅竹斜街→大栅栏→前门大街\n必打卡：湖广会馆、京华印书局 、韩家胡同Choochoo coffee、小安澜营胡同大橘为重、铁树斜街梅兰芳祖居、93号博物院、未来邮局，樱桃斜街西单饭店旧址，杨梅竹斜街京味时光等。",
+      "provenance": {
+        "document_id": "doc_7babefdca8144924",
+        "chunk_id": "chunk_15fc34872b97424f",
+        "title": "北京初秋7条封神Citywalk路线！错过等一年！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1135,
+          "collects": 2338,
+          "comments": 44,
+          "shares": 1293
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-05",
+      "query": "去北京安排城市漫步行程时，关于“一条很适合北京秋天的citywalk路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_affde975b23d4dd7",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "总结了北京秋天非常适合溜达的一条citywalk路线：朝外-三里屯-朝阳公园-亮马河，沿途可以逛书店、杂货店，逛累了再去三里屯喜茶吃个盖碗枣泥水牛乳冰淇淋，晚上再去亮马河边散步吹风～没有人会不爱上秋天的北京！",
+      "provenance": {
+        "document_id": "doc_affde975b23d4dd7",
+        "chunk_id": "chunk_54c926d760c04cff",
+        "title": "一条很适合北京秋天的citywalk路线",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 285,
+          "collects": 226,
+          "comments": 7,
+          "shares": 96
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-CITY-06",
+      "query": "去北京安排城市漫步行程时，关于“北京条初秋必逛CityWalk路线！快码住”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "citywalk",
+      "relevant": [
+        {
+          "document_id": "doc_e4c49271f1fb47d4",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "又到了北京金秋的时节🍂\n秋高气爽特别适合走街串巷感受秋日的美！\n卷卷整理了🔟条适合初秋的CityWalk路线\n全程轻松不暴走🚶地铁直达🚇\n\t\n🍂路线1️⃣ 东交民巷复古赏秋路线：🚶2km\n🗺️路线：🚇2号线崇文门站A1出➡️东交民巷街区\n（圣弥厄尔教堂-法国邮局旧址-比利时使馆旧址-法院博物馆）\n\t\n🍂路线2️⃣ 前门周边文艺胡同路线：🚶3km\n🗺️路线：西兴隆街➡️三里河公园➡️北京坊PageOne书店➡️空中花廊➡️杨梅竹斜街➡️琉璃厂\n\t\n🍂路线3️⃣国子监雍和宫古巷祈福路线：🚶2km\n🗺️路线：雍和宫祈福➡️国子监街➡️孔庙国子监➡️五道营胡同\n\t\n🍂路线4️⃣鼓楼什刹海古韵赏秋路线：🚶4km",
+      "provenance": {
+        "document_id": "doc_e4c49271f1fb47d4",
+        "chunk_id": "chunk_d48b707f80484a64",
+        "title": "北京🔟条初秋必逛CityWalk路线！快码住！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2038,
+          "collects": 2639,
+          "comments": 91,
+          "shares": 2433
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-01",
+      "query": "去北京安排亲子游行程时，关于“不要浪费大城市的资源（北京遛娃篇）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_06feff0e624c4979",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "整理了一些在北京适合遛娃的地方，商场儿童乐园、户外公园、科普场馆和亲子美食全都有，大多免费！周末不知道带娃去哪玩，直接抄作业✨\n\t\n商场免费儿童乐园\n1.芳圆里ID MALL：四五层无动力乐园，配备攀爬网、滑梯，设有免费绘本馆，低龄宝宝适配度超高。\n2.喜隆多新国际购物中心：三层大型免费游乐区，有滑梯、海底主题乐园、机甲熊猫打卡点，游玩项目丰富。\n3.惠多港购物中心：自带免费惠趣岛乐园，定期开放趣味项目，可免费借童车，停车福利十足。\n4.长楹天街购物中心：安静软包游乐区，安全舒适，周边绘本、手工店铺众多，适合轻松遛娃。\n5.华熙LIVE五棵松：户外无动力乐园，各式滑梯齐全，室内外可玩，天气适配性强。",
+      "provenance": {
+        "document_id": "doc_06feff0e624c4979",
+        "chunk_id": "chunk_0263a89d5d6e48e0",
+        "title": "不要浪费大城市的资源（北京遛娃篇）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 832,
+          "collects": 1351,
+          "comments": 1,
+          "shares": 410
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-02",
+      "query": "去北京安排亲子游行程时，关于“北京！果然最好逛的都是免费的”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_302345b8898e4188",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京玩水野餐、看展看书、逛博物馆，这10个神仙去处全部免费！\n1. 📍北京朝阳公园\n🕒 时间：6:00-22:00\n🎫 预约：无需预约\n超大面积的城市公园，可以划船、野餐，还有超火的网红彩虹阶梯和世纪喷泉广场\n\t\n2. 📍北京奥加美术馆\n🕒 时间：10:00-11:30，12:30-17:00（注意中午有午休）\n🎫 预约：免费免预约\n藏在酒店里的艺术馆，展品都是各类石头天然形成的图案，整体氛围很有欧洲古堡的感觉。\n\t\n3.📍 中国电影博物馆\n🕒 时间：周二至周五9:00-17:00（16:30停止入馆）\n🎫 预约：需在官方小程序提前预约\n拥有目前北京最大的IMAX银幕，馆内巨大的环形屏幕和光影互动区都非常震撼。",
+      "provenance": {
+        "document_id": "doc_302345b8898e4188",
+        "chunk_id": "chunk_99bdcc1e5ba741a1",
+        "title": "北京！果然最好逛的都是免费的",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1146,
+          "collects": 1311,
+          "comments": 4,
+          "shares": 421
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-03",
+      "query": "去北京安排亲子游行程时，关于“北京果然最牛逼的地方都是免费的”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_35b3cc80522e4d53",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京最难约的博物馆，37.2万件珍稀标本，从远古恐龙到非洲草原，一次逛遍！2026最新攻略直接照抄作业！\n\t\n🎫门票免费🆓（记得定闹钟⏰预约）\n国家自然博物馆，每天11:00开抢，提前3天预约，免费（周中比较好约，周末节假日拼手速）\n不用带身份证，凭预约码直接刷码进馆\n\t\n🕒开放时间\n平时：9:00-17:00（16:30停止入馆），周一闭馆\n2026年暑假（7.7-8.31）：改成每周二闭馆，周一正常开放，以官方通知为准\n\t\n🚗交通\n地铁：8号线天桥站B口，出来走200米\n自驾：停天桥艺术中心地下停车场，10元/小时，车位充足\n\t\n❤️展厅怎么逛【按楼层走不迷路】\n📍B1层（2个展厅）",
+      "provenance": {
+        "document_id": "doc_35b3cc80522e4d53",
+        "chunk_id": "chunk_c5ce8a48008643a8",
+        "title": "北京📍果然最牛逼的地方都是免费的",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 7717,
+          "collects": 5470,
+          "comments": 232,
+          "shares": 5600
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-04",
+      "query": "去北京安排亲子游行程时，关于“✨北京7️⃣处热门遛娃地合集攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_47a74df8cdf6480b",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "1⃣ 北京环球度假区\n哈利波特、小黄人等经典IP，剧场、花车巡游、灯光秀，沉浸式体验。\n📍位置：通州区环球大道\n💰票价：成人413r起 | 儿童/老人310r起\n⚠️避坑注意\n▪️园区提供直饮水\n▪️实时查排队、演出时间、项目停运等通知\n2️⃣北京野生动物园\n三千多亩超大园区，免费小火车、猛兽笼车可以近距离看老虎、狮子，还能互动投喂，小朋友超爱。\n📍位置：大兴区榆垡镇万亩森林\n💰票价：成人149r起｜学生89r起｜车票199r起\n⚠️避坑注意\n▪️禁止自带食物投喂！只能用园区专用食材\n▪️猛兽区严禁开窗、伸手，安全第一\n3️⃣ 泡泡玛特城市乐园\n包含LABUBU奇遇森林，泡泡街，MOLLY城堡、DIMOO云之湖等。",
+      "provenance": {
+        "document_id": "doc_47a74df8cdf6480b",
+        "chunk_id": "chunk_09184d920b974074",
+        "title": "✨北京7️⃣处热门遛娃地合集攻略👀",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 180,
+          "collects": 181,
+          "comments": 6,
+          "shares": 69
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-05",
+      "query": "去北京安排亲子游行程时，关于“收好！北京20个亲子博物馆大全，直接抄作业”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_f01a390f10974fc1",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：值得一去的博物馆、博物观世界、带娃去逛博物馆、一定要带孩子去的城市、探索博物馆、没有围墙的博物馆、带宝宝去博物馆、感受博物馆的力量、跟着北京大视听游北京、520跟着北京大视听游北京",
+      "provenance": {
+        "document_id": "doc_f01a390f10974fc1",
+        "chunk_id": "chunk_3cab4cac4baa4d2a",
+        "title": "收好！北京20个亲子博物馆大全，直接抄作业",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 8,
+          "collects": 21,
+          "comments": 0,
+          "shares": 4
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FAMILY-06",
+      "query": "去北京安排亲子游行程时，关于“讲讲北京景点真实感受（吃住玩行攻略）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "family",
+      "relevant": [
+        {
+          "document_id": "doc_f36af84004d94f62",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：北京火锅、北京漂亮饭、朝阳区美食、北京旅游攻略、北京避雷攻略、国庆去哪玩、中秋去哪玩、北京、北京景点推荐、北京吃喝玩乐",
+      "provenance": {
+        "document_id": "doc_f36af84004d94f62",
+        "chunk_id": "chunk_decae276657c4ddf",
+        "title": "讲讲北京景点真实感受（吃住玩行攻略）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 407,
+          "collects": 333,
+          "comments": 8,
+          "shares": 85
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-01",
+      "query": "去北京安排本地美食行程时，关于“北京美食集合，忍不住分享”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_22743175d15445ec",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京真的太太太好吃了！！整理了最近吃到的美味，跟着吃就对了👇\n🦆北京烤鸭\n来北京必吃！！皮脆肉嫩，卷上黄瓜丝和甜面酱，一口下去太满足了～(便宜坊，四季民福，味道环境都差不多，老字号不踩雷)\n🍲南门涮肉\n铜锅涮肉yyds！麻酱蘸料绝了，羊肉特别嫩，冬天来一锅整个人都活了！(敲黑板，满大街都是南门涮肉。正宗的是不含其他字样的，只有“南门涮肉”四个字，其他都是高仿)\n🥩门钉肉饼\n外皮酥脆，里面满满肉汁，咬一口小心爆汁💥\n🍜老北京爆肚粉 + 火烧\n爆肚脆嫩，粉丝吸满麻酱汤汁，配个火烧，香迷糊了！\n🍡驴打滚 + 冰糖葫芦\n驴打滚软糯豆香，糖葫芦酸甜脆，边走边吃超有感觉～\n🥟锦芳小吃\n老字号，艾窝窝、豌豆黄都好吃，想体验地道京味小吃来这里没错！",
+      "provenance": {
+        "document_id": "doc_22743175d15445ec",
+        "chunk_id": "chunk_aeee2d34ed634efd",
+        "title": "北京美食集合，忍不住分享",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 196,
+          "collects": 144,
+          "comments": 8,
+          "shares": 54
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-02",
+      "query": "去北京安排本地美食行程时，关于“北京吃喝避坑指南｜老住户都偷偷存下的美食清单”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_26cbfcf4abaa42f4",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "头一回来北京，或者想换换口味？胡同旮旯里的小馆子、商场里的连锁店，是不是看得眼花缭乱？这份红黑榜把游客反馈和本地人常去的店都扒了一遍，好吃不好吃的都列出来了。当然啦，各人嘴刁程度不一样，只当个参考，祝你在北京吃得开心不踩雷！",
+      "provenance": {
+        "document_id": "doc_26cbfcf4abaa42f4",
+        "chunk_id": "chunk_fe1a5a67043e40dd",
+        "title": "北京吃喝避坑指南｜老住户都偷偷存下的美食清单",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1804,
+          "collects": 1684,
+          "comments": 58,
+          "shares": 645
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-03",
+      "query": "去北京安排本地美食行程时，关于“北京一些真正好吃的”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_2a6508e7bcbc4cd6",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：北京美食、北京旅游、北京攻略、饭搭子、3003",
+      "provenance": {
+        "document_id": "doc_2a6508e7bcbc4cd6",
+        "chunk_id": "chunk_7559241759824db0",
+        "title": "北京一些真正好吃的。。。。。",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 721,
+          "collects": 804,
+          "comments": 56,
+          "shares": 384
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-04",
+      "query": "去北京安排本地美食行程时，关于“在北京逛吃必去的街，第一条就是这儿”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_423d8fc632c84321",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "雍和宫周边简直是吃货的天堂，来北京玩要是奔着吃来的，这条攻略直接抄作业！\n锅儿挑：藏在胡同里，打卤面超赞，碗大量足，卤子给得特豪横。\n七寻八找胡同菜：离锅儿挑不远，关晓彤都打卡过的小馆子，味道好，菜量也实在。\n茶饼斋：买伴手礼很合适，点心做得精致好吃，就是排队挺凶的。\n丰年灌肠：本地人常去，北京特色小吃基本都有，驴打滚、炸年糕、豌豆黄……各种小食任你挑。\n三宝乐面包店：招牌牛角包，不过我个人更爱豆馅的，每次路过都带几个，地铁口边上很方便。\n梅谭村：跟茶饼斋差不多风格，抹茶酥特别香，杏仁豆腐也嫩滑得很。\n吴裕泰：不只冰淇淋好吃，冷萃茶也超赞，夏天来一杯冰茶，边走边喝太爽了。\n刘阿妹鸡煲：小火锅形式，菜品自己选，鸡肉嫩得没话说。",
+      "provenance": {
+        "document_id": "doc_423d8fc632c84321",
+        "chunk_id": "chunk_2d08c8f1f6f4429c",
+        "title": "在北京逛吃必去的街，第一条就是这儿！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 94,
+          "collects": 105,
+          "comments": 2,
+          "shares": 40
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-05",
+      "query": "去北京安排本地美食行程时，关于“北京各区无法超越的店（上）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_c88cdbbe3fd0470e",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "整理了东城+海淀两区，在我心里无法超越的北京馆子📋\n避开千篇一律网红店，涮肉、烤鸭、小吃、日料、烤肉全都有\n人均、营业时间、招牌菜一次性整理好\n来北京旅游、周末觅食直接收藏，照着打卡就行#北京打卡#北京美食#吃喝玩乐逛北京#北京美食攻略",
+      "provenance": {
+        "document_id": "doc_c88cdbbe3fd0470e",
+        "chunk_id": "chunk_f8fe5deb45914be5",
+        "title": "北京各区无法超越的店（上）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 89,
+          "collects": 83,
+          "comments": 6,
+          "shares": 33
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-FOOD-06",
+      "query": "去北京安排本地美食行程时，关于“北京必吃的1️⃣0️⃣件套！本地人强推”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "food",
+      "relevant": [
+        {
+          "document_id": "doc_cee5d653cb1c40ca",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "本地人私藏的10家美食！来北京一定要尝尝，亲测不踩雷！\n-\n📍四季民福烤鸭\n来北京必吃烤鸭！鸭皮脆脆油油的，鸭肉很嫩吃不到一点腥味，甜面酱调的刚好，真的嘎嘎好吃！\n📍​​洪记小吃​​\n北京小吃的金字招牌！包子是必吃的！2.5元一个，个头大咬一口汤汁四溢，满满的肉香吃着真的超满足！\n📍南门涮肉\n涮肉肉质细嫩，入口即化，不膻不腻，搭配麻酱真的香迷糊了，麻酱脑袋闭眼冲！\n📍方砖厂69号炸酱面​​\n黄仁勋同款炸酱面！地道的老北京味道！可以续面续酱，还有爆肚粉、干炸丸子、胡同酱瓜每一样都好好吃！\n📍茶饼斋\n人手一盒的开心果奶糕一定要买！奶糕一层一层口感丰富，开心果味绵密浓郁，茶味的乳酪饼也都很好吃\n📍刘记炙子烤肉​​",
+      "provenance": {
+        "document_id": "doc_cee5d653cb1c40ca",
+        "chunk_id": "chunk_ce9a45d087e34944",
+        "title": "北京必吃的1️⃣0️⃣件套！本地人强推！！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 12000,
+          "collects": 11000,
+          "comments": 269,
+          "shares": 7015
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-01",
+      "query": "去北京安排历史文化行程时，关于“被自己做的北京地铁直达博物馆满意到睡不着”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_1288bb4edf9449a6",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "相关主题：北京旅游、北京旅游攻略、北京吃喝玩乐、北京citywalk、北京地铁、北京博物馆、北京故宫、国家博物馆、首都博物馆、军事博物馆",
+      "provenance": {
+        "document_id": "doc_1288bb4edf9449a6",
+        "chunk_id": "chunk_9c83ba4f21354023",
+        "title": "被自己做的北京地铁直达博物馆满意到睡不着",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 820,
+          "collects": 1330,
+          "comments": 55,
+          "shares": 220
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-02",
+      "query": "去北京安排历史文化行程时，关于“北京一史馆丨明清痛馆”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_4d15a14ccdeb4d26",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "是几周前去的一史馆，这里看展不用预约，但要记得带上身份证！我这篇笔记内容只有部分明朝文物，馆内清朝展品也很丰富，搞明史同或清史同的都很适合来逛。周六来看展的人也不多，可以安静观展。\n⚠️一史馆营业时间：周一～周六，周日不开馆。\n我来一史馆是想看看有没有矩阵相关文物，但张居正相关内容目前只有p3这样介绍人物的画像和简介……遗憾离场！！！（不是\n一史馆还有关于高拱和戚继光的介绍（p3和p5），就是随手一拍没注意内容不清晰啊啊啊啊……\n高拱相关的文物有《掌铨题稿》，朱翊钧相关文物有和李太后共同赈灾捐银的档案……一史馆展出的万历朝文物还是挺多的，不过大多都是名册。",
+      "provenance": {
+        "document_id": "doc_4d15a14ccdeb4d26",
+        "chunk_id": "chunk_89665b5e898246dc",
+        "title": "北京一史馆丨明清痛馆",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 383,
+          "collects": 220,
+          "comments": 50,
+          "shares": 78
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-03",
+      "query": "去北京安排历史文化行程时，关于“北京这两个景点，我劝你慎重”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_7ea5851cba8347d8",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "1.圆明园是真的大，但要是进错了门，进门就得掏20块坐车。里头就是些残垣断壁，抛开历史意义不说，传说中的“万园之园”也就那么回事，特意跑一趟真没必要，毕竟人挤人～\n2.颐和园也挺让人无语的，本来想着趁着大清没了，坐船看看皇上和慈禧太后当年的风景，结果赶上风大游船停航，周一佛香阁又关门，还碰上一堆研学的小朋友，真心不建议专程去，因为到处都是人～",
+      "provenance": {
+        "document_id": "doc_7ea5851cba8347d8",
+        "chunk_id": "chunk_3137e8db21514af8",
+        "title": "北京这两个景点，我劝你慎重！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 201,
+          "collects": 71,
+          "comments": 30,
+          "shares": 72
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-04",
+      "query": "去北京安排历史文化行程时，关于“北京人逛胡同从来不去南锣，去东四”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_86b7c27e0bfd4d59",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "逛胡同，最怕“乱”。\n南锣是给游客走的，东四才是我们自己溜达的地儿。\n你问为啥？因为这儿是北京城里最讲规矩的胡同群。😎\n\t\n✅名字由来：东四牌楼下的胡同 东四，全称“东四牌楼”。\n明朝时，十字路口有四座牌楼，后来牌楼没了，名字留下了。\n胡同以“条”命名，从东四三条到东四十四条，横平竖直，跟棋盘似的。\n北京人打小儿就知道：东四的胡同，闭着眼走都迷不了路。🧭\n\t\n✅最有看头的一条：东四六条\n这条胡同里藏着个“豪宅”——崇礼住宅。\n清代大学士崇礼的宅子，三路四进，气派得很。\n现在虽然进不去，但光看门楼就够你琢磨半天的。\n北京人路过都得慢两步，说一句：“这宅子，过去可不是一般人住的。”🏛️\n\t\n✅胡同里的“门当户对”是真的",
+      "provenance": {
+        "document_id": "doc_86b7c27e0bfd4d59",
+        "chunk_id": "chunk_3bafaf998320428f",
+        "title": "北京人逛胡同从来不去南锣，去东四！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 284,
+          "collects": 364,
+          "comments": 107,
+          "shares": 97
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-05",
+      "query": "去北京安排历史文化行程时，关于“不要白白浪费北京的城市资源！第一期”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_ca38aa5f60aa4b3f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🔥北京作为首都，大城市资源非常丰富！\n给大家整理了一期城市资源汇总！吃喝玩乐全部涵盖，再也不愁周末去哪了！\n🌟本期盘点：博物馆、图书馆、花卉市场、名人故居、宝藏公园 👇\n\t\n✅【博物馆篇】\n1. 故宫博物院\n2. 中国国家博物馆\n3. 国家自然博物馆\n4. 中国美术馆\n5. 首都博物馆\n6. 恭王府博物馆\n7. 中国地质博物馆\n8. 北京天文馆\n9. 中国科学技术馆\n10. 北京古代建筑博物馆\n11. 中国园林博物馆\n12. 中国考古博物馆\n13. 中国电影博物馆\n14. 中国农业博物馆\n15. 中国人民革命军事博物馆\n16. 中国人民抗日战争纪念馆\n17. 周口店北京人遗址博物馆\n18. 中国大运河博物馆\n\t\n✅【图书馆篇】",
+      "provenance": {
+        "document_id": "doc_ca38aa5f60aa4b3f",
+        "chunk_id": "chunk_536ed8cb8b8a44bb",
+        "title": "不要白白浪费北京的城市资源！第一期！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 3039,
+          "collects": 4798,
+          "comments": 62,
+          "shares": 1054
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-HIST-06",
+      "query": "去北京安排历史文化行程时，关于“国庆假期，通过一张图在北海公园看见历史”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "history_culture",
+      "relevant": [
+        {
+          "document_id": "doc_f88a9651a0884b2d",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北海公园是辽、金、元、明、清五朝皇家御苑，遵循古典“一池三山”造园理念。金代开始挖湖堆山，元代依托此地规划大都，乾隆时期大规模增建，奠定如今格局。1925年正式对外开放，从帝王私园变成大众公共园林。\n✨西天梵境（大西天）\n明代始建，乾隆扩建的皇家藏传佛教寺院。核心建筑大慈真如宝殿是珍贵明代金丝楠木大殿，无彩绘，黑琉璃瓦。寺院西侧墙壁就是九龙壁。\n✨九龙壁\n乾隆年间修建，全国三座九龙壁中唯一双面九龙壁，正反两面都雕刻琉璃龙，一共635条，原本是西天梵境的影壁。\n✨快雪堂\n北岸的书法石刻院落，名字取自王羲之《快雪时晴帖》，回廊镶嵌《快雪堂法帖》石刻。",
+      "provenance": {
+        "document_id": "doc_f88a9651a0884b2d",
+        "chunk_id": "chunk_f8b727496cdd421d",
+        "title": "国庆假期，通过一张图在北海公园看见历史！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 71,
+          "collects": 53,
+          "comments": 5,
+          "shares": 8
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-01",
+      "query": "去北京安排周边游行程时，关于“北京出发0.5h一座被低估的宝藏小城”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_4a63cbe8e86547f9",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京出发半小时就能抵达的宝藏小城\n人少景美，乾隆御笔 \"天下第一州\"  ，张飞故里……\n不用做复杂攻略，早上出发晚上就能回\n挑个周末，来这座慢节奏的小城，感受千年历史与人间烟火的碰撞吧～\n.\n🚄高铁\n去程 G481  北京西➠涿州东（10:28-11:53）\n返程 G388  涿州东➠丰台站（19:37-20:00\n市内：景点集中，大部分都能步行到达\n.\n🗺️一日 citywalk 路线（亲测不绕路）\n鼓楼大街➠涿州博物馆➠涿州打卡墙➠辽代双塔➠高家大院➠永济公园\n.\n🌟必打卡景点\n✅ 鼓楼大街\n涿州的中轴线，满满的人间烟火气。豆馅炸糕外皮焦脆内馅绵密，刚出锅趁热吃绝了。本地人常去的老马豆腐脑、老方包子\n✅年轻人打卡墙",
+      "provenance": {
+        "document_id": "doc_4a63cbe8e86547f9",
+        "chunk_id": "chunk_83d5e492b9e0472b",
+        "title": "北京出发0.5h🚄一座被低估的宝藏小城",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1515,
+          "collects": 1404,
+          "comments": 71,
+          "shares": 1150
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-02",
+      "query": "去北京安排周边游行程时，关于“国庆在北京玩什么？18个人少的短途去处合集”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_54ff3459be1840b5",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "国庆不出京或者来北京玩能避开人流去相对小众地方？可以摘抄作业。\n\t\n1️⃣日光山谷.密云\n\t\n2️⃣雁栖湖步道.怀柔\n\t\n3️⃣檀谷.门头沟\n\t\n4️⃣云峰山.密云\n\t\n5️⃣金海湖.平谷\n\t\n6️⃣水关长城.延庆\n\t\n7️⃣板栗村.怀柔\n\t\n8️⃣永定河集.石景山\n\t\n9️⃣桃子采摘.平谷\n\t\n🔟小汤山汤泉.昌平\n\t\n1️⃣1️⃣打铁花表演.石景山\n\t\n1️⃣2️⃣慕田峪长城.怀柔\n\t\n1️⃣3️⃣潭柘寺礼佛.门头沟\n\t\n1️⃣4️⃣葡萄采摘.四季青\n\t\n1️⃣5️⃣什刹海Citywalk\n\t\n1️⃣6️⃣采摘蘑菇、柠檬.门头沟/昌平\n\t\n1️⃣7️⃣不老屯天文台参观/密云",
+      "provenance": {
+        "document_id": "doc_54ff3459be1840b5",
+        "chunk_id": "chunk_57c93652cd6448b0",
+        "title": "国庆在北京玩什么？18个人少的短途去处合集",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 166,
+          "collects": 202,
+          "comments": 76,
+          "shares": 77
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-03",
+      "query": "去北京安排周边游行程时，关于“小红书旅行笔记 6ab10ac20000000034034f7c”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_6b1c9fef95554081",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "国庆避挤｜北京近郊10个免费小众山野一日🍃\n\t\n🌿 房山·雾岚山步道（小白楼）\n自驾1h｜免门票｜停车免费\n缓坡木栈道，老少友好。山顶小白楼俯瞰群山，秋日云雾氛围感强，节假日人很少。\n\t\n🍃 房山·南窖古村+猫耳山\n自驾1.2h｜免门票｜停车免费\n原生态古村落，无商铺。后山轻徒步，山谷秋景清幽，远离热门景区人流。\n\t\n🌾 昌平·长峪城登山步道（风车长城）\n自驾1.5h｜免门票｜停车免费\n平缓木栈道环线，风车搭配残长城，秋天山林色彩丰富，游客不多。\n\t\n💧 怀柔·神堂峪公共木栈道\n自驾1h｜免门票｜路边免费停车\n沿溪林荫步道，只走免费段。溪水清澈，基本无陡坡，散步吸氧很舒服。\n\t\n🌄 门头沟·落坡岭水库（山水铁路）",
+      "provenance": {
+        "document_id": "doc_6b1c9fef95554081",
+        "chunk_id": "chunk_1a37bd534880474b",
+        "title": "小红书旅行笔记 6ab10ac20000000034034f7c",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 360,
+          "collects": 853,
+          "comments": 13,
+          "shares": 447
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-04",
+      "query": "去北京安排周边游行程时，关于“北京周边小众自驾✨高速免费”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_86229d47b8464aaa",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🌿整理18个京郊一日自驾点位，高速免费，不用过夜，人少清净，有的看风景，有的专门吃农家味，直接抄作业！\n\t\n⛰️月亮山｜房山\n平缓小山，有迷你玻璃栈道，山间视野开阔。农家院铁锅炖配贴饼子，停车方便，爬山不累。\n\t\n💧湖洞水｜平谷\n浅峡谷，溪水潺潺，几乎没有陡坡，适合慢悠悠散步。门口农家菜，平谷柴鸡炖得入味。\n\t\n🚂双龙峡｜门头沟\n京郊小九寨，可以坐森林小火车进山，溪流瀑布，秋日彩林好看。斋堂镇吃焖饭、炖羊肉。\n\t\n🏯九眼楼长城｜怀柔\n万里长城第一楼，视野能眺望群山，步道规整，比慕田峪安静很多。四海镇柴锅炖菜。\n\t\n🏡南窖村｜房山\n原生态明清古村落，石板老街，游客不多。街边能买山核桃、柿子，农家菜吃炸咯吱。\n\t\n🥘长峪城｜昌平",
+      "provenance": {
+        "document_id": "doc_86229d47b8464aaa",
+        "chunk_id": "chunk_c51a152c4b6b4e6c",
+        "title": "北京周边小众自驾✨高速免费",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 97,
+          "collects": 300,
+          "comments": 3,
+          "shares": 129
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-05",
+      "query": "去北京安排周边游行程时，关于“️ 北京周末出逃6大目的地全攻略”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_ebbd49fa08cf40b7",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🗺️ 北京周末出逃6大目的地全攻略 2天1晚｜逃离城市计划｜距离·玩法·美食全包含\n\t\n📍 【六大目的地一览】\n🏯 古北水镇（密云） 🚗 约130km · 车程2.5h ✨ 亮点：北方小江南，夜游长城超美 💡 推荐：泡温泉 · 赏灯光 · 品美食\n🏛️ 承德避暑山庄（承德） 🚗 约230km · 车程3.5h ✨ 亮点：皇家园林，清凉避暑胜地 💡 推荐：山庄+外八庙 · 吃驴打滚\n🏔️ 野三坡（保定） 🚗 约150km · 车程2h ✨ 亮点：山水风光，峡谷漂流超刺激 💡 推荐：徒步百里峡 · 品尝农家菜\n🌊 秦皇岛 🚗 约300km · 车程3.5h ✨ 亮点：看海踏浪，看日出绝美 💡 推荐：北戴河+山海关 · 海鲜大餐必吃",
+      "provenance": {
+        "document_id": "doc_ebbd49fa08cf40b7",
+        "chunk_id": "chunk_53400a8c6e824411",
+        "title": "🗺️ 北京周末出逃6大目的地全攻略",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 914,
+          "collects": 622,
+          "comments": 8,
+          "shares": 605
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NEARBY-06",
+      "query": "去北京安排周边游行程时，关于“北京高铁20min直达｜廊坊一日游”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "nearby_trip",
+      "relevant": [
+        {
+          "document_id": "doc_f5764efadfb2448c",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🚄完整路线：\n北京南站→廊坊站→隆福寺→禾素斋吃素面→廊坊市博物馆→廊坊市图书馆→水云文化商业街→曹福烧饼→廊坊站→北京南站\n\t\n⏰出行时间\n9:38 北京南站-10:00 廊坊站\n19:52 廊坊站-20:13 北京南站\n\t\n🏯第一站｜隆福寺\n廊坊站打车8公里，可直接定位隆福寺东门！\n进门就是卖米糕的摊位，素包子2r/个，米糕、枣糕1r/个，软糯香甜。\n建议顺时针游览，顺路可找到禾素斋吃斋面\n可选拌面/汤面，都是15r一碗。饭点人较多！建议一人排队买面，一人先占位，不然端着面找不到座位！\n沿路经过弥陀殿、大雄宝殿，大雄宝殿后方能打卡标志性长明灯楼。\n\t\n🏛第二站｜廊坊博物馆&图书馆\n隆福寺打车直达，博物馆和图书馆紧紧相邻",
+      "provenance": {
+        "document_id": "doc_f5764efadfb2448c",
+        "chunk_id": "chunk_2b8374ad4dbc402d",
+        "title": "北京高铁20min直达｜廊坊一日游",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 129,
+          "collects": 123,
+          "comments": 9,
+          "shares": 110
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-01",
+      "query": "去北京安排夜游行程时，关于“小红书旅行笔记 6aa667280000000026031499”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_1015a498aea94098",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "到北京带爸妈玩完景点后还剩一个晚上和一个上午可以干什么#不懂就问有问必答[话题]# #万能的小红书[话题]#\n\n相关主题：不懂就问有问必答、万能的小红书",
+      "provenance": {
+        "document_id": "doc_1015a498aea94098",
+        "chunk_id": "chunk_cfcea9b6199246f9",
+        "title": "小红书旅行笔记 6aa667280000000026031499",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 45,
+          "collects": 73,
+          "comments": 39,
+          "shares": 3
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-02",
+      "query": "去北京安排夜游行程时，关于“北京最适合晚上Citywalk的地方”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_5f362bdb582645a0",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "如果你第一次来北京，又不知道晚上去哪里逛——\n这里可能是北京最适合的地方。\n既有老北京的烟火气，也有年轻人的夜生活。\n你可以横看钟鼓楼的古往今来。\n既有老字号和传统北京美食，\n也有排队不断的网红餐厅、咖啡馆和小店。\n\t\n📍北京经典Citywalk路线推荐\n① 从什刹海地铁站A口出发\n从地铁站出来，可以先往西走。\n你会看到充满市井气息的烟袋斜街，\n再往前走，就是什刹海、后海一带。\n到了晚上，这里可以说是北京夜生活最热闹的区域之一。酒吧、餐厅、湖边夜景、人群和音乐，让这里完全是另一种北京。\n\t\n② 往北走，去打卡钟鼓楼\n从什刹海一路往北，就可以来到北京鼓楼、钟楼。\n傍晚到晚上，是这里最适合拍照的时候。\n沿着鼓楼东大街一直往东走。",
+      "provenance": {
+        "document_id": "doc_5f362bdb582645a0",
+        "chunk_id": "chunk_8c036488bfac4b48",
+        "title": "北京最适合晚上Citywalk的地方",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 1603,
+          "collects": 1559,
+          "comments": 32,
+          "shares": 927
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-03",
+      "query": "去北京安排夜游行程时，关于“北京夜景绝了！这9个地方不去亏大”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_62a7f163c32f437c",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京的晚上真的适合出来溜达，吹着小风看灯火，整个城市都变温柔了～我整理了9个夜游好去处，从老街到地标，从市井到水岸，直接照着玩就行！\n\t\n📍前门大街：2/8号线前门站I口，17:30-22:00亮灯。百年老街配鱼灯，还能坐铛铛车。\n📍奥林匹克公园：8/15号线奥园站，19:30-22:00亮灯。鸟巢和水立方光影超炫，现代感拉满。\n📍国贸CBD：1/10号线国贸站，19:00-23:00亮灯。6楼观景台拍全景，中国尊、央视大楼、车流同框。\n📍天坛：5号线天坛东门A1，只有周五/六/节假日19:30-21:00亮灯。夜场人少，古风氛围浓。\n📍什刹海：8号线什刹海C口，18:30-22:30。",
+      "provenance": {
+        "document_id": "doc_62a7f163c32f437c",
+        "chunk_id": "chunk_b7cd3d2af3744b6a",
+        "title": "北京夜景绝了！这9个地方不去亏大",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 775,
+          "collects": 643,
+          "comments": 6,
+          "shares": 366
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-04",
+      "query": "去北京安排夜游行程时，关于“北京国庆夜游｜4大夜间打卡清单”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_86b5572eea684f89",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "白天逛完别急着回家，整理好4场特色夜场，看好时间！\n\t\n🏮首钢园游园灯会\n⏰10.1–10.3｜15:00–21:00\n📍首钢园秀池+三高炉南广场\n灯会｜水市｜水上音乐会｜非遗\n👉仅国庆前3天，适合下午待到晚上\n\t\n🌊永定河水幕灯光秀\n⏰10.1–10.7\n📍门头沟门城湖公园（永定楼周边）\n水幕光影+非遗京西太平鼓\n👉出发前查官方演出场次\n\t\n✨朝阳国际灯光消费季\n⏰至10.11\n📍亮马河、奥森、CBD、三里屯一带\n亮马河滨水夜游｜朝阳公园行进光影秀\n👉时间最宽裕，假期后也能玩\n\t\n🔥石景山游乐园\n⏰10.1–10.7\n📍石景山游乐园\n打铁花+音乐水舞秀\n👉收💰活动，🎟️不同入园时间不同\n\t\n⚠️时间重点",
+      "provenance": {
+        "document_id": "doc_86b5572eea684f89",
+        "chunk_id": "chunk_e8722bd485334aca",
+        "title": "北京国庆夜游｜4大夜间打卡清单🌃",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 47,
+          "collects": 61,
+          "comments": 2,
+          "shares": 68
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-05",
+      "query": "去北京安排夜游行程时，关于“京城夜游公园”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_b9baec13220b4446",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "1️⃣北海公园｜印·静心（收费专场夜游）\n✅限定专场活动\n- 静心斋 + 西天梵境双景区，灯光布景+国风演艺（古琴、昆曲、惊鸿舞、敦煌飞天），每场限流。\n- 活动多集中在暑期、中秋、国庆。\n- 单独买「印·静心」活动票，需在官方渠道抢场次；公园普通夜游（不参加印·静心） 。\n- 20:00停止入园，21:00清场。\n2️⃣天坛公园｜祈年殿夜景照明\n✅周五、周六、法定节假日晚间开启，平日不亮建筑灯 。\n- 晚上到22:00，21点停止入园，可以夜游散步 ；祈年殿院落18:00关门清场 。\n3️⃣紫竹院公园｜晚间音乐会\n✅季节性限定公益活动，竹荷文化季（7‑8月），中秋国庆仅有少量晚间专场，日常晚上没有官方固定音乐会 。",
+      "provenance": {
+        "document_id": "doc_b9baec13220b4446",
+        "chunk_id": "chunk_86886ec932fc4a47",
+        "title": "京城夜游公园",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 35,
+          "collects": 36,
+          "comments": 0,
+          "shares": 21
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NIGHT-06",
+      "query": "去北京安排夜游行程时，关于“北京初秋夜游7大宝藏点位（合集推荐）”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "night_tour",
+      "relevant": [
+        {
+          "document_id": "doc_c8441c8a190d4353",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "终于到了北京最适合夜游的季节！\n告别白天的燥热，傍晚吹着晚风citywalk，整理了7种完全不同风格的夜景，承包整个初秋的浪漫✨\n\t\n✨亮马河\n被称为北京“东方塞纳河”的水岸夜景🌌\n一桥一景自带氛围感，傍晚蓝调时刻绝美！\n河面波光倒影、沿岸灯火温柔，散步、吹风、看游船穿梭，松弛又高级，是本地人私藏的治愈夜游地。\n\t\n✨首钢园｜永定河集\n京西独有的工业风浪漫夜景！\n高炉灯光亮起硬朗又出片，永定河集河畔晚风超舒服。\n草坪开阔、灯光治愈，人少安静，发呆散步、拍照漫游都超合适。\n\t\n✨泡泡玛特城市乐园\n谁能拒绝夜晚的童话小镇！\n夜场灯光全开，城堡梦幻感直接拉满✨\n晚风配治愈夜景，温柔解压，少女心爆棚。\n\t\n✨潘家园夜市",
+      "provenance": {
+        "document_id": "doc_c8441c8a190d4353",
+        "chunk_id": "chunk_72acaf03afdc4f96",
+        "title": "北京初秋夜游7大宝藏点位🌙（合集推荐）",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 217,
+          "collects": 199,
+          "comments": 8,
+          "shares": 177
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-01",
+      "query": "去北京安排拍照打卡行程时，关于“迄今为止！我最喜欢的北京都市citywalk”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_00af08eb97fa4950",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京最具时尚气质的citywalk路线，非国贸莫属了～\n今天带大家打卡国贸附近不可错过的9个机位！\n\t\n🗺️｜路线：\nLv路易威登颠倒世界➡️国贸公寓➡️嘉里大酒店➡️景华南街➡️国贸商城北区六层露台➡️光华桥➡️麦当劳景辉街餐厅➡️众秀大厦➡️中信大厦➡️ 团结湖地铁站\n\t\n📷｜机位分享：\n1️⃣Lv路易威登颠倒世界\n地铁国贸站A口出，向西步行100多米就到了，摄影师在Lv东门仰拍，翻转180度就能Get大名鼎鼎的颠倒世界大片\n2️⃣国贸公寓\n金桐东路向北步行100多米，国贸南公寓，模特过马路过程中摄影师抓拍，妥妥的时尚街拍。\n3️⃣团结湖地铁站\n溜溜哒哒来到了团结湖，进地铁站竟然偶遇了李雪琴新年大屏，一下子被吸引。",
+      "provenance": {
+        "document_id": "doc_00af08eb97fa4950",
+        "chunk_id": "chunk_b4750ba6344b419d",
+        "title": "迄今为止！我最喜欢的北京都市citywalk！",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 2005,
+          "collects": 1012,
+          "comments": 52,
+          "shares": 264
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-02",
+      "query": "去北京安排拍照打卡行程时，关于“北京这1️⃣6️⃣个机位，我足足拍了一年，附机位”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_234f726a391c4aec",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "大家好，我是影迹\n自学摄影1️⃣年，喜欢城市探索，挖掘宝拍摄机位，\n给大家整理了一些北京出片儿的拍摄机位，和机位适合的焦段\n1️⃣ 进京之路（📍通州通广嘉园70-200）\n2️⃣中国尊列车同框（📍管庄地铁站A口西侧天桥/70-200）\n3️⃣ 天安门天坛同框（📍蒲黄榆地铁G口时代群芳小区/600）\n4️⃣ 广渠快速路（📍定为北京塞隆国际文化创意园/24-105）\n5️⃣城市折叠（📍导航朝阳区文化馆前十字路口/16-24）\n6️⃣白塔寺（📍抄手胡同/24-105）\n7️⃣钟楼（📍铃铛胡同/24-105）\n8️⃣阜成门地铁站（📍任意一个进站口即可/24-105）\n9️⃣望京南地铁c口（📍出来看到一条小河就是/24-105）",
+      "provenance": {
+        "document_id": "doc_234f726a391c4aec",
+        "chunk_id": "chunk_83a6ba9117b847d9",
+        "title": "北京这1️⃣6️⃣个机位，我足足拍了一年，附机位",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 5474,
+          "collects": 4918,
+          "comments": 407,
+          "shares": 1267
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-03",
+      "query": "去北京安排拍照打卡行程时，关于“为了这18张照片❗️我专门飞了趟北京✈️”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_6ea03a0f1f464c57",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "“一座北京城，半部华夏史”\n红墙黄瓦锁住了六百年的光阴\n胡同的风吹过了几个世纪的烟\n我跨越山海而来\n只为在光影交错间📷\n与这座古老而庄严的城市\n达成一次默契的对视\n\t\n整理了这份私藏的1️⃣8️⃣个机位\n分享给大家✌️建议收藏备用\n\t\n图1️⃣ 北京古建筑博物馆星空藻井\n图2️⃣ 中乐六星酒店顶楼餐厅\n图3️⃣ 天安门城楼\n图4️⃣ 景山公园观景台\n图5️⃣ 故宫博物院万春亭藻井\n图6️⃣ 丽泽商务区夜景内透\n图7️⃣ 颐和园十七孔桥\n图8️⃣ 丽泽SOHO大堂\n图9️⃣ 天坛祈年殿门缝\n图🔟 先农坛盘龙藻井\n图1️⃣1️⃣ 东大桥地铁站A出口\n图1️⃣2️⃣ 城奥大厦\n图1️⃣3️⃣ 天坛玻璃祥云倒影\n图1️⃣4️⃣ 人民大会堂",
+      "provenance": {
+        "document_id": "doc_6ea03a0f1f464c57",
+        "chunk_id": "chunk_bc3228d8a05a4c47",
+        "title": "为了这18张照片❗️我专门飞了趟北京✈️",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 28000,
+          "collects": 13000,
+          "comments": 534,
+          "shares": 3519
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-04",
+      "query": "去北京安排拍照打卡行程时，关于“北京9个值得打卡的现代建筑科幻感十足”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_b69af481c6e248ae",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "如果你喜欢工业风未来感喜欢拍建筑\n推荐几个北京超现实的建筑摄影机位\n这些地方就像科幻片里的场景\n拍出盗梦空间式的视觉暴击ins风拉满\n🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸\n1️⃣凤凰中心（图1-2）\n整座建筑由一个巨大的环形钢结构包裹，空中走廊像极了两条丝带，中式美学与现代感融合，像莫比乌斯环里的纯白幻境\n2️⃣丽泽SOHO（图3-4）\n由建筑大师扎哈·哈迪德设计的收官之作，被誉为南城新地标，拥有194米高的世界最高中庭，双螺旋结构像DNA盘旋而上，视觉冲击力极强。最佳机位在1楼中庭，抬头可见完美的对称线条\n3️⃣中关村SOHO（图5）",
+      "provenance": {
+        "document_id": "doc_b69af481c6e248ae",
+        "chunk_id": "chunk_57b7c174b0974a79",
+        "title": "北京9个值得打卡的现代建筑🛸科幻感十足",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 103,
+          "collects": 124,
+          "comments": 1,
+          "shares": 51
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-05",
+      "query": "去北京安排拍照打卡行程时，关于“北京今年爆火的四只猫猫｜国庆来一次性打卡”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_c1bda8ad5aea465e",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "🐱京城四咪｜不走回头路一日路线\n第1站｜菜市口·园谷谷（花环猫猫）\n🚇地铁4/7号线 菜市口站E口，出站地面广场，不用过马路，直接打卡。\n✅免费无需预约。\n第2站｜西单路口西北角·三花猫\n从菜市口地铁坐4号线1站直达西单站F1口和F2口之间，地铁F1口出，回头看就是西北角花坛三花小猫就在那里啦。\n✅免费，不要翻越护栏。\n第3站｜景山公园·丑萌猫猫（重点！西门进，东门出）\n🚇西单坐地铁到8号线南锣鼓巷站，打车/公交到景山西门；\n📍西门入园，往北走就能看见丑萌草猫；逛完景山，从东门出来，不用走回西门，省去折返的路。\n🎫门票2元，扫码购票。\n需带身份证🪪\n第4站｜日坛公园南门·大绿雕猫咪",
+      "provenance": {
+        "document_id": "doc_c1bda8ad5aea465e",
+        "chunk_id": "chunk_92626c757a194034",
+        "title": "北京今年爆火的四只猫猫｜国庆来一次性打卡",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 465,
+          "collects": 450,
+          "comments": 28,
+          "shares": 625
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-PHOTO-06",
+      "query": "去北京安排拍照打卡行程时，关于“北京！迄今为止最有都市感的city walk路线…”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "photo_spots",
+      "relevant": [
+        {
+          "document_id": "doc_eb3b2fb57ff94b05",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京周末避开人群去CBD附近闲逛\n九月的天气骑行、散步都很舒服\n穿过街巷换个角度领略京城的流光溢彩\n-\n【CBD小众citywalk路线】\n西总布胡同➡️东总布胡同➡️三星大厦➡️景华南街➡️国贸商城➡️朝阳公园\n-\n📷【拍照机位】\n💙景华南街（p1-2）\n世纪财富中心央视大裤衩机位\n💙朝阳公园（p11、p15）\n公园公园北码头远眺国贸CBD\n💙东&西总布胡同（p3、p5）\n胡同深处的古今同框\n💙三星大厦（p8）\n赛博朋克三件套（中国尊、三星大厦、众秀大厦）同框\n💙国贸公寓南公寓（p7）\n恍若在国外的欧式街景\n💙国贸商城北区6层观景台（p9-10）\n观赏大裤衩夜景的免费机位，视野绝佳\n💙国贸商城LV门口颠倒世界（p6、p12）",
+      "provenance": {
+        "document_id": "doc_eb3b2fb57ff94b05",
+        "chunk_id": "chunk_824beac59afb4185",
+        "title": "北京！迄今为止最有都市感的city walk路线…",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 512,
+          "collects": 401,
+          "comments": 8,
+          "shares": 107
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-01",
+      "query": "去北京安排自然休闲行程时，关于“在北京实习半年，真心觉得这几个地方值得去”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_0c554654bb274e59",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "大四在北京实习了六个月，周末没事就到处乱逛，挑了几个自己觉得还不错的地方，简单分享下～\n1. 首钢园\n工业风很浓，随便走走都很出片，地方超大，骑车逛很舒服，人也不会特别挤，很适合放空。\n2. 颐和园\n经典必去了，天气好的时候逛特别舒服，长廊、昆明湖、十七孔桥，慢慢走很有感觉，比挤在热门商圈舒服多了。\n3. 野鸭湖\n稍微远一点，但很值。视野很开阔，有湖有芦苇，风一吹特别治愈，很适合想远离市区待一天。\n4. 奥森公园\n日常散步首选，免费、大、绿化好，早晚都有人跑步散步，春天看花秋天看落叶，很舒服。\n在北京待久了才发现，不用总去网红打卡点，这些地方安安静静逛一圈，真的很放松。",
+      "provenance": {
+        "document_id": "doc_0c554654bb274e59",
+        "chunk_id": "chunk_92159979d8ca4b06",
+        "title": "在北京实习半年，真心觉得这几个地方值得去",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 172,
+          "collects": 71,
+          "comments": 3,
+          "shares": 14
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-02",
+      "query": "去北京安排自然休闲行程时，关于“接下来的北京，10月超全赏秋citywalk路线”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_261801313742460f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京最治愈的秋天，藏在大大小小的老胡同里🌿\n每年10月上旬到11月初，是北京胡同赏秋的黄金期！\n整理了我私藏很久的3条秋日胡同路线，10月来北京游玩的赶紧码住！骑行、散步都超合适。\n\t\n🍁10月上旬-中旬\n\t\n老舍故居(丹柿小院) → 五四大街 → 北大红楼 → 长春堂（绝美窗景）→ 南锣鼓巷 → 黄瓦财神庙 → 北锣鼓巷 → 鼓楼 → 什刹海\n\t\n🍁10月底-11月初\n▫️路线1：东四十三条 → 东四十二条 → 细管胡同 → 冰心故居 → 东不压桥胡同 → 北锣鼓巷 → 鼓楼 → 什刹海\n\t\n▫️路线2：地坛公园 → 青龙胡同 → 雍和宫 → 五道营胡同 → 箭厂胡同 → 国子监街 → 北锣鼓巷 → 鼓楼东大街",
+      "provenance": {
+        "document_id": "doc_261801313742460f",
+        "chunk_id": "chunk_d43d94e3158b442e",
+        "title": "接下来的北京，10月超全赏秋citywalk路线",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 4390,
+          "collects": 4554,
+          "comments": 202,
+          "shares": 2516
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-03",
+      "query": "去北京安排自然休闲行程时，关于“北京国庆冷门打卡地 自留备用”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_76c2b3dda5184d30",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "自留备用4个小众不扎堆去处，核心秘诀：早出晚归！\n一、通州城市副中心 citywalk（1-3日，可住宿）​\n韩美林艺术馆\n免费，建议预约，免费停车。作品横跨绘画、雕塑、书法、陶艺，园区自带水系小公园，慢慢逛待一整天（到门口大胆开进去，否则要绕一圈）\n通州大运河博物馆\n免预约免门票（带身份证）。展陈超有设计感，负一楼水下展厅拍照很出片；​可关注国庆特展。联动打卡：城市图书馆、北京艺术中心（通州文化三件套），安静适合i人\n“三庙一塔”：通州文庙、佑胜教寺和紫清宫“三教共存”建筑群，一塔是燃灯佛舍利塔\n千荷泻露桥：看日落绝佳，可以躺平的大草地，设计感现代\n提前查国剧台湖剧场演出表，票价比国家大剧院的更有性价比",
+      "provenance": {
+        "document_id": "doc_76c2b3dda5184d30",
+        "chunk_id": "chunk_6934a55bcb7c43a8",
+        "title": "北京国庆冷门打卡地 自留备用",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 813,
+          "collects": 1039,
+          "comments": 28,
+          "shares": 371
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-04",
+      "query": "去北京安排自然休闲行程时，关于“谁说北京没有秋景这12个地方美到犯规‼️”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_87a1224bbcdb4d96",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "北京的秋天真的太短了🍂\n但也是一年里最值得出门的季节之一！\n整理了 12个北京秋天超好看的地方，从银杏、红叶到古建、山景、水景都有～\n10月中旬开始就可以陆续打卡啦！\n\t\n🍁 香山公园\n⏰｜10.20—11.10\n📍｜海淀区香山路40号\n💌｜北京赏红叶经典地，漫山红叶很出片\n\t\n🍁 颐和园\n⏰｜10月中旬—11月初\n📍｜海淀区新建宫门路19号\n💌｜湖面、长廊配金黄银杏，古典秋意拉满\n\t\n🍁 钓鱼台银杏大道\n⏰｜10.25—11.10\n📍｜海淀区玉渊潭南路\n💌｜整条银杏大道变金黄，City Walk超有氛围\n\t\n🍁 北海公园\n⏰｜10.20—11.15\n📍｜西城区文津街1号\n💌｜红墙古建配银杏，随手拍都很有北京味\n\t\n🍁 奥森公园",
+      "provenance": {
+        "document_id": "doc_87a1224bbcdb4d96",
+        "chunk_id": "chunk_8357e6a2972142cc",
+        "title": "谁说北京没有秋景🍂这12个地方美到犯规‼️",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 488,
+          "collects": 612,
+          "comments": 1,
+          "shares": 396
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-05",
+      "query": "去北京安排自然休闲行程时，关于“在北京，我最喜欢的秋日郊游路线出现了”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_c08913a41f384bc2",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "你永远可以相信北京的秋天🍁，一入秋，这里变美成了北平\n推荐一个私藏的京郊一日游赏秋路线，建议收藏\n\t\n1️⃣第一站：红螺寺\n1200岁银杏古树树王，一雄一雌，相伴千年\n大雄宝殿搭配古银杏真的太出片儿了\n想拍金黄的秋景，出发前记得看看近期实拍，叶色会随天气变化\n🎫：54r\n🅿️：景区停车场\n\t\n2️⃣第二站：喵汪司山野茶食\n从红螺寺出来，可以在附近觅食\n想不到在北京怀柔居然藏着一家，同时有萌宠互动、吃饭、拍照的地方\n喵汪司不是那种匆匆打卡就走的店～\n先从庭院慢慢逛进去，主楼餐厅是很舒服的新中式氛围，木质、石材和暖光……\n我们点的是山野拾味双人餐，豉香沙葱谷饲牛腹肉一口惊艳，搭配酸酸甜甜的桃胶蜜小番茄，太满足了",
+      "provenance": {
+        "document_id": "doc_c08913a41f384bc2",
+        "chunk_id": "chunk_13fa19c1ce884284",
+        "title": "在北京，我最喜欢的秋日郊游路线出现了🍁",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 722,
+          "collects": 408,
+          "comments": 39,
+          "shares": 79
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    },
+    {
+      "id": "SILVER-BJ-NATURE-06",
+      "query": "去北京安排自然休闲行程时，关于“北京十一好逛清单｜本地人私藏，避开人潮✨”有哪些具体玩法和注意事项？",
+      "filters": {
+        "city": "北京"
+      },
+      "target_city": "北京",
+      "target_theme": "relaxed_nature",
+      "relevant": [
+        {
+          "document_id": "doc_e6d8c33c7b53458f",
+          "relevance": 3
+        }
+      ],
+      "answer_evidence": "十一来北京不想挤热门大景区？整理了本地人常逛，好拍、不累、氛围感拉满的点位，分胡同/公园/文艺园区，直接抄作业✅吧\n\t\n🍂【胡同慢逛线｜感受老北京国庆氛围】\n[折叠车R]五道营胡同｜国子监\n比南锣鼓巷安静很多，灰砖搭配国庆红旗，街边咖啡馆、文创小店很多。慢悠悠散步拍照，红墙古槐很出片。不想进馆在外边走，全程免费。\n[咖啡R]白塔寺片区\n宫门口胡同+白塔远景，很多露台咖啡店，坐着看白塔，人少松弛，适合午后过来。顺路可以逛鲁迅博物馆。\n[气球R]杨梅竹斜街\n前门旁的宝藏胡同，文艺小店、书店扎堆，避开前门主街人流，傍晚光影特别好看。\n\t\n🌿【公园/户外｜秋日散步，免费出片】\n[玫瑰R]温榆河公园",
+      "provenance": {
+        "document_id": "doc_e6d8c33c7b53458f",
+        "chunk_id": "chunk_8f21ae6d3c3d4598",
+        "title": "北京十一好逛清单｜本地人私藏，避开人潮✨",
+        "source_name": "小红书旅游攻略试点",
+        "source_url": "https://www.xiaohongshu.com",
+        "authorization_status": "research_only",
+        "engagement": {
+          "likes": 660,
+          "collects": 593,
+          "comments": 46,
+          "shares": 478
+        }
+      },
+      "generation_type": "template_fallback",
+      "review_status": "auto_validated"
+    }
+  ]
+}

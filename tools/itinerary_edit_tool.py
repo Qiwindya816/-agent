@@ -1,4 +1,4 @@
-﻿"""Deterministic local itinerary editing tool based on stable activity IDs."""
+﻿"""提供 工作流可调用工具；本文件负责 `itinerary_edit_tool` 相关实现。"""
 
 from __future__ import annotations
 
@@ -12,13 +12,16 @@ from validators.itinerary_validator import ItineraryValidator
 
 
 class ItineraryEditTool(BaseTool):
+    """实现 行程、编辑 能力的统一工具接口。"""
     name = "edit_itinerary_activity"
     description = "基于 activity_id 局部修改行程，不重写整份行程。"
 
     def __init__(self, editor: ItineraryEditor | None = None) -> None:
+        """初始化 ItineraryEditTool 及其运行依赖。"""
         self.editor = editor or ItineraryEditor()
 
     def run(self, tool_input: dict[str, Any]) -> ToolResult:
+        """执行行程、编辑的完整业务流程并返回执行结果。"""
         state = tool_input.get("state")
         itinerary = getattr(state, "structured_itinerary", None)
         if not isinstance(itinerary, Itinerary):

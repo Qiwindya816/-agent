@@ -26,11 +26,13 @@ AgentStage = Literal[
 
 
 class ChatMessage(BaseModel):
+    """定义 聊天、消息 的结构化数据模型。"""
     role: Literal["user", "assistant", "system"]
     content: str
 
 # 定义 AgentState 模型，用于保存当前会话的状态信息，包括用户 ID、会话 ID、请求 ID、当前阶段、上一次意图、上一次使用的工具名称、当前行程、预算计划、天气信息、汇率信息、上一次错误信息、用户资料和聊天历史记录。
 class AgentState(BaseModel):
+    """保存 Agent 的结构化状态。"""
     schema_version: str = "2.0"
     user_id: str = "default_user"
     session_id: str = "default_session"

@@ -8,6 +8,7 @@ FRANKFURTER_URL = "https://api.frankfurter.app/latest"
 
 
 class ExchangeService:
+    """提供 exchange 相关的领域服务。"""
     def __init__(self) -> None:
         """加载汇率接口请求所需的项目配置。"""
         self.settings = get_settings()

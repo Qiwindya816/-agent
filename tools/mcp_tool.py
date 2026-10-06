@@ -19,19 +19,25 @@ RAILWAY_MCP_TOOL_ALIASES = frozenset(
 
 
 class MCPCaller(Protocol):
-    def call_tool(self, name: str, arguments: dict[str, Any]) -> tuple[Any, dict[str, Any]]: ...
+    """约束 MCP 客户端必须提供的远端工具调用接口。"""
+
+    def call_tool(self, name: str, arguments: dict[str, Any]) -> tuple[Any, dict[str, Any]]:
+        """调用指定 MCP 工具并返回数据及调用元信息。"""
+        ...
 
 
 class RemoteMCPTool(BaseTool):
     """把一个白名单内的远端 MCP 工具暴露为本地 ToolRegistry 工具。"""
 
     def __init__(self, name: str, remote_name: str, client: MCPCaller) -> None:
+        """初始化 RemoteMCPTool 及其运行依赖。"""
         self.name = name
         self.remote_name = remote_name
         self.client = client
         self.description = f"调用 MCP 工具 {remote_name}。"
 
     def run(self, tool_input: dict[str, Any]) -> ToolResult:
+        """校验并转换参数后调用远端 MCP 工具。"""
         arguments = tool_input.get("mcp_arguments") or {}
         if self.name == "geocode":
             arguments = _normalize_geocode_arguments(arguments)
@@ -77,9 +83,14 @@ class RemoteMCPTool(BaseTool):
             return ToolResult.failure(self.name, "missing_mcp_arguments", "缺少待解析的地址。")
 
         results = []
+        unresolved = []
         city = str(arguments.get("city") or "")
         for address in addresses:
-            data, _ = self.client.call_tool(self.remote_name, {"address": address, "city": city})
+            try:
+                data, _ = self.client.call_tool(self.remote_name, {"address": address, "city": city})
+            except Exception as exc:
+                unresolved.append({"address": address, "error": str(exc)})
+                continue
             if isinstance(data, str):
                 try:
                     data = json.loads(data)
@@ -89,12 +100,8 @@ class RemoteMCPTool(BaseTool):
             first = candidates[0] if candidates else {}
             location = first.get("location") if isinstance(first, dict) else None
             if not location:
-                return ToolResult.failure(
-                    self.name,
-                    "geocode_no_location",
-                    f"没有解析到 {address} 的经纬度坐标。",
-                    retryable=True,
-                )
+                unresolved.append({"address": address, "error": "没有解析到经纬度坐标"})
+                continue
             results.append(
                 {
                     "address": address,
@@ -102,9 +109,17 @@ class RemoteMCPTool(BaseTool):
                     "city": str(first.get("city") or city or ""),
                 }
             )
+        if not results:
+            return ToolResult.failure(
+                self.name,
+                "geocode_no_location",
+                "没有解析到可用的经纬度坐标。",
+                retryable=True,
+                details={"unresolved": unresolved},
+            )
         return ToolResult.ok(
             self.name,
-            {"results": results},
+            {"results": results, "unresolved": unresolved},
             {"provider": "mcp", "remote_tool": self.remote_name},
         )
 

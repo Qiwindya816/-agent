@@ -1,4 +1,4 @@
-"""Manage TravelMind long-term memory."""
+"""提供 项目维护和命令行操作；本文件负责 `manage_memory` 相关实现。"""
 
 import argparse
 import json
@@ -15,10 +15,12 @@ from services.memory_retrieval import MemoryRetrievalService
 
 
 def default_database() -> DatabaseEngine:
+    """创建使用当前项目配置的数据库访问对象。"""
     return DatabaseEngine(get_settings().database_url)
 
 
 def list_memories(args: argparse.Namespace) -> int:
+    """列出记忆列表并返回符合当前作用域的结果。"""
     with default_database().session() as session:
         repository = MemoryRepository(session)
         items = repository.list_items(
@@ -49,6 +51,7 @@ def list_memories(args: argparse.Namespace) -> int:
 
 
 def search_memories(args: argparse.Namespace) -> int:
+    """检索记忆列表并返回符合当前作用域的结果。"""
     service = MemoryRetrievalService(default_database(), EmbeddingService() if not args.no_embedding else None)
     results = service.retrieve(args.user_id, args.query, scope=args.scope)
     decisions = MemoryConflictResolver().resolve(results, scope=args.scope)
@@ -70,6 +73,7 @@ def search_memories(args: argparse.Namespace) -> int:
 
 
 def update_memory(args: argparse.Namespace) -> int:
+    """更新记忆，并保持相关状态或持久化数据一致。"""
     with default_database().session() as session:
         item = MemoryRepository(session).update_statement(args.user_id, args.memory_id, args.statement)
     print(json.dumps({"updated": item is not None}, ensure_ascii=False))
@@ -77,6 +81,7 @@ def update_memory(args: argparse.Namespace) -> int:
 
 
 def delete_memory(args: argparse.Namespace) -> int:
+    """删除记忆，并保持相关状态或持久化数据一致。"""
     with default_database().session() as session:
         deleted = MemoryRepository(session).delete_item(args.user_id, args.memory_id)
     print(json.dumps({"deleted": deleted}, ensure_ascii=False))
@@ -84,6 +89,7 @@ def delete_memory(args: argparse.Namespace) -> int:
 
 
 def list_evidence(args: argparse.Namespace) -> int:
+    """列出证据并返回符合当前作用域的结果。"""
     with default_database().session() as session:
         evidence = MemoryRepository(session).list_evidence(args.user_id, args.memory_id)
         payload = [
@@ -105,6 +111,7 @@ def list_evidence(args: argparse.Namespace) -> int:
 
 
 def clear_memories(args: argparse.Namespace) -> int:
+    """清空记忆列表，并保持相关状态或持久化数据一致。"""
     with default_database().session() as session:
         deleted = MemoryRepository(session).clear_items(args.user_id)
     print(json.dumps({"deleted": deleted}, ensure_ascii=False))
@@ -112,6 +119,7 @@ def clear_memories(args: argparse.Namespace) -> int:
 
 
 def export_memories(args: argparse.Namespace) -> int:
+    """导出当前用户的长期记忆及其证据记录。"""
     with default_database().session() as session:
         payload = MemoryRepository(session).export_items(args.user_id)
     print(json.dumps({"user_id": args.user_id, "memories": payload}, ensure_ascii=False, indent=2))
@@ -119,6 +127,7 @@ def export_memories(args: argparse.Namespace) -> int:
 
 
 def update_settings(args: argparse.Namespace) -> int:
+    """更新设置，并保持相关状态或持久化数据一致。"""
     with default_database().session() as session:
         repository = UserRepository(session)
         if repository.get(args.user_id) is None:
@@ -143,6 +152,7 @@ def update_settings(args: argparse.Namespace) -> int:
 
 
 def main() -> int:
+    """解析命令行参数并执行 manage_memory 的主流程。"""
     if sys.stdout.encoding and sys.stdout.encoding.lower() not in {"utf-8", "utf8"}:
         sys.stdout.reconfigure(encoding="utf-8")
 

@@ -1,1 +1,1 @@
-"""Shared utility helpers for TravelMind."""
+"""提供 共享工具函数；本文件负责 `__init__` 相关实现。"""

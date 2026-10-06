@@ -1,4 +1,4 @@
-"""Resolve conflicts between current context and retrieved long-term memories."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `memory_conflict_resolver` 相关实现。"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ TYPE_PRIORITY = {
 
 
 class MemoryConflictResolver:
-    """Rank memories while respecting recency, confidence, scope, and current context."""
+    """集中实现 `MemoryConflictResolver` 对应的确定性业务逻辑。"""
 
     def resolve(
         self,
@@ -25,6 +25,7 @@ class MemoryConflictResolver:
         *,
         scope: str | None = None,
     ) -> list[MemoryDecision]:
+        """按类型、置信度、重要性和作用域选择优先记忆。"""
         decisions: list[MemoryDecision] = []
         for memory in memories:
             priority = self._priority(memory, scope)
@@ -35,6 +36,7 @@ class MemoryConflictResolver:
 
     @staticmethod
     def _priority(memory: RetrievedMemory, scope: str | None) -> float:
+        """计算一条记忆在冲突消解中的综合优先级。"""
         priority = TYPE_PRIORITY.get(memory.memory_type, 50)
         priority += memory.confidence * 5
         priority += memory.importance * 3
@@ -48,6 +50,7 @@ class MemoryConflictResolver:
 
     @staticmethod
     def _reason(memory: RetrievedMemory) -> str:
+        """生成人类可读的记忆选择原因。"""
         return (
             f"{memory.memory_type} 记忆，置信度 {memory.confidence:.2f}，"
             f"证据数 {memory.evidence_count}，作用域 {memory.scope}。"

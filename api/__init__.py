@@ -1,1 +1,1 @@
-﻿"""TravelMind FastAPI package."""
+﻿"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `__init__` 相关实现。"""

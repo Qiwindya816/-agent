@@ -1,4 +1,4 @@
-"""Tool Gateway descriptors and metadata models."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `tool_gateway` 相关实现。"""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 
 
 class ToolDescriptor(BaseModel):
-    """Stable description of a local tool exposed by the gateway."""
+    """定义 `ToolDescriptor` 使用的结构化数据。"""
 
     name: str
     description: str
@@ -23,7 +23,7 @@ class ToolDescriptor(BaseModel):
 
 
 class ProviderDescriptor(BaseModel):
-    """Provider identity and circuit state."""
+    """定义 `ProviderDescriptor` 使用的结构化数据。"""
 
     name: str
     status: str = "unknown"
@@ -35,7 +35,7 @@ class ProviderDescriptor(BaseModel):
 
 
 class GatewayCallContext(BaseModel):
-    """User/session/trip ownership for an audited tool call."""
+    """定义 `GatewayCallContext` 使用的结构化数据。"""
 
     user_id: str
     session_id: str | None = None
@@ -44,7 +44,7 @@ class GatewayCallContext(BaseModel):
 
 
 class ToolCallSnapshot(BaseModel):
-    """Serializable audit snapshot for a gateway call."""
+    """定义 `ToolCallSnapshot` 使用的结构化数据。"""
 
     tool_call_id: str
     provider: str
@@ -60,7 +60,7 @@ class ToolCallSnapshot(BaseModel):
 
 
 def expiry_from_now(seconds: int | None, now: datetime | None = None) -> datetime | None:
-    """Return a metadata expiry timestamp, or None for durable facts."""
+    """计算过期时间 `expiry_from_now` 对应的数据和流程，返回该步骤的处理结果。"""
     if seconds is None:
         return None
     current = now or datetime.now()

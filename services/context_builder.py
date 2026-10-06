@@ -1,4 +1,4 @@
-"""Short-term context and token budget management for TravelMind."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `context_builder` 相关实现。"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from schemas.travel_request import TravelRequest
 
 @dataclass(frozen=True)
 class ContextSection:
-    """A prioritized prompt section."""
+    """封装 `ContextSection` 的核心数据与行为。"""
 
     name: str
     content: str
@@ -19,7 +19,7 @@ class ContextSection:
 
 
 class ContextBuilder:
-    """Build bounded, prioritized context for planner and generator prompts."""
+    """集中实现 `ContextBuilder` 对应的确定性业务逻辑。"""
 
     def __init__(
         self,
@@ -27,11 +27,12 @@ class ContextBuilder:
         recent_turns: int = 8,
         max_context_tokens: int = 6000,
     ) -> None:
+        """初始化 ContextBuilder 及其运行依赖。"""
         self.recent_turns = recent_turns
         self.max_context_tokens = max_context_tokens
 
     def build(self, state: AgentState, user_input: str, **extra: Any) -> str:
-        """Return compact context ordered by decision priority."""
+        """构建 `build` 对应的数据和流程，返回该步骤的处理结果。"""
         sections = [
             ContextSection("current_input", f"用户本轮输入：{user_input}", 100),
             ContextSection("travel_request", self._format_travel_request(state.travel_request), 90),
@@ -69,17 +70,19 @@ class ContextBuilder:
 
     @staticmethod
     def estimate_tokens(text: str) -> int:
-        """Cheap deterministic estimate suitable for local budget enforcement."""
+        """估算 `estimate_tokens` 对应的数据和流程，返回该步骤的处理结果。"""
         return max(1, (len(text) + 3) // 4)
 
     @staticmethod
     def _format_travel_request(request: TravelRequest) -> str:
+        """将当前旅行约束格式化为可注入模型的文本。"""
         values = request.model_dump(exclude_none=True, exclude_defaults=True)
         if not values:
             return "当前旅行约束：暂无。"
         return "当前旅行约束：" + ", ".join(f"{key}={value}" for key, value in values.items())
 
     def _format_recent_chat(self, chat_history: list[Any]) -> str:
+        """格式化限定轮数内的最近聊天记录。"""
         if not chat_history:
             return "最近对话：暂无。"
         messages = chat_history[-self.recent_turns :]
@@ -87,24 +90,30 @@ class ContextBuilder:
 
     @staticmethod
     def _format_rag_results(rag_results: Any) -> str:
-        """Format retrieved chunks with source and freshness metadata."""
+        """处理 `_format_rag_results` 对应的数据和流程，返回该步骤的处理结果。"""
         lines = ["检索到的参考知识："]
         for item in rag_results:
             source_name = getattr(item, "source_name", None) or "未知来源"
             source_url = getattr(item, "source_url", None)
+            published_at = getattr(item, "published_at", None)
             fetched_at = getattr(item, "fetched_at", None)
+            authorization = getattr(item, "source_authorization_status", None)
             chunk_text = getattr(item, "chunk_text", str(item))
             citation = source_name
             if source_url:
                 citation += f"（{source_url}）"
+            if published_at:
+                citation += f"，发布时间：{published_at}"
             if fetched_at:
                 citation += f"，更新时间：{fetched_at}"
+            if authorization:
+                citation += f"，授权状态：{authorization}"
             lines.append(f"- {chunk_text}\n  来源：{citation}")
         return "\n".join(lines)
 
     @staticmethod
     def _format_memory_results(memory_results: Any) -> str:
-        """Format long-term memories with type, confidence, and evidence count."""
+        """处理 `_format_memory_results` 对应的数据和流程，返回该步骤的处理结果。"""
         lines = ["长期记忆："]
         for item in memory_results:
             memory = getattr(item, "memory", item)
@@ -120,6 +129,7 @@ class ContextBuilder:
 
     @staticmethod
     def _format_profile(profile: Any) -> str:
+        """格式化用户画像，供后续流程使用。"""
         values = profile.model_dump(exclude_none=True, exclude_defaults=True)
         if not values:
             return "长期偏好：暂无。"
@@ -127,21 +137,19 @@ class ContextBuilder:
 
 
 class ConversationSummarizer:
-    """Compress long chat history while retaining hard travel constraints."""
+    """封装 `ConversationSummarizer` 的核心数据与行为。"""
 
     def __init__(self, *, summary_after_turns: int = 12, summary_max_tokens: int = 800) -> None:
+        """初始化 ConversationSummarizer 及其运行依赖。"""
         self.summary_after_turns = summary_after_turns
         self.summary_max_tokens = summary_max_tokens
 
     def should_summarize(self, state: AgentState) -> bool:
+        """判断当前状态是否满足summarize条件。"""
         return len(state.chat_history) >= self.summary_after_turns
 
     def summarize(self, state: AgentState) -> dict[str, Any]:
-        """Return a structured summary without calling an LLM.
-
-        The first version deliberately preserves deterministic fields. LLM summary
-        generation can be layered later without changing the data contract.
-        """
+        """汇总 `summarize` 对应的数据和流程，返回该步骤的处理结果。"""
         request = state.travel_request.model_dump(exclude_none=True, exclude_defaults=True)
         rejected = state.travel_request.special_requirements
         summary = {
@@ -157,7 +165,7 @@ class ConversationSummarizer:
         return summary
 
     def build_summary_text(self, state: AgentState) -> str:
-        """Build a bounded summary text for prompt injection."""
+        """构建 `build_summary_text` 对应的数据和流程，返回该步骤的处理结果。"""
         summary = self.summarize(state)
         lines = ["会话摘要："]
         for key, value in summary.items():
@@ -166,6 +174,6 @@ class ConversationSummarizer:
         token_estimate = ContextBuilder.estimate_tokens(text)
         if token_estimate <= self.summary_max_tokens:
             return text
-        # Preserve the head; this is a safety fallback rather than normal behavior.
+        # 保留摘要开头；这里只是安全回退，不是正常截断路径。
         allowed_chars = self.summary_max_tokens * 4
         return text[:allowed_chars]

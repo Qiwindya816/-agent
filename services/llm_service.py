@@ -1,8 +1,13 @@
 from openai import OpenAI
+import time
 
 from config.settings import get_settings
 from exceptions.llm import LLMServiceError
 from utils.json_parser import parse_json_object
+from utils.logger import get_logger
+
+
+logger = get_logger("llm")
 
 
 class LLMService:
@@ -33,15 +38,40 @@ class LLMService:
         *,
         system_prompt: str = "你是一名专业的旅行助手。",
         temperature: float | None = None,
+        max_tokens: int | None = None,
     ) -> str:
         """调用配置的语言模型并返回纯文本响应。"""
-        response = self.client.chat.completions.create(
-            model=self.settings.deepseek_model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=self.settings.llm_temperature if temperature is None else temperature,
+        started = time.perf_counter()
+        try:
+            request = {
+                "model": self.settings.deepseek_model,
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+                "temperature": self.settings.llm_temperature if temperature is None else temperature,
+            }
+            if max_tokens is not None:
+                request["max_tokens"] = max_tokens
+            response = self.client.chat.completions.create(
+                **request,
+            )
+        except Exception:
+            logger.exception(
+                "llm_call_failed",
+                extra={"event_name": "llm_call_failed", "elapsed_ms": round((time.perf_counter() - started) * 1000, 3)},
+            )
+            raise
+        usage = response.usage
+        logger.info(
+            "llm_call_completed",
+            extra={
+                "event_name": "llm_call_completed",
+                "elapsed_ms": round((time.perf_counter() - started) * 1000, 3),
+                "prompt_tokens": getattr(usage, "prompt_tokens", None),
+                "completion_tokens": getattr(usage, "completion_tokens", None),
+                "total_tokens": getattr(usage, "total_tokens", None),
+            },
         )
         return response.choices[0].message.content or ""
 
@@ -51,8 +81,14 @@ class LLMService:
         *,
         system_prompt: str = "你是一个严格输出 JSON 的助手。",
         temperature: float = 0,
+        max_tokens: int | None = None,
     ) -> dict:
         """调用语言模型并将响应解析为 JSON 对象。"""
         return parse_json_object(
-            self.generate_text(prompt, system_prompt=system_prompt, temperature=temperature)
+            self.generate_text(
+                prompt,
+                system_prompt=system_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
         )

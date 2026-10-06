@@ -17,13 +17,13 @@ from utils.ids import new_session_id, new_trip_id, validate_user_id
 
 T = TypeVar("T", bound=BaseModel)
 
-# Phase 1 storage adapter. Database is the source of truth; JSON remains as a
-# migration and offline fallback until PostgreSQL/pgvector is fully deployed.
+# 第一阶段存储适配器：数据库是事实来源；在 PostgreSQL/pgvector 完全部署前，
+# JSON 仅作为迁移和离线回退方案保留。
 _database_state_store: AgentStateRepository | None = None
 
 
 def _state_store() -> AgentStateRepository:
-    """Return the database-backed state store, creating it lazily."""
+    """处理 `_state_store` 对应的数据和流程，返回该步骤的处理结果。"""
     global _database_state_store
     if _database_state_store is None:
         _database_state_store = AgentStateRepository()
@@ -31,7 +31,7 @@ def _state_store() -> AgentStateRepository:
 
 
 def use_database_state_store(store: AgentStateRepository | None) -> None:
-    """Switch memory persistence between the database and legacy JSON backend."""
+    """切换使用 `use_database_state_store` 对应的数据和流程，返回该步骤的处理结果。"""
     global _database_state_store
     _database_state_store = store
 
@@ -113,7 +113,7 @@ def save_user_profile(profile: UserProfile, user_id: str = "default_user") -> No
     try:
         _state_store().save_user_profile(profile, user_id)
     except LookupError:
-        # New users are created by initialize_session/save_agent_state.
+        # 新用户由 initialize_session 或 save_agent_state 创建。
         return
 
 

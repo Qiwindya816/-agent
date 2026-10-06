@@ -1,4 +1,4 @@
-"""RAG source, document, and chunk ingestion pipeline."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `rag_ingestion` 相关实现。"""
 
 from __future__ import annotations
 
@@ -18,9 +18,10 @@ from services.rag_chunker import RagChunker
 
 
 class RagIngestionService:
-    """Register sources, deduplicate documents, chunk content, and store embeddings."""
+    """提供 `RagIngestionService` 对应领域能力的统一服务。"""
 
     def __init__(self, database: DatabaseEngine | None = None, chunker: RagChunker | None = None) -> None:
+        """初始化 RagIngestionService 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.chunker = chunker or RagChunker()
 
@@ -34,6 +35,7 @@ class RagIngestionService:
         authorization_status: str = "authorized",
         owner_user_id: str | None = None,
     ) -> RagSource:
+        """创建知识来源，并保持相关状态或持久化数据一致。"""
         with self.database.session() as session:
             source = RagSource(
                 source_id=f"src_{uuid4().hex[:16]}",
@@ -61,11 +63,7 @@ class RagIngestionService:
         embeddings: list[list[float]] | None = None,
         published_at: datetime | None = None,
     ) -> tuple[RagDocument, list[RagChunk]]:
-        """Ingest a document, returning document and chunks.
-
-        ``embeddings`` is optional to keep deterministic ingestion testable. In
-        production, callers should first call EmbeddingService.embed_texts.
-        """
+        """导入 `ingest_document` 对应的数据和流程，返回该步骤的处理结果。"""
         content_hash = self.content_hash(content)
         with self.database.session() as session:
             job = RagIngestionJob(
@@ -128,6 +126,7 @@ class RagIngestionService:
         metadata: dict[str, Any],
         embeddings: list[list[float]],
     ) -> list[RagChunk]:
+        """创建chunks，并保持相关状态或持久化数据一致。"""
         chunk_inputs = self.chunker.chunk(content, document_type, metadata)
         if embeddings and len(embeddings) != len(chunk_inputs):
             raise ValueError("Embedding count must match chunk count.")
@@ -160,9 +159,11 @@ class RagIngestionService:
 
     @staticmethod
     def content_hash(content: str) -> str:
+        """计算文档内容的 SHA-256 哈希，用于幂等去重。"""
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
     def _store_raw(self, source_id: str, title: str, content: str) -> Path:
+        """将原始文档按知识来源归档到本地 RAG 数据目录。"""
         root = get_settings().rag_raw_dir
         directory = root / source_id
         directory.mkdir(parents=True, exist_ok=True)

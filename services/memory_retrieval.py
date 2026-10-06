@@ -1,4 +1,4 @@
-"""Vector and metadata retrieval for long-term memory."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `memory_retrieval` 相关实现。"""
 
 from __future__ import annotations
 
@@ -14,13 +14,14 @@ from services.embedding_service import EmbeddingService
 
 
 class MemoryRetrievalService:
-    """Retrieve active long-term memories by vector similarity and metadata."""
+    """提供 `MemoryRetrievalService` 对应领域能力的统一服务。"""
 
     def __init__(
         self,
         database: DatabaseEngine | None = None,
         embedding_service: EmbeddingService | None = None,
     ) -> None:
+        """初始化 MemoryRetrievalService 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.embedding_service = embedding_service
         self.settings = get_settings()
@@ -33,6 +34,7 @@ class MemoryRetrievalService:
         scope: str | None = None,
         memory_types: list[str] | None = None,
     ) -> list[RetrievedMemory]:
+        """按用户、语义相关性、类型和作用域召回长期记忆。"""
         if self.embedding_service is None or self.database.url.startswith("sqlite"):
             return self._metadata_retrieval(user_id, query, scope, memory_types)
 
@@ -74,7 +76,7 @@ class MemoryRetrievalService:
         scope: str | None,
         memory_types: list[str] | None,
     ) -> list[RetrievedMemory]:
-        """Deterministic fallback when embedding service is unavailable."""
+        """处理 `_metadata_retrieval` 对应的数据和流程，返回该步骤的处理结果。"""
         normalized_query = query.lower()
         with self.database.session() as session:
             repository = MemoryRepository(session)

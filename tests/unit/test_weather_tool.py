@@ -87,3 +87,15 @@ def test_weather_tool_uses_profile_destination_when_llm_has_no_location() -> Non
     assert result.success is True
     assert weather_service.calls == [("东京", 1)]
     assert result.metadata["parameter_extraction"] == "llm"
+
+
+def test_weather_tool_accepts_structured_frontend_arguments() -> None:
+    weather_service = RecordingWeatherService()
+    tool = WeatherTool(weather_service=weather_service, llm_service=FakeLLMService(error=AssertionError()))
+
+    result = tool.run({"mcp_arguments": {"location": "北京", "days": 3}})
+
+    assert result.success is True
+    assert weather_service.calls == [("北京", 3)]
+    assert result.metadata["parameter_extraction"] == "arguments"
+    assert result.metadata["forecast"]["days"][0]["weather"] == "晴"

@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "name": "Memory 冲突与召回基线",
+    "version": "1.0.0",
+    "calibration_status": "approved"
+  },
+  "cases": [
+    {
+      "id": "MEM-EXPLICIT-FIRST-01",
+      "scope": "global",
+      "expected_selected": ["memory_explicit"],
+      "expected_first": "memory_explicit",
+      "memories": [
+        {
+          "memory_id": "memory_semantic",
+          "user_id": "eval_user",
+          "memory_type": "semantic",
+          "category": "pace",
+          "statement": "用户通常喜欢紧凑行程",
+          "scope": "global",
+          "polarity": "positive",
+          "importance": 0.9,
+          "confidence": 0.95,
+          "evidence_count": 3,
+          "status": "active",
+          "similarity": 0.9
+        },
+        {
+          "memory_id": "memory_explicit",
+          "user_id": "eval_user",
+          "memory_type": "explicit",
+          "category": "pace",
+          "statement": "用户明确要求轻松慢节奏",
+          "scope": "global",
+          "polarity": "positive",
+          "importance": 0.8,
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "status": "active",
+          "similarity": 0.8
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ from schemas.travel_request import TravelRequest
 
 
 class RequestValidationResult(BaseModel):
+    """承载 请求、校验 的结构化结果。"""
     is_complete: bool
     missing_fields: list[str] = Field(default_factory=list)
     invalid_fields: list[str] = Field(default_factory=list)
@@ -11,6 +12,7 @@ class RequestValidationResult(BaseModel):
 
 
 class RequestValidator:
+    """集中校验 请求 的业务约束。"""
     def validate_for_itinerary(self, request: TravelRequest) -> RequestValidationResult:
         """检查生成行程所需字段是否完整且取值有效。"""
         missing = []

@@ -33,6 +33,7 @@ WEATHER_CODE_TEXT = {
 
 
 class WeatherService:
+    """提供 天气 相关的领域服务。"""
     def __init__(self) -> None:
         """加载天气接口请求所需的项目配置。"""
         self.settings = get_settings()

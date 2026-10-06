@@ -5,6 +5,7 @@ from schemas.tool import ToolResult
 
 # 定义一个抽象基类 BaseTool，作为所有工具的基类。
 class BaseTool(ABC):
+    """实现 base 能力的统一工具接口。"""
     name: str
     description: str
 

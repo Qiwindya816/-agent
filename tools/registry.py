@@ -17,6 +17,7 @@ from services.tool_gateway import ToolGateway
 
 # 定义一个工具注册表类 ToolRegistry，用于管理所有可用的旅行工具。
 class ToolRegistry:
+    """集中注册、查询并描述工作流允许调用的旅行工具。"""
     def __init__(self) -> None:
         """创建空的工具名称到工具实例映射。"""
         self._tools: dict[str, BaseTool] = {}
@@ -26,7 +27,7 @@ class ToolRegistry:
         self._tools[tool.name] = tool
 
     def register_gateway(self, tool: BaseTool, provider: str, *, cache_ttl_seconds: int = 0) -> None:
-        """Register a tool through the unified Tool Gateway."""
+        """注册 `register_gateway` 对应的数据和流程，返回该步骤的处理结果。"""
         gateway = ToolGateway(tool, provider, cache_ttl_seconds=cache_ttl_seconds)
         self.register(GatewayTool(gateway))
 

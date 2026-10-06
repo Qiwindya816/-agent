@@ -1,4 +1,4 @@
-"""Inspect and test TravelMind tools through the unified gateway."""
+"""提供 项目维护和命令行操作；本文件负责 `manage_tools` 相关实现。"""
 
 import argparse
 import json
@@ -9,6 +9,7 @@ from tools.registry import build_default_registry
 
 
 def main() -> int:
+    """解析命令行参数并执行 manage_tools 的主流程。"""
     parser = argparse.ArgumentParser(description="Manage TravelMind tools")
     commands = parser.add_subparsers(dest="command", required=True)
 
@@ -42,7 +43,7 @@ def main() -> int:
     from schemas.agent_state import AgentState
     from schemas.tool_gateway import GatewayCallContext
 
-    # GatewayTool is the only supported invocation target.
+    # 仅允许直接调用经过统一网关包装的 GatewayTool。
     from tools.gateway_tool import GatewayTool
 
     if not isinstance(tool, GatewayTool):

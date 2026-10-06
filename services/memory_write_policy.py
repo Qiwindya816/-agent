@@ -1,4 +1,4 @@
-"""Write policy for semantic, episodic, procedural, and explicit memories."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `memory_write_policy` 相关实现。"""
 
 from __future__ import annotations
 
@@ -11,18 +11,21 @@ from schemas.memory import MemoryCandidate, MemoryWriteDecision
 
 @dataclass
 class MemoryPolicyResult:
+    """承载 记忆、策略 的结构化结果。"""
     decision: MemoryWriteDecision
     existing_memory_id: str | None = None
 
 
 class MemoryWritePolicy:
-    """Decide whether a memory candidate should be created, merged, rejected, or deferred."""
+    """封装 `MemoryWritePolicy` 的核心数据与行为。"""
 
     def __init__(self, repository: MemoryRepository) -> None:
+        """初始化 MemoryWritePolicy 及其运行依赖。"""
         self.repository = repository
         self.settings = get_settings()
 
     def evaluate(self, candidate: MemoryCandidate) -> MemoryPolicyResult:
+        """评估候选记忆应创建、合并、延迟还是拒绝。"""
         existing = self.repository.find_similar_statements(
             candidate.user_id,
             candidate.statement,
@@ -63,6 +66,7 @@ class MemoryWritePolicy:
         )
 
     def _threshold(self, memory_type: str) -> float:
+        """返回指定记忆类型对应的写入置信度阈值。"""
         if memory_type == "procedural":
             return self.settings.memory_procedural_write_threshold
         if memory_type == "semantic":

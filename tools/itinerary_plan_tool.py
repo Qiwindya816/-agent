@@ -9,6 +9,7 @@ from tools.base import BaseTool
 
 
 class ItineraryPlanTool(BaseTool):
+    """实现 行程、计划 能力的统一工具接口。"""
     name = "plan_itinerary"
     description = "根据用户需求规划新的旅行行程。"
 

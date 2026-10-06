@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 
 class ToolError(BaseModel):
+    """定义 工具、错误响应 的结构化数据模型。"""
     code: str
     message: str
     retryable: bool = False
@@ -11,6 +12,7 @@ class ToolError(BaseModel):
 
 # 工具执行结果的统一数据结构，包含成功标志、业务数据、错误信息和元信息。
 class ToolResult(BaseModel):
+    """承载 工具 的结构化结果。"""
     success: bool
     tool_name: str
     data: Any | None = None

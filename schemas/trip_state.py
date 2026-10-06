@@ -7,6 +7,7 @@ from schemas.itinerary import Itinerary
 
 
 class ItineraryVersion(BaseModel):
+    """定义 行程、版本 的结构化数据模型。"""
     version: int
     itinerary_markdown: str
     structured_itinerary: Itinerary | None = None
@@ -16,6 +17,7 @@ class ItineraryVersion(BaseModel):
 
 # 定义旅行状态的统一数据结构，包含行程 ID、标题、旅行请求、当前行程、预算计划、行程版本列表、状态和时间戳等信息。
 class TripState(BaseModel):
+    """保存 旅行 的结构化状态。"""
     schema_version: str = "2.0"
     trip_id: str
     user_id: str | None = None

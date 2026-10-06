@@ -9,6 +9,7 @@ from tools.base import BaseTool
 
 
 class ItineraryRefineTool(BaseTool):
+    """实现 行程、优化 能力的统一工具接口。"""
     name = "refine_itinerary"
     description = "根据用户反馈修改已有行程。"
 
@@ -50,6 +51,7 @@ class ItineraryRefineTool(BaseTool):
 def refine_itinerary(current_itinerary: str | None, user_feedback: str) -> dict[str, Any] | str:
     """以简化接口修改给定行程并返回结构化数据。"""
     class _State:
+        """为规则回退路径提供最小的行程状态适配器。"""
         pass
 
     state = _State()

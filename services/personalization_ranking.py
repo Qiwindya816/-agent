@@ -1,4 +1,4 @@
-"""Explainable ranking for activities using long-term memories and constraints."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `personalization_ranking` 相关实现。"""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from schemas.personalization import RankingFeature, RankedActivity
 
 @dataclass
 class RankingWeights:
+    """集中保存个性化排序中各类特征的可调权重。"""
     preference_match: float = 0.30
     budget_match: float = 0.20
     popularity: float = 0.15
@@ -22,9 +23,10 @@ class RankingWeights:
 
 
 class PersonalizationRankingService:
-    """Rank candidate activities with explainable normalized features."""
+    """提供 `PersonalizationRankingService` 对应领域能力的统一服务。"""
 
     def __init__(self, weights: RankingWeights | None = None) -> None:
+        """初始化 PersonalizationRankingService 及其运行依赖。"""
         self.weights = weights or RankingWeights()
 
     def rank(
@@ -35,6 +37,7 @@ class PersonalizationRankingService:
         budget: float | None = None,
         existing_categories: list[str] | None = None,
     ) -> list[RankedActivity]:
+        """依据画像、记忆、预算和多样性重新排列行程活动。"""
         memories = memories or []
         ranked = [self._rank_activity(activity, memories, budget, existing_categories or []) for activity in activities]
         ranked.sort(key=lambda item: item.score, reverse=True)
@@ -49,6 +52,7 @@ class PersonalizationRankingService:
         budget: float | None,
         existing_categories: list[str],
     ) -> RankedActivity:
+        """计算单个活动的个性化得分和可解释原因。"""
         features: list[RankingFeature] = []
 
         positive_statements = [memory.statement for memory in memories if memory.polarity == "positive"]
@@ -104,12 +108,14 @@ class PersonalizationRankingService:
         )
 
     def _matches_negative(self, activity: Activity, memory: RetrievedMemory) -> bool:
+        """判断活动是否命中用户明确拒绝的偏好。"""
         structured = memory.structured_value or {}
         subject = str(structured.get("subject") or "").lower()
         return bool(subject and subject in activity.name.lower())
 
     @staticmethod
     def _feature(name: str, value: float, weight: float, explanation: str) -> RankingFeature:
+        """从活动文本中提取用于排序的主题特征。"""
         return RankingFeature(
             name=name,
             value=round(value, 4),
@@ -120,7 +126,7 @@ class PersonalizationRankingService:
 
 
 def render_ranking_explanation(ranked_activities: list[RankedActivity]) -> str:
-    """Render an explainable Markdown ranking summary for user-facing output."""
+    """渲染 `render_ranking_explanation` 对应的数据和流程，返回该步骤的处理结果。"""
     if not ranked_activities:
         return "暂无可排序的候选活动。"
     lines = ["## 个性化排序说明"]

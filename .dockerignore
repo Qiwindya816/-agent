@@ -1,0 +1,16 @@
+.git
+.venv
+.pytest_cache
+__pycache__
+*.pyc
+*.db
+*.sqlite*
+frontend/node_modules
+frontend/dist
+integrations/xhs-mcp-runtime/node_modules
+.xhs-mcp
+logs
+outputs
+memory_data
+rag_data
+.env

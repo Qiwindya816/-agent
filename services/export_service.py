@@ -8,6 +8,7 @@ from utils.ids import validate_user_id
 
 
 class ExportService:
+    """提供 export 相关的领域服务。"""
     def __init__(self) -> None:
         """加载导出目录等项目配置。"""
         self.settings = get_settings()
@@ -38,6 +39,31 @@ class ExportService:
         if state.exchange_info:
             parts.extend(["## 汇率信息", str(state.exchange_info.get("result") or state.exchange_info)])
         return "\n\n".join(parts)
+
+    def build_user_summary(self, state: AgentState) -> str:
+        """生成不包含内部 ID、原始 JSON 和重复行程正文的用户版摘要。"""
+        itinerary = state.structured_itinerary
+        destination = (
+            (itinerary.destination if itinerary else None)
+            or state.travel_request.destination
+            or "当前目的地"
+        )
+        days = (itinerary.travel_days if itinerary else None) or state.travel_request.travel_days
+        total = itinerary.total_estimated_cost if itinerary else None
+        currency = itinerary.currency if itinerary else "CNY"
+
+        overview = [destination]
+        if days:
+            overview.append(f"{days} 天")
+        if total is not None:
+            overview.append(f"预计行程内费用约 {total:g} {currency}")
+        return "\n\n".join(
+            [
+                "方案已经整理并保存到行程册。",
+                " · ".join(overview),
+                "详细日程、预算和后续修改请直接查看右侧行程卡片或行程规划页。",
+            ]
+        )
 
     def save_request_response(self, state: AgentState, content: str) -> Path:
         """按 request_id 保存本轮原始回答，保证不同轮次不会互相覆盖。"""

@@ -1,4 +1,4 @@
-"""Deterministic local itinerary edits based on stable activity IDs."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `itinerary_editor` 相关实现。"""
 
 from __future__ import annotations
 
@@ -9,9 +9,10 @@ from schemas.itinerary import Activity, Itinerary
 
 
 class ItineraryEditor:
-    """Edit individual activities and route references without regenerating a trip."""
+    """集中实现 `ItineraryEditor` 对应的确定性业务逻辑。"""
 
     def remove_activity(self, itinerary: Itinerary, activity_id: str) -> Itinerary:
+        """移除活动，并保持相关状态或持久化数据一致。"""
         result = deepcopy(itinerary)
         for day in result.days:
             day.activities = [activity for activity in day.activities if activity.activity_id != activity_id]
@@ -23,6 +24,7 @@ class ItineraryEditor:
         return result
 
     def replace_activity(self, itinerary: Itinerary, activity_id: str, replacement: Activity) -> Itinerary:
+        """替换活动，并保持相关状态或持久化数据一致。"""
         result = deepcopy(itinerary)
         for day in result.days:
             day.activities = [
@@ -42,6 +44,7 @@ class ItineraryEditor:
         estimated_cost: float | None = None,
         notes: str | None = None,
     ) -> Itinerary:
+        """更新活动，并保持相关状态或持久化数据一致。"""
         result = deepcopy(itinerary)
         for day in result.days:
             for index, activity in enumerate(day.activities):
@@ -62,6 +65,7 @@ class ItineraryEditor:
         return result
 
     def add_activity(self, itinerary: Itinerary, day_number: int, activity: Activity) -> Itinerary:
+        """添加活动，并保持相关状态或持久化数据一致。"""
         result = deepcopy(itinerary)
         day = next((item for item in result.days if item.day == day_number), None)
         if day is None:
@@ -70,6 +74,7 @@ class ItineraryEditor:
         return result
 
     def reorder_activities(self, itinerary: Itinerary, day_number: int, ordered_activity_ids: list[str]) -> Itinerary:
+        """按完整活动 ID 顺序重新排列某天的活动。"""
         result = deepcopy(itinerary)
         day = next((item for item in result.days if item.day == day_number), None)
         if day is None:

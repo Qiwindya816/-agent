@@ -6,6 +6,7 @@ from tools.base import BaseTool
 
 # 定义一个具体工具 ExportTool，用于导出最终旅行方案。
 class ExportTool(BaseTool):
+    """实现 export 能力的统一工具接口。"""
     name = "finalize_plan"
     description = "导出最终旅行方案。"
 
@@ -19,5 +20,11 @@ class ExportTool(BaseTool):
         state = tool_input.get("state")
         if not state:
             return ToolResult.failure(self.name, "missing_state", "当前没有可导出的旅行方案。")
-        content = self.export_service.build_final_markdown(state)
-        return ToolResult.ok(self.name, content)
+        # 完整状态只写入后台导出快照；聊天窗口仅返回用户可读的精简确认。
+        version_path, latest_path = self.export_service.save_versioned_snapshot(state)
+        content = self.export_service.build_user_summary(state)
+        return ToolResult.ok(
+            self.name,
+            content,
+            metadata={"version_path": str(version_path), "latest_path": str(latest_path)},
+        )

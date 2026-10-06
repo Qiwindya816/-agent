@@ -10,6 +10,7 @@ from db import Base
 from db.engine import DatabaseEngine, reset_database_engine
 from repositories.user_repository import UserRepository
 from repositories.session_repository import SessionRepository
+import api.sessions as sessions_api
 
 
 @pytest.fixture()
@@ -47,6 +48,34 @@ def test_session_isolation(client: TestClient, database: DatabaseEngine) -> None
     assert client.get("/api/v1/sessions", headers=headers_b).json() == []
     assert client.get(f"/api/v1/sessions/{session_id}", headers=headers_b).status_code == 404
     assert client.delete(f"/api/v1/sessions/{session_id}", headers=headers_b).status_code == 404
+
+
+def test_message_stream_emits_sse_events(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    headers = {"X-User-ID": "stream_user"}
+    created = client.post("/api/v1/sessions", json={"title": "Streaming"}, headers=headers)
+    session_id = created.json()["session_id"]
+    monkeypatch.setattr(
+        sessions_api,
+        "_execute_workflow",
+        lambda user_id, current_session_id, message: {
+            "request_id": "req_stream",
+            "response": f"收到：{message}",
+            "node_trace": ["coordinator", "summarizer"],
+            "errors": [],
+        },
+    )
+
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/messages/stream",
+        json={"message": "规划周末旅行"},
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    assert "event: status" in response.text
+    assert "event: message" in response.text
+    assert "event: done" in response.text
 
 
 def test_memory_endpoints_and_isolation(client: TestClient, database: DatabaseEngine) -> None:
@@ -109,6 +138,16 @@ def test_rag_source_and_document_flow(client: TestClient, database: DatabaseEngi
     assert document.status_code == 201
     assert document.json()["chunk_count"] == 1
     document_id = document.json()["document_id"]
+
+    assert client.get("/api/v1/rag/sources", headers={"X-User-ID": "other_rag_user"}).json() == []
+    assert client.get("/api/v1/rag/documents", headers={"X-User-ID": "other_rag_user"}).json() == []
+    assert (
+        client.delete(
+            f"/api/v1/rag/documents/{document_id}",
+            headers={"X-User-ID": "other_rag_user"},
+        ).status_code
+        == 404
+    )
 
     deleted = client.delete(f"/api/v1/rag/documents/{document_id}", headers=headers)
     assert deleted.status_code == 200

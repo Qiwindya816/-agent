@@ -1,4 +1,4 @@
-﻿"""Hybrid RAG retrieval with BM25, vector, geographic, and template recall."""
+﻿"""提供 核心领域服务和外部服务适配；本文件负责 `rag_retrieval` 相关实现。"""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from services.embedding_service import EmbeddingService
 
 @dataclass
 class RetrievedChunk:
-    """A fused RAG candidate with provenance."""
+    """承载 `RetrievedChunk` 对应的结构化结果及元数据。"""
 
     chunk_id: str
     document_id: str
@@ -30,17 +30,25 @@ class RetrievedChunk:
     audience: str | None = None
     source_name: str | None = None
     source_url: str | None = None
+    source_authorization_status: str | None = None
+    published_at: str | None = None
     fetched_at: str | None = None
+    social_platform: str | None = None
+    likes: int | None = None
+    collects: int | None = None
+    comments: int | None = None
+    shares: int | None = None
 
 
 class RagRetrievalService:
-    """Run multi-way recall and Reciprocal Rank Fusion on rag_chunks."""
+    """提供 `RagRetrievalService` 对应领域能力的统一服务。"""
 
     def __init__(
         self,
         database: DatabaseEngine | None = None,
         embedding_service: EmbeddingService | None = None,
     ) -> None:
+        """初始化 RagRetrievalService 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.embedding_service = embedding_service
         self.settings = get_settings()
@@ -58,7 +66,7 @@ class RagRetrievalService:
         audience: str | None = None,
         top_k: int | None = None,
     ) -> list[RetrievedChunk]:
-        """Return public and current-user chunks ordered by RRF score."""
+        """检索 `search` 对应的数据和流程，返回该步骤的处理结果。"""
         settings = self.settings
         final_k = top_k or settings.rag_rrf_top_k
         dense_ids: list[str] = []
@@ -99,13 +107,21 @@ class RagRetrievalService:
                 audience=row["audience"],
                 source_name=row["source_name"],
                 source_url=row["source_url"],
+                source_authorization_status=row["source_authorization_status"],
+                published_at=str(row["published_at"]) if row.get("published_at") else None,
                 fetched_at=str(row["fetched_at"]) if row.get("fetched_at") else None,
+                social_platform=row.get("social_platform"),
+                likes=row.get("likes"),
+                collects=row.get("collects"),
+                comments=row.get("comments"),
+                shares=row.get("shares"),
             )
             for rank, (chunk_id, score) in enumerate(fused[:final_k], start=1)
             if (row := rows.get(chunk_id)) is not None
         ]
 
     def _dense(self, user_id: str, query_vector: list[float], top_k: int) -> list[str]:
+        """按向量相似度召回候选知识切片。"""
         vector_text = "[" + ",".join(str(value) for value in query_vector) + "]"
         sql = text(
             """
@@ -121,53 +137,72 @@ class RagRetrievalService:
             return [row[0] for row in session.execute(sql, {"user_id": user_id, "vector": vector_text, "top_k": top_k})]
 
     def _bm25(self, user_id: str, query: str, top_k: int) -> list[str]:
-        # PostgreSQL simple parser treats contiguous Chinese as one token. Split
-        # the query into likely searchable tokens and fall back to substring ILIKE.
+        # PostgreSQL simple 解析器会把连续中文视作一个词，因此先拆出可能的检索词，
+        # 并使用 ILIKE 子串匹配作为回退。
+        """按全文关键词和子串匹配召回候选知识切片。"""
         tokens = self._search_tokens(query)
         token_query = " | ".join(tokens)
+        like_tokens = tokens[:12] or [query]
+        like_conditions = " or ".join(
+            f"chunk_text ilike :like_{index}" for index in range(len(like_tokens))
+        )
+        match_score = " + ".join(
+            f"case when chunk_text ilike :like_{index} then 1 else 0 end"
+            for index in range(len(like_tokens))
+        )
         sql = text(
-            """
+            f"""
             select chunk_id
             from rag_chunks
             where (owner_user_id is null or owner_user_id = :user_id)
               and (
                 tsv @@ to_tsquery('simple', :token_query)
                 or chunk_text ilike :query
-                or :token1 ilike '%' || chunk_text || '%'
-                or chunk_text ilike '%' || :token1 || '%'
-                or chunk_text ilike '%' || :token2 || '%'
+                or ({like_conditions})
               )
-            order by ts_rank(tsv, to_tsquery('simple', :token_query)) desc, chunk_id
+            order by ({match_score}) desc,
+                     ts_rank(tsv, to_tsquery('simple', :token_query)) desc,
+                     chunk_id
             limit :top_k
             """
         )
-        tokens = self._search_tokens(query)
-        token1 = tokens[0] if tokens else query
-        token2 = tokens[1] if len(tokens) > 1 else token1
+        params = {
+            "user_id": user_id,
+            "token_query": token_query,
+            "query": f"%{query}%",
+            "top_k": top_k,
+            **{f"like_{index}": f"%{token}%" for index, token in enumerate(like_tokens)},
+        }
         with self.database.session() as session:
             return [
                 row[0]
-                for row in session.execute(
-                    sql,
-                    {
-                        "user_id": user_id,
-                        "token_query": token_query,
-                        "query": f"%{query}%",
-                        "token1": token1,
-                        "token2": token2,
-                        "top_k": top_k,
-                    },
-                )
+                for row in session.execute(sql, params)
             ]
 
     @staticmethod
     def _search_tokens(query: str) -> list[str]:
-        """Split Chinese and Latin words into safe tsquery tokens."""
+        """检索 `_search_tokens` 对应的数据和流程，返回该步骤的处理结果。"""
         import re
 
-        return [token for token in re.findall(r"[A-Za-z0-9_]+|[\u4e00-\u9fff]+", query) if token]
+        latin = re.findall(r"[A-Za-z0-9_]+", query)
+        chinese_parts = re.findall(r"[\u4e00-\u9fff]+", query)
+        travel_terms = (
+            "公园", "自然", "湿地", "森林", "散步", "徒步", "美食", "老店", "本地人",
+            "历史", "人文", "故宫", "博物馆", "艺术", "亲子", "夜景", "购物", "住宿",
+            "拍照", "小众", "免费", "预约", "交通", "地铁",
+        )
+        tokens: list[str] = []
+        # 中文旅行问题通常以城市或行政区开头。
+        for part in chinese_parts:
+            if len(part) >= 2:
+                tokens.append(part[:2])
+        tokens.extend(term for term in travel_terms if term in query)
+        tokens.extend(latin)
+        tokens.extend(part for part in chinese_parts if len(part) <= 8)
+        return list(dict.fromkeys(token for token in tokens if token))[:24]
 
     def _geo(self, user_id: str, latitude: float, longitude: float, top_k: int) -> list[str]:
+        """按经纬度距离召回附近知识切片。"""
         sql = text(
             """
             select chunk_id
@@ -190,6 +225,7 @@ class RagRetrievalService:
         audience: str | None,
         top_k: int,
     ) -> list[str]:
+        """按城市、主题、天数和受众召回行程模板。"""
         if not any([city, theme, travel_days, audience]):
             return []
         conditions = ["chunk_type = 'template'", "(owner_user_id is null or owner_user_id = :user_id)"]
@@ -211,16 +247,30 @@ class RagRetrievalService:
             return [row[0] for row in session.execute(sql, params)]
 
     def _load_chunks(self, user_id: str, chunk_ids: list[str]) -> dict[str, dict[str, Any]]:
+        """加载chunks并返回符合当前作用域的结果。"""
         if not chunk_ids:
             return {}
         sql = text(
             """
             select c.chunk_id, c.document_id, c.owner_user_id, c.chunk_text, c.chunk_type,
                    c.city, c.theme, c.travel_days, c.audience,
-                   s.name as source_name, s.url as source_url, d.updated_at as fetched_at
+                   s.name as source_name, coalesce(sn.canonical_url, s.url) as source_url,
+                   s.authorization_status as source_authorization_status,
+                   coalesce(sn.published_at, d.published_at) as published_at,
+                   coalesce(sn.fetched_at, d.updated_at) as fetched_at,
+                   sn.platform as social_platform,
+                   metrics.likes, metrics.collects, metrics.comments, metrics.shares
             from rag_chunks c
             join rag_documents d on d.document_id = c.document_id
             join rag_sources s on s.source_id = d.source_id
+            left join social_notes sn on sn.document_id = d.document_id
+            left join lateral (
+                select m.likes, m.collects, m.comments, m.shares
+                from social_metric_snapshots m
+                where m.social_note_id = sn.social_note_id
+                order by m.captured_at desc
+                limit 1
+            ) metrics on true
             where c.chunk_id = any(:chunk_ids)
               and (c.owner_user_id is null or c.owner_user_id = :user_id)
             """
@@ -228,6 +278,7 @@ class RagRetrievalService:
         from sqlalchemy.orm import Session as OrmSession
 
         def load(session: OrmSession) -> dict[str, dict[str, object]]:
+            """批量加载融合排名中的知识切片及来源元数据。"""
             return {
                 row["chunk_id"]: dict(row._mapping)
                 for row in session.execute(sql, {"chunk_ids": chunk_ids, "user_id": user_id})
@@ -239,6 +290,7 @@ class RagRetrievalService:
 
     @staticmethod
     def _rrf(candidate_lists: list[list[str]], *, k: int = 60) -> list[tuple[str, float]]:
+        """使用 Reciprocal Rank Fusion 融合多路召回排名。"""
         scores: dict[str, float] = {}
         for candidates in candidate_lists:
             for rank, chunk_id in enumerate(candidates, start=1):

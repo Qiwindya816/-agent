@@ -1,4 +1,4 @@
-"""Adapt itinerary activities to provider-backed weather forecasts."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `weather_advisor` 相关实现。"""
 
 from __future__ import annotations
 
@@ -7,9 +7,10 @@ from schemas.tool_outputs import NormalizedWeather
 
 
 class WeatherAdvisor:
-    """Add deterministic weather advisories and suggest indoor alternatives."""
+    """集中实现 `WeatherAdvisor` 对应的确定性业务逻辑。"""
 
     def adjust(self, itinerary: Itinerary, weather: NormalizedWeather) -> Itinerary:
+        """根据降雨和高温情况为行程活动补充天气建议。"""
         if not weather.days:
             return itinerary
         for index, day in enumerate(itinerary.days):
@@ -29,4 +30,5 @@ class WeatherAdvisor:
 
     @staticmethod
     def _is_outdoor(value: str) -> bool:
+        """判断活动是否属于容易受天气影响的户外项目。"""
         return any(word in value.lower() for word in ("park", "mountain", "outdoor", "公园", "山", "长城", "户外"))

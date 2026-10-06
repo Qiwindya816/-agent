@@ -1,4 +1,4 @@
-"""TravelMind database package."""
+"""提供 数据库模型、连接与初始化；本文件负责 `__init__` 相关实现。"""
 
 from db.base import Base
 from db.models import (

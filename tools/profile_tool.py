@@ -177,7 +177,7 @@ def extract_memory_candidates_from_text(
     session_id: str | None = None,
     trip_id: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Deterministic fallback extraction for explicit long-term memories."""
+    """提取 `extract_memory_candidates_from_text` 对应的数据和流程，返回该步骤的处理结果。"""
     text = user_input.strip()
     candidates: list[dict[str, Any]] = []
 

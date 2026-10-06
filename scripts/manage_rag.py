@@ -1,4 +1,4 @@
-"""Manage RAG sources, ingestion, search, embeddings, and deletion."""
+"""提供 项目维护和命令行操作；本文件负责 `manage_rag` 相关实现。"""
 
 import argparse
 import json
@@ -15,10 +15,12 @@ from services.rag_retrieval import RagRetrievalService
 
 
 def default_database() -> DatabaseEngine:
+    """创建使用当前项目配置的数据库访问对象。"""
     return DatabaseEngine(get_settings().database_url)
 
 
 def create_source(args: argparse.Namespace) -> int:
+    """创建知识来源，并保持相关状态或持久化数据一致。"""
     service = RagIngestionService(default_database())
     source = service.create_source(
         args.source_type,
@@ -33,6 +35,7 @@ def create_source(args: argparse.Namespace) -> int:
 
 
 def ingest(args: argparse.Namespace) -> int:
+    """读取本地文档、生成可选向量并导入指定知识来源。"""
     database = default_database()
     service = RagIngestionService(database)
     content = Path(args.file).read_text(encoding=args.encoding).lstrip("\ufeff")
@@ -65,6 +68,7 @@ def ingest(args: argparse.Namespace) -> int:
 
 
 def search(args: argparse.Namespace) -> int:
+    """执行带用户隔离和可选过滤条件的检索。"""
     retrieval = RagRetrievalService(default_database(), EmbeddingService() if args.no_embedding is False else None)
     results = retrieval.search(
         args.user_id,
@@ -83,7 +87,16 @@ def search(args: argparse.Namespace) -> int:
             "chunk_type": item.chunk_type,
             "source_name": item.source_name,
             "source_url": item.source_url,
+            "source_authorization_status": item.source_authorization_status,
+            "published_at": item.published_at,
             "fetched_at": item.fetched_at,
+            "social_platform": item.social_platform,
+            "engagement": {
+                "likes": item.likes,
+                "collects": item.collects,
+                "comments": item.comments,
+                "shares": item.shares,
+            } if item.social_platform else None,
         }
         for item in results
     ]
@@ -92,6 +105,7 @@ def search(args: argparse.Namespace) -> int:
 
 
 def list_sources(_: argparse.Namespace) -> int:
+    """列出知识来源列表并返回符合当前作用域的结果。"""
     with default_database().session() as session:
         repository = RagRepository(session)
         payload = [
@@ -110,6 +124,7 @@ def list_sources(_: argparse.Namespace) -> int:
 
 
 def delete(args: argparse.Namespace) -> int:
+    """删除指定 RAG 来源或文档及其关联切片。"""
     with default_database().session() as session:
         repository = RagRepository(session)
         deleted = repository.delete_source(args.source_id) if args.source_id else repository.delete_document(args.document_id)
@@ -118,6 +133,7 @@ def delete(args: argparse.Namespace) -> int:
 
 
 def backfill_embeddings(_: argparse.Namespace) -> int:
+    """为数据库中缺失向量的知识切片批量生成 Embedding。"""
     database = default_database()
     service = EmbeddingService()
     with database.session() as session:
@@ -130,7 +146,8 @@ def backfill_embeddings(_: argparse.Namespace) -> int:
 
 
 def main() -> int:
-    # Windows terminals may default to GBK; force UTF-8 for reliable JSON output.
+    # Windows 终端可能默认使用 GBK，因此强制 UTF-8 以稳定输出 JSON。
+    """解析命令行参数并执行 manage_rag 的主流程。"""
     if sys.stdout.encoding and sys.stdout.encoding.lower() not in {"utf-8", "utf8"}:
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="Manage TravelMind RAG")

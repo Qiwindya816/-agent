@@ -1,1 +1,1 @@
-﻿"""Repositories with user/session/trip isolation boundaries."""
+﻿"""提供 带用户隔离的数据访问；本文件负责 `__init__` 相关实现。"""

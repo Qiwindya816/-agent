@@ -1,4 +1,4 @@
-"""Embedding service for RAG ingestion and retrieval."""
+"""提供 核心领域服务和外部服务适配；本文件负责 `embedding_service` 相关实现。"""
 
 from __future__ import annotations
 
@@ -11,14 +11,16 @@ from exceptions.llm import LLMServiceError
 
 
 class EmbeddingService:
-    """Generate embeddings using an OpenAI-compatible endpoint."""
+    """提供 `EmbeddingService` 对应领域能力的统一服务。"""
 
     def __init__(self) -> None:
+        """初始化 EmbeddingService 及其运行依赖。"""
         self.settings = get_settings()
         self._client: OpenAI | None = None
 
     @property
     def client(self) -> OpenAI:
+        """延迟创建并复用 OpenAI 兼容的向量模型客户端。"""
         if not self.settings.dashscope_api_key:
             raise LLMServiceError("缺少 DASHSCOPE_API_KEY，请在本地 .env 文件中配置。")
         if self._client is None:
@@ -31,7 +33,7 @@ class EmbeddingService:
         return self._client
 
     def embed_texts(self, texts: list[str]) -> list[list[float]]:
-        """Embed texts in batches and return vectors in input order."""
+        """生成向量 `embed_texts` 对应的数据和流程，返回该步骤的处理结果。"""
         if not texts:
             return []
         vectors: list[list[float]] = []
@@ -46,5 +48,5 @@ class EmbeddingService:
         return vectors
 
     def embed_query(self, text: str) -> list[float]:
-        """Embed a single retrieval query."""
+        """生成向量 `embed_query` 对应的数据和流程，返回该步骤的处理结果。"""
         return self.embed_texts([text])[0]

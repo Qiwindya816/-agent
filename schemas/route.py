@@ -37,13 +37,13 @@ class RouteResult(BaseModel):
 
     @property
     def origin_activity_id(self) -> str | None:
-        """Optional explicit origin activity ID for route binding."""
+        """获取起点 `origin_activity_id` 对应的数据和流程，返回该步骤的处理结果。"""
         value = self.arguments.get("origin_activity_id")
         return str(value) if value else None
 
     @property
     def destination_activity_id(self) -> str | None:
-        """Optional explicit destination activity ID for route binding."""
+        """获取终点 `destination_activity_id` 对应的数据和流程，返回该步骤的处理结果。"""
         value = self.arguments.get("destination_activity_id")
         return str(value) if value else None
 

@@ -10,6 +10,7 @@ from tools.base import BaseTool
 
 
 class WeatherTool(BaseTool):
+    """实现 天气 能力的统一工具接口。"""
     name = "check_weather"
     description = "查询目的地天气。"
 
@@ -25,14 +26,29 @@ class WeatherTool(BaseTool):
     def run(self, tool_input: dict[str, Any]) -> ToolResult:
         """优先用 LLM 提取地点和天数，失败时使用正则规则兜底。"""
         state = tool_input.get("state")
-        user_input = tool_input["user_input"]
-        query = _extract_query_with_llm(self.llm_service, user_input)
+        user_input = str(tool_input.get("user_input") or "")
+        arguments = tool_input.get("mcp_arguments") or {}
+        argument_location = arguments.get("location") or arguments.get("city")
+        argument_days = arguments.get("days")
 
-        if query is None:
+        if isinstance(argument_location, str) and argument_location.strip():
+            location = argument_location.strip()
+            try:
+                days = max(1, min(int(argument_days or 7), 16))
+            except (TypeError, ValueError):
+                days = 7
+            extraction_method = "arguments"
+            query = None
+        else:
+            location = None
+            days = 7
+            query = _extract_query_with_llm(self.llm_service, user_input)
+
+        if location is None and query is None:
             location = _extract_location(user_input)
             days = _extract_days(user_input)
             extraction_method = "rules"
-        else:
+        elif location is None and query is not None:
             location, days = query
             extraction_method = "llm"
 
@@ -54,7 +70,11 @@ class WeatherTool(BaseTool):
         return ToolResult.ok(
             self.name,
             _format_weather(weather),
-            metadata={"source": weather.source, "parameter_extraction": extraction_method},
+            metadata={
+                "source": weather.source,
+                "parameter_extraction": extraction_method,
+                "forecast": weather.model_dump(mode="json"),
+            },
         )
 
 

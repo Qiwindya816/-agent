@@ -1,4 +1,4 @@
-﻿"""Memory management endpoints with strict user isolation."""
+﻿"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `memory` 相关实现。"""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ router = APIRouter(prefix="/memory", tags=["memory"])
 
 
 def _memory_response(item) -> MemoryResponse:
+    """将数据库记忆实体转换为 API 响应模型。"""
     return MemoryResponse(
         memory_id=item.memory_id,
         memory_type=item.memory_type,
@@ -36,9 +37,27 @@ def list_memories(
     user: UserContext = Depends(get_current_user),
     database: DatabaseEngine = Depends(get_database),
 ) -> list[MemoryResponse]:
+    """列出记忆列表并返回符合当前作用域的结果。"""
     with database.session() as session:
         items = MemoryRepository(session).list_items(user.user_id, memory_type=memory_type, scope=scope)
     return [_memory_response(item) for item in items]
+
+
+@router.get("/settings")
+def get_settings(
+    user: UserContext = Depends(get_current_user),
+    database: DatabaseEngine = Depends(get_database),
+) -> dict[str, bool]:
+    """获取设置并返回符合当前作用域的结果。"""
+    with database.session() as session:
+        users = UserRepository(session)
+        item = users.get(user.user_id)
+        if item is None:
+            item = users.create(user.user_id)
+    return {
+        "personalization_enabled": item.personalization_enabled,
+        "long_term_memory_enabled": item.long_term_memory_enabled,
+    }
 
 
 @router.patch("/{memory_id}", response_model=MemoryResponse)
@@ -48,6 +67,7 @@ def update_memory(
     user: UserContext = Depends(get_current_user),
     database: DatabaseEngine = Depends(get_database),
 ) -> MemoryResponse:
+    """更新记忆，并保持相关状态或持久化数据一致。"""
     with database.session() as session:
         item = MemoryRepository(session).update_statement(user.user_id, memory_id, request.statement)
         if item is None:
@@ -61,6 +81,7 @@ def delete_memory(
     user: UserContext = Depends(get_current_user),
     database: DatabaseEngine = Depends(get_database),
 ) -> dict[str, bool]:
+    """删除记忆，并保持相关状态或持久化数据一致。"""
     with database.session() as session:
         deleted = MemoryRepository(session).delete_item(user.user_id, memory_id)
     if not deleted:
@@ -73,6 +94,7 @@ def clear_memories(
     user: UserContext = Depends(get_current_user),
     database: DatabaseEngine = Depends(get_database),
 ) -> dict[str, int]:
+    """清空记忆列表，并保持相关状态或持久化数据一致。"""
     with database.session() as session:
         deleted = MemoryRepository(session).clear_items(user.user_id)
     return {"deleted": deleted}
@@ -84,6 +106,7 @@ def update_settings(
     user: UserContext = Depends(get_current_user),
     database: DatabaseEngine = Depends(get_database),
 ) -> dict[str, bool]:
+    """更新设置，并保持相关状态或持久化数据一致。"""
     with database.session() as session:
         users = UserRepository(session)
         if users.get(user.user_id) is None:

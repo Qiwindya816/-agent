@@ -1,4 +1,4 @@
-﻿"""Repository for long-term memory items, evidence, and vector backfill."""
+﻿"""提供 带用户隔离的数据访问；本文件负责 `memory_repository` 相关实现。"""
 
 from __future__ import annotations
 
@@ -12,12 +12,14 @@ from schemas.memory import MemoryCandidate, RetrievedMemory
 
 
 class MemoryRepository:
-    """CRUD and evidence operations for long-term memory."""
+    """封装 `MemoryRepository` 对应实体的数据访问和作用域隔离。"""
 
     def __init__(self, session: Session) -> None:
+        """初始化 MemoryRepository 及其运行依赖。"""
         self.session = session
 
     def create_item(self, candidate: MemoryCandidate, embedding: list[float] | None = None) -> MemoryItem:
+        """创建记录，并保持相关状态或持久化数据一致。"""
         user = self.session.get(User, candidate.user_id)
         if user is None:
             user = User(user_id=candidate.user_id)
@@ -46,6 +48,7 @@ class MemoryRepository:
         return item
 
     def get_item(self, user_id: str, memory_id: str) -> MemoryItem | None:
+        """获取记录并返回符合当前作用域的结果。"""
         item = self.session.get(MemoryItem, memory_id)
         if item is None or item.user_id != user_id:
             return None
@@ -59,6 +62,7 @@ class MemoryRepository:
         scope: str | None = None,
         status: str = "active",
     ) -> list[MemoryItem]:
+        """列出记录列表并返回符合当前作用域的结果。"""
         statement = select(MemoryItem).where(MemoryItem.user_id == user_id, MemoryItem.status == status)
         if memory_type:
             statement = statement.where(MemoryItem.memory_type == memory_type)
@@ -67,7 +71,8 @@ class MemoryRepository:
         return list(self.session.scalars(statement.order_by(MemoryItem.last_confirmed_at.desc())))
 
     def find_similar_statements(self, user_id: str, statement: str, memory_type: str) -> list[MemoryItem]:
-        # Deterministic exact-match merging. Vector similarity is used at retrieval.
+        # 写入阶段采用确定性的精确匹配合并；向量相似度只用于召回。
+        """查找同一用户和记忆类型下陈述相同的现有记忆。"""
         normalized = statement.strip().lower()
         return [
             item
@@ -76,6 +81,7 @@ class MemoryRepository:
         ]
 
     def add_evidence(self, memory_id: str, candidate: MemoryCandidate) -> MemoryEvidence:
+        """添加证据，并保持相关状态或持久化数据一致。"""
         item = self.session.get(MemoryItem, memory_id)
         if item is None or item.user_id != candidate.user_id:
             raise LookupError("Memory not found for user")
@@ -99,6 +105,7 @@ class MemoryRepository:
         return evidence
 
     def update_statement(self, user_id: str, memory_id: str, statement: str) -> MemoryItem | None:
+        """更新陈述，并保持相关状态或持久化数据一致。"""
         item = self.get_item(user_id, memory_id)
         if item is None:
             return None
@@ -109,14 +116,14 @@ class MemoryRepository:
         return item
 
     def list_evidence(self, user_id: str, memory_id: str) -> list[MemoryEvidence]:
-        """List evidence for a memory while enforcing user ownership."""
+        """列出 `list_evidence` 对应的数据和流程，返回该步骤的处理结果。"""
         item = self.get_item(user_id, memory_id)
         if item is None:
             return []
         return sorted(item.evidence, key=lambda evidence: evidence.observed_at)
 
     def clear_items(self, user_id: str) -> int:
-        """Delete all active long-term memories and evidence for one user."""
+        """清空 `clear_items` 对应的数据和流程，返回该步骤的处理结果。"""
         items = self.list_items(user_id, status="active")
         for item in items:
             self.session.delete(item)
@@ -124,7 +131,7 @@ class MemoryRepository:
         return len(items)
 
     def export_items(self, user_id: str) -> list[dict]:
-        """Export a user's memories and evidence for data portability."""
+        """导出 `export_items` 对应的数据和流程，返回该步骤的处理结果。"""
         result = []
         for item in self.list_items(user_id):
             result.append(
@@ -161,6 +168,7 @@ class MemoryRepository:
         return result
 
     def delete_item(self, user_id: str, memory_id: str) -> bool:
+        """删除记录，并保持相关状态或持久化数据一致。"""
         item = self.get_item(user_id, memory_id)
         if item is None:
             return False
@@ -170,6 +178,7 @@ class MemoryRepository:
 
     @staticmethod
     def to_retrieved(item: MemoryItem, similarity: float = 0.0) -> RetrievedMemory:
+        """转换为retrieved，供后续流程使用。"""
         return RetrievedMemory(
             memory_id=item.memory_id,
             user_id=item.user_id,

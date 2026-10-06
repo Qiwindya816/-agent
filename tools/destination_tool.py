@@ -7,6 +7,7 @@ from tools.base import BaseTool
 
 
 class DestinationTool(BaseTool):
+    """实现 destination 能力的统一工具接口。"""
     name = "recommend_destination"
     description = "根据用户偏好推荐旅行目的地。"
 

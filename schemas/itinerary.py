@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, model_validator
 
 
 def _new_id(prefix: str) -> str:
+    """生成带指定前缀的短唯一标识。"""
     return f"{prefix}_{uuid4().hex}"
 
 
@@ -52,6 +53,7 @@ class RouteSegment(BaseModel):
 
 
 class Activity(BaseModel):
+    """定义 活动 的结构化数据模型。"""
     activity_id: str = Field(default_factory=lambda: _new_id("activity"))
     name: str
     category: str | None = None
@@ -66,7 +68,7 @@ class Activity(BaseModel):
 
 
 class TransportOption(BaseModel):
-    """A verified cross-city transportation option."""
+    """封装 `TransportOption` 的核心数据与行为。"""
 
     option_id: str = Field(default_factory=lambda: _new_id("transport"))
     transport_type: Literal["train", "flight", "bus", "car", "unknown"] = "unknown"
@@ -82,6 +84,7 @@ class TransportOption(BaseModel):
 
 
 class DailyItinerary(BaseModel):
+    """定义 每日、行程 的结构化数据模型。"""
     day: int = Field(ge=1)
     date: str | None = None
     theme: str | None = None
@@ -91,6 +94,7 @@ class DailyItinerary(BaseModel):
 
 
 class Itinerary(BaseModel):
+    """定义 行程 的结构化数据模型。"""
     schema_version: str = "3.0"
     title: str | None = None
     departure_city: str | None = None

@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "name": "行程确定性质量基线",
+    "version": "1.0.0",
+    "calibration_status": "approved"
+  },
+  "cases": [
+    {
+      "id": "ITI-VALID-01",
+      "budget_limit": 300,
+      "itinerary": {
+        "title": "北京轻松一日游",
+        "destination": "北京",
+        "travel_days": 1,
+        "currency": "CNY",
+        "total_estimated_cost": 180,
+        "days": [
+          {
+            "day": 1,
+            "activities": [
+              {"activity_id": "a1", "name": "公园散步", "start_time": "09:00", "end_time": "11:00", "estimated_cost": 0, "verification_status": "verified"},
+              {"activity_id": "a2", "name": "博物馆参观", "start_time": "13:30", "end_time": "16:30", "estimated_cost": 60, "verification_status": "verified"}
+            ],
+            "routes": [
+              {"origin_activity_id": "a1", "destination_activity_id": "a2", "mode": "transit", "duration_minutes": 35, "verification_status": "verified"}
+            ],
+            "estimated_daily_cost": 180
+          }
+        ]
+      }
+    }
+  ]
+}

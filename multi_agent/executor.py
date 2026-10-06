@@ -6,6 +6,7 @@ from schemas.route import RoutePlan, RouteResult
 from schemas.tool import ToolResult
 from services.context_builder import ContextBuilder
 from services.itinerary_enricher import ItineraryEnricher
+from services.itinerary_map_service import ItineraryMapService
 from services.memory_conflict_resolver import MemoryConflictResolver
 from services.memory_retrieval import MemoryRetrievalService
 from repositories.trip_feedback_repository import TripFeedbackRepository
@@ -32,6 +33,7 @@ class ToolExecutor:
         self.registry = registry or build_default_registry()
         self.context_builder = context_builder or ContextBuilder()
         self.enricher = enricher or ItineraryEnricher()
+        self.map_service = ItineraryMapService()
         self.rag_retrieval = rag_retrieval or RagRetrievalService()
         from services.embedding_service import EmbeddingService
         self.memory_retrieval = memory_retrieval or MemoryRetrievalService(embedding_service=EmbeddingService())
@@ -94,7 +96,20 @@ class ToolExecutor:
         ):
             from schemas.itinerary import Itinerary
             parsed_itinerary = Itinerary.model_validate(result.data)
-        candidate_itinerary = state.structured_itinerary or parsed_itinerary
+            geocode_tool = self.registry.get("geocode")
+            if geocode_tool is not None:
+                parsed_itinerary, map_result, resolved = self.map_service.enrich(
+                    parsed_itinerary,
+                    geocode_tool,
+                    state,
+                )
+                result.data = parsed_itinerary.model_dump(mode="json", exclude_none=True)
+                result.metadata["map_enrichment"] = {
+                    "success": map_result.success,
+                    "resolved_activities": resolved,
+                    "error": map_result.error.model_dump(mode="json") if map_result.error else None,
+                }
+        candidate_itinerary = parsed_itinerary or state.structured_itinerary
         if (
             result.success
             and route.tool_name in {"plan_itinerary", "refine_itinerary", "edit_itinerary_activity"}
@@ -137,7 +152,7 @@ class ToolExecutor:
                         reason=change_reason,
                     )
             except Exception:
-                # Version persistence must not block user-facing itinerary generation.
+                # 行程版本持久化失败不能阻断面向用户的生成主链路。
                 pass
 
         if result.success and state.structured_itinerary:
@@ -182,7 +197,7 @@ class ToolExecutor:
 
     @staticmethod
     def _personalization_enabled(user_id: str) -> bool:
-        """Return whether long-term memory may influence the current user."""
+        """处理 `_personalization_enabled` 对应的数据和流程，返回该步骤的处理结果。"""
         from config.settings import get_settings
         from db.engine import get_database_engine
         from db.models import User
@@ -260,6 +275,7 @@ def _fill_route_arguments(step: RouteResult, locations: list[dict[str, str]]) ->
     by_address = {item["address"]: item for item in locations if item["address"]}
 
     def resolve(name: Any, index: int) -> str:
+        """递归解析参数中的状态引用和前序工具结果。"""
         text = str(name or "").strip()
         if _is_coordinate(text):
             return text

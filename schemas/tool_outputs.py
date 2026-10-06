@@ -1,4 +1,4 @@
-"""Normalized output models for external tool providers."""
+"""提供 Pydantic 结构化数据模型；本文件负责 `tool_outputs` 相关实现。"""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 
 
 class ExternalFact(BaseModel):
-    """Common provider and freshness metadata for an external fact."""
+    """封装 `ExternalFact` 的核心数据与行为。"""
 
     provider: str
     source_id: str | None = None
@@ -18,7 +18,7 @@ class ExternalFact(BaseModel):
 
 
 class NormalizedPoi(BaseModel):
-    """A provider-independent POI record."""
+    """封装 `NormalizedPoi` 的核心数据与行为。"""
 
     poi_id: str
     rating: float | None = None
@@ -34,7 +34,7 @@ class NormalizedPoi(BaseModel):
 
 
 class NormalizedGeocode(BaseModel):
-    """A provider-independent geocoding result."""
+    """封装 `NormalizedGeocode` 的核心数据与行为。"""
 
     address: str
     formatted_address: str | None = None
@@ -47,7 +47,7 @@ class NormalizedGeocode(BaseModel):
 
 
 class NormalizedRouteStep(BaseModel):
-    """A coarse route instruction without provider-specific fields."""
+    """封装 `NormalizedRouteStep` 的核心数据与行为。"""
 
     instruction: str | None = None
     distance_meters: int | None = None
@@ -55,7 +55,7 @@ class NormalizedRouteStep(BaseModel):
 
 
 class NormalizedRoute(BaseModel):
-    """A provider-independent route result."""
+    """封装 `NormalizedRoute` 的核心数据与行为。"""
 
     origin: str
     destination: str
@@ -68,7 +68,7 @@ class NormalizedRoute(BaseModel):
 
 
 class NormalizedTrainStation(BaseModel):
-    """A railway station record."""
+    """封装 `NormalizedTrainStation` 的核心数据与行为。"""
 
     station_name: str
     station_code: str | None = None
@@ -77,14 +77,14 @@ class NormalizedTrainStation(BaseModel):
 
 
 class NormalizedTrainSeat(BaseModel):
-    """A seat class and its textual availability/price."""
+    """封装 `NormalizedTrainSeat` 的核心数据与行为。"""
 
     seat_class: str
     value: str
 
 
 class NormalizedTrainTicket(BaseModel):
-    """A train option returned by the railway provider."""
+    """封装 `NormalizedTrainTicket` 的核心数据与行为。"""
 
     train_no: str
     departure_station: str
@@ -99,7 +99,7 @@ class NormalizedTrainTicket(BaseModel):
 
 
 class NormalizedWeatherDay(BaseModel):
-    """A daily forecast record."""
+    """封装 `NormalizedWeatherDay` 的核心数据与行为。"""
 
     date: str
     weather: str
@@ -109,7 +109,7 @@ class NormalizedWeatherDay(BaseModel):
 
 
 class NormalizedWeather(BaseModel):
-    """A provider-independent forecast."""
+    """封装 `NormalizedWeather` 的核心数据与行为。"""
 
     location: str
     latitude: float | None = None
@@ -119,7 +119,7 @@ class NormalizedWeather(BaseModel):
 
 
 def parse_poi_response(data: Any, provider: str = "amap") -> list[NormalizedPoi]:
-    """Normalize an Amap POI response into NormalizedPoi records."""
+    """解析 `parse_poi_response` 对应的数据和流程，返回该步骤的处理结果。"""
     payload = _decode_json(data)
     pois = payload.get("pois", []) if isinstance(payload, dict) else []
     if not pois and isinstance(payload, dict) and payload.get("id"):
@@ -148,7 +148,7 @@ def parse_poi_response(data: Any, provider: str = "amap") -> list[NormalizedPoi]
 
 
 def parse_geocode_response(data: Any, provider: str = "amap") -> list[NormalizedGeocode]:
-    """Normalize an Amap geocode response."""
+    """解析 `parse_geocode_response` 对应的数据和流程，返回该步骤的处理结果。"""
     payload = _decode_json(data)
     rows = payload.get("results", []) if isinstance(payload, dict) else []
     result: list[NormalizedGeocode] = []
@@ -172,7 +172,7 @@ def parse_geocode_response(data: Any, provider: str = "amap") -> list[Normalized
 
 
 def parse_route_response(data: Any, provider: str = "amap") -> NormalizedRoute | None:
-    """Normalize an Amap transit route response at a high level."""
+    """解析 `parse_route_response` 对应的数据和流程，返回该步骤的处理结果。"""
     payload = _decode_json(data)
     if not isinstance(payload, dict):
         return None
@@ -212,7 +212,7 @@ def parse_route_response(data: Any, provider: str = "amap") -> NormalizedRoute |
 
 
 def parse_train_station_response(data: Any, provider: str = "railway-12306") -> list[NormalizedTrainStation]:
-    """Normalize a railway station search response."""
+    """解析 `parse_train_station_response` 对应的数据和流程，返回该步骤的处理结果。"""
     payload = _decode_json(data)
     rows = payload.get("stations", []) if isinstance(payload, dict) else []
     return [
@@ -228,7 +228,7 @@ def parse_train_station_response(data: Any, provider: str = "railway-12306") -> 
 
 
 def parse_train_ticket_response(data: Any, provider: str = "railway-12306") -> list[NormalizedTrainTicket]:
-    """Normalize a railway ticket query response."""
+    """解析 `parse_train_ticket_response` 对应的数据和流程，返回该步骤的处理结果。"""
     payload = _decode_json(data)
     rows = payload.get("trains", []) if isinstance(payload, dict) else []
     result: list[NormalizedTrainTicket] = []
@@ -258,7 +258,7 @@ def parse_train_ticket_response(data: Any, provider: str = "railway-12306") -> l
 
 
 def parse_weather_markdown(data: str) -> NormalizedWeather | None:
-    """Extract a normalized weather object from the current Markdown table."""
+    """解析 `parse_weather_markdown` 对应的数据和流程，返回该步骤的处理结果。"""
     lines = data.splitlines()
     location = None
     days: list[NormalizedWeatherDay] = []
@@ -283,6 +283,7 @@ def parse_weather_markdown(data: str) -> NormalizedWeather | None:
 
 
 def _decode_json(value: Any) -> Any:
+    """解码json，供后续流程使用。"""
     import json
 
     if isinstance(value, str):
@@ -294,6 +295,7 @@ def _decode_json(value: Any) -> Any:
 
 
 def _split_location(value: Any) -> tuple[float | None, float | None]:
+    """拆分位置，供后续流程使用。"""
     if not isinstance(value, str):
         return None, None
     parts = value.split(",")
@@ -306,6 +308,7 @@ def _split_location(value: Any) -> tuple[float | None, float | None]:
 
 
 def _to_int(value: Any) -> int | None:
+    """转换为int，供后续流程使用。"""
     try:
         return int(float(value))
     except (TypeError, ValueError):
@@ -313,6 +316,7 @@ def _to_int(value: Any) -> int | None:
 
 
 def _first_float(value: str) -> float | None:
+    """返回候选值中第一个可转换的浮点数。"""
     try:
         return float(value)
     except ValueError:
