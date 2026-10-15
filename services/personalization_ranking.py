@@ -13,19 +13,19 @@ from schemas.personalization import RankingFeature, RankedActivity
 @dataclass
 class RankingWeights:
     """集中保存个性化排序中各类特征的可调权重。"""
-    preference_match: float = 0.30
-    budget_match: float = 0.20
-    popularity: float = 0.15
-    freshness: float = 0.10
-    diversity: float = 0.10
-    verification: float = 0.10
-    rejection_penalty: float = 0.35
+    preference_match: float = 0.30  # 偏好匹配权重
+    budget_match: float = 0.20  # 预算匹配权重
+    popularity: float = 0.15  # 热度权重
+    freshness: float = 0.10  # 新鲜度权重
+    diversity: float = 0.10  # 多样性权重
+    verification: float = 0.10  # 核验权重
+    rejection_penalty: float = 0.35  # 历史拒绝惩罚
 
 
 class PersonalizationRankingService:
     """提供 `PersonalizationRankingService` 对应领域能力的统一服务。"""
 
-    def __init__(self, weights: RankingWeights | None = None) -> None:
+    def __init__(self, weights: RankingWeights | None = None) -> None:  # 排序权重配置
         """初始化 PersonalizationRankingService 及其运行依赖。"""
         self.weights = weights or RankingWeights()
 

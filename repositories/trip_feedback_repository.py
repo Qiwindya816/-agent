@@ -12,7 +12,7 @@ from db.models import TripFeedback
 class TripFeedbackRepository:
     """封装 `TripFeedbackRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 TripFeedbackRepository 及其运行依赖。"""
         self.session = session
 

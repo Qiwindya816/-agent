@@ -1,4 +1,4 @@
-﻿"""提供 数据库模型、连接与初始化；本文件负责 `base` 相关实现。"""
+"""提供 数据库模型、连接与初始化；本文件负责 `base` 相关实现。"""
 
 from datetime import datetime, timezone
 
@@ -18,7 +18,7 @@ class Base(DeclarativeBase):
 class TimestampMixin:
     """封装 `TimestampMixin` 的核心数据与行为。"""
 
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)  # 创建时间
+    updated_at: Mapped[datetime] = mapped_column(  # 更新时间
         DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
     )

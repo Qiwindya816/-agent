@@ -9,7 +9,7 @@ from db.models import ChatMessage, ChatSession
 class SessionRepository:
     """封装 `SessionRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 SessionRepository 及其运行依赖。"""
         self.session = session
 
@@ -82,7 +82,7 @@ class SessionRepository:
 class MessageRepository:
     """封装 `MessageRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 MessageRepository 及其运行依赖。"""
         self.session = session
 

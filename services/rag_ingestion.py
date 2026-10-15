@@ -20,7 +20,7 @@ from services.rag_chunker import RagChunker
 class RagIngestionService:
     """提供 `RagIngestionService` 对应领域能力的统一服务。"""
 
-    def __init__(self, database: DatabaseEngine | None = None, chunker: RagChunker | None = None) -> None:
+    def __init__(self, database: DatabaseEngine | None = None, chunker: RagChunker | None = None) -> None:  # 切块器
         """初始化 RagIngestionService 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.chunker = chunker or RagChunker()

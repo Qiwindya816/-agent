@@ -1,4 +1,4 @@
-﻿"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `rag` 相关实现。"""
+"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `rag` 相关实现。"""
 
 from __future__ import annotations
 
@@ -20,12 +20,12 @@ router = APIRouter(prefix="/rag", tags=["rag"])
 
 class SearchRequest(BaseModel):
     """定义 search 请求的数据结构。"""
-    query: str = Field(min_length=1, max_length=2000)
-    city: str | None = None
-    theme: str | None = None
-    travel_days: int | None = None
-    audience: str | None = None
-    top_k: int | None = None
+    query: str = Field(min_length=1, max_length=2000)  # 用户检索查询文本
+    city: str | None = None  # 按城市过滤
+    theme: str | None = None  # 按主题/旅行风格过滤
+    travel_days: int | None = None  # 按旅行天数过滤
+    audience: str | None = None  # 按适用人群过滤
+    top_k: int | None = None  # 返回结果数量上限
 
 
 @router.post("/search")
@@ -70,20 +70,20 @@ def search(
 
 class SourceCreateRequest(BaseModel):
     """定义创建 RAG 知识来源时允许提交的字段。"""
-    source_type: str
-    name: str
-    url: str | None = None
-    license_name: str | None = None
-    authorization_status: str = "authorized"
+    source_type: str  # 来源类型，如 official/guide/template
+    name: str  # 来源名称
+    url: str | None = None  # 来源链接
+    license_name: str | None = None  # 授权或版权说明
+    authorization_status: str = "authorized"  # 授权状态
 
 
 class DocumentIngestRequest(BaseModel):
     """定义向指定知识来源导入文档时的请求字段。"""
-    title: str
-    content: str
-    document_type: str = "fact"
-    metadata: dict[str, Any] = Field(default_factory=dict)
-    embed: bool = True
+    title: str  # 文档标题
+    content: str  # 文档正文内容
+    document_type: str = "fact"  # 文档类型：fact/guide/template
+    metadata: dict[str, Any] = Field(default_factory=dict)  # 城市、坐标、主题等元数据
+    embed: bool = True  # 是否调用 Embedding 生成向量
 
 
 @router.post("/sources", status_code=201)

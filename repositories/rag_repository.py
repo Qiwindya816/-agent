@@ -11,7 +11,7 @@ from db.models import RagChunk, RagDocument, RagIngestionJob, RagSource
 class RagRepository:
     """封装 `RagRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 RagRepository 及其运行依赖。"""
         self.session = session
 

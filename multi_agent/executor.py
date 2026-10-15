@@ -21,13 +21,13 @@ class ToolExecutor:
 
     def __init__(
         self,
-        registry: ToolRegistry | None = None,
-        context_builder: ContextBuilder | None = None,
-        enricher: ItineraryEnricher | None = None,
-        rag_retrieval: RagRetrievalService | None = None,
-        memory_retrieval: MemoryRetrievalService | None = None,
-        memory_resolver: MemoryConflictResolver | None = None,
-        ranking_service: PersonalizationRankingService | None = None,
+        registry: ToolRegistry | None = None,  # 工具注册表
+        context_builder: ContextBuilder | None = None,  # 上下文构建器
+        enricher: ItineraryEnricher | None = None,  # 行程回填器
+        rag_retrieval: RagRetrievalService | None = None,  # RAG 检索服务
+        memory_retrieval: MemoryRetrievalService | None = None,  # 长期记忆检索服务
+        memory_resolver: MemoryConflictResolver | None = None,  # 记忆冲突解析器
+        ranking_service: PersonalizationRankingService | None = None,  # 个性化排序服务
     ) -> None:
         """初始化执行器；未传入注册表时创建默认工具注册表。"""
         self.registry = registry or build_default_registry()
@@ -42,6 +42,7 @@ class ToolExecutor:
 
     def execute(self, route: RouteResult, user_input: str, state: AgentState) -> ToolResult:
         """根据路由结果查找并执行工具，统一返回 ToolResult。"""
+        # 检索plan中的工具
         tool = self.registry.get(route.tool_name) # tool是一个BaseTool实例
         if not tool:
             return ToolResult.failure(
@@ -50,9 +51,12 @@ class ToolExecutor:
                 message=f"未找到工具：{route.tool_name}",
             )
 
+        # 检索长期记忆
         memory_results = self.memory_resolver.resolve(
             self.memory_retrieval.retrieve(state.user_id, user_input)
         ) if self._personalization_enabled(state.user_id) else []
+
+        # RAG检索知识
         rag_results = self.rag_retrieval.search(
             state.user_id,
             user_input,
@@ -60,6 +64,7 @@ class ToolExecutor:
             theme=state.travel_request.travel_style,
             travel_days=state.travel_request.travel_days,
         ) if route.tool_name in {"plan_itinerary", "refine_itinerary", "recommend_destination", "estimate_budget"} else []
+        # 构建工具输入
         tool_input = {
             "user_input": user_input,
             "contextual_input": self.context_builder.build(
@@ -73,6 +78,8 @@ class ToolExecutor:
             "mcp_arguments": route.arguments,
         }
         result = tool.run(tool_input)
+
+        # 把检索的长期记忆写入AgentState，只取前5个
         if memory_results:
             state.active_memories = [
                 {
@@ -87,6 +94,8 @@ class ToolExecutor:
                 }
                 for decision in memory_results[:5]
             ]
+
+        # 行程生成并进行地图增强
         ranking_explanation = ""
         parsed_itinerary = None
         if (
@@ -109,6 +118,8 @@ class ToolExecutor:
                     "resolved_activities": resolved,
                     "error": map_result.error.model_dump(mode="json") if map_result.error else None,
                 }
+
+        # 对候选的行程进行排序，按照长期记忆与预算
         candidate_itinerary = parsed_itinerary or state.structured_itinerary
         if (
             result.success
@@ -128,6 +139,7 @@ class ToolExecutor:
             ranking_explanation = render_ranking_explanation(ranked)
             result.metadata["ranking"] = [item.model_dump(mode="json") for item in ranked]
             result.metadata["ranking_explanation"] = ranking_explanation
+            # 记录当前行程版本
             try:
                 from db.engine import get_database_engine
 
@@ -154,7 +166,7 @@ class ToolExecutor:
             except Exception:
                 # 行程版本持久化失败不能阻断面向用户的生成主链路。
                 pass
-
+        # 回填外部MCP调用的结果
         if result.success and state.structured_itinerary:
             if route.tool_name == "search_poi":
                 state.structured_itinerary = self.enricher.enrich_from_poi(

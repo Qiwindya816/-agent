@@ -13,7 +13,7 @@ class ItineraryRefineTool(BaseTool):
     name = "refine_itinerary"
     description = "根据用户反馈修改已有行程。"
 
-    def __init__(self, llm_service: LLMService | None = None) -> None:
+    def __init__(self, llm_service: LLMService | None = None) -> None:  # LLM 服务
         """初始化行程修改工具及其语言模型服务。"""
         self.llm_service = llm_service or LLMService()
 

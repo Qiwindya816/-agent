@@ -26,14 +26,14 @@ TOOL_STAGE_MAP = {
 class RouteResult(BaseModel):
     """一个可执行的工具步骤。"""
 
-    intent: str
-    tool_name: str
-    reason: str = ""
-    confidence: float = Field(default=0.5, ge=0, le=1)
-    missing_fields: list[str] = Field(default_factory=list)
-    requires_existing_itinerary: bool = False
-    depends_on: list[str] = Field(default_factory=list)
-    arguments: dict[str, Any] = Field(default_factory=dict)
+    intent: str  # 意图描述
+    tool_name: str  # 工具名
+    reason: str = ""  # 选择原因
+    confidence: float = Field(default=0.5, ge=0, le=1)  # 置信度
+    missing_fields: list[str] = Field(default_factory=list)  # 缺失关键字段
+    requires_existing_itinerary: bool = False  # 是否要求已有行程
+    depends_on: list[str] = Field(default_factory=list)  # 前置依赖工具
+    arguments: dict[str, Any] = Field(default_factory=dict)  # 工具参数
 
     @property
     def origin_activity_id(self) -> str | None:
@@ -56,12 +56,12 @@ class RouteResult(BaseModel):
 class RoutePlan(BaseModel):
     """保存一轮请求中按顺序执行的一个或多个工具步骤。"""
 
-    steps: list[RouteResult] = Field(min_length=1, max_length=7)
-    confidence: float = Field(default=0.5, ge=0, le=1)
-    missing_fields: list[str] = Field(default_factory=list)
-    needs_clarification: bool = False
-    clarification_question: str | None = None
-    continue_on_error: bool = True
+    steps: list[RouteResult] = Field(min_length=1, max_length=7)  # 工具步骤列表
+    confidence: float = Field(default=0.5, ge=0, le=1)  # 整体置信度
+    missing_fields: list[str] = Field(default_factory=list)  # 缺失字段
+    needs_clarification: bool = False  # 是否需要追问
+    clarification_question: str | None = None  # 追问内容
+    continue_on_error: bool = True  # 失败后是否继续
 
     @property
     def primary(self) -> RouteResult:

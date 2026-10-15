@@ -1,4 +1,4 @@
-﻿"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `tools` 相关实现。"""
+"""提供 FastAPI 接口、依赖注入与请求处理；本文件负责 `tools` 相关实现。"""
 
 from __future__ import annotations
 
@@ -20,9 +20,9 @@ router = APIRouter(prefix="/tools", tags=["tools"])
 
 class InvokeRequest(BaseModel):
     """定义 invoke 请求的数据结构。"""
-    arguments: dict[str, Any] = {}
-    session_id: str | None = None
-    trip_id: str | None = None
+    arguments: dict[str, Any] = {}  # 工具结构化参数
+    session_id: str | None = None  # 调用所属会话
+    trip_id: str | None = None  # 调用所属行程
 
 
 @router.get("")

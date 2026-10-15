@@ -31,7 +31,7 @@ class ExchangeTool(BaseTool):
     name = "convert_currency"
     description = "根据实时汇率换算货币。"
 
-    def __init__(self, exchange_service: ExchangeService | None = None) -> None:
+    def __init__(self, exchange_service: ExchangeService | None = None) -> None:  # 汇率服务
         """初始化换汇工具及其汇率服务。"""
         self.exchange_service = exchange_service or ExchangeService()
 

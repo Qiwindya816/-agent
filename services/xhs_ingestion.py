@@ -38,14 +38,14 @@ READ_ONLY_TOOLS = frozenset(
 @dataclass
 class PilotIngestionResult:
     """承载 试点、导入 的结构化结果。"""
-    source_id: str
-    cells_processed: int = 0
-    searches: int = 0
-    notes_fetched: int = 0
-    documents_created: int = 0
-    notes_reused: int = 0
-    metric_snapshots_created: int = 0
-    errors: list[dict[str, str]] = field(default_factory=list)
+    source_id: str  # 来源 ID
+    cells_processed: int = 0  # 处理单元格数
+    searches: int = 0  # 搜索次数
+    notes_fetched: int = 0  # 抓取笔记数
+    documents_created: int = 0  # 新建文档数
+    notes_reused: int = 0  # 复用笔记数
+    metric_snapshots_created: int = 0  # 指标快照数
+    errors: list[dict[str, str]] = field(default_factory=list)  # 错误
 
     def to_dict(self) -> dict[str, Any]:
         """转换为dict，供后续流程使用。"""
@@ -55,7 +55,7 @@ class PilotIngestionResult:
 class XhsMcpService:
     """提供 `XhsMcpService` 对应领域能力的统一服务。"""
 
-    def __init__(self, client: MCPClient | None = None) -> None:
+    def __init__(self, client: MCPClient | None = None) -> None:  # MCP 客户端
         """初始化 XhsMcpService 及其运行依赖。"""
         settings = get_settings()
         self.client = client or MCPClient(
@@ -160,9 +160,9 @@ class XhsPilotIngestionService:
 
     def __init__(
         self,
-        database: DatabaseEngine | None = None,
-        mcp: XhsMcpService | None = None,
-        embeddings: EmbeddingService | None = None,
+        database: DatabaseEngine | None = None,  # 数据库引擎
+        mcp: XhsMcpService | None = None,  # 小红书 MCP 服务
+        embeddings: EmbeddingService | None = None,  # 向量服务
     ) -> None:
         """初始化 XhsPilotIngestionService 及其运行依赖。"""
         self.database = database or get_database_engine()

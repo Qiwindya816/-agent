@@ -46,15 +46,15 @@ THEME_CODES = {
 @dataclass(frozen=True)
 class CorpusItem:
     """承载生成 RAG 评测集所需的一条真实语料及来源元数据。"""
-    document_id: str
-    chunk_id: str
-    city: str
-    theme: str
-    title: str
-    chunk_text: str
-    source_name: str
-    source_url: str
-    authorization_status: str
+    document_id: str  # 文档 ID
+    chunk_id: str  # Chunk ID
+    city: str  # 城市
+    theme: str  # 主题
+    title: str  # 标题
+    chunk_text: str  # 文本
+    source_name: str  # 来源名
+    source_url: str  # 来源链接
+    authorization_status: str  # 授权状态
     likes: int = 0
     collects: int = 0
     comments: int = 0

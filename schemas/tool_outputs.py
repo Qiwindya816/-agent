@@ -11,111 +11,111 @@ from pydantic import BaseModel, Field
 class ExternalFact(BaseModel):
     """封装 `ExternalFact` 的核心数据与行为。"""
 
-    provider: str
-    source_id: str | None = None
-    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    expires_at: datetime | None = None
+    provider: str  # 提供方
+    source_id: str | None = None  # 来源 ID
+    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))  # 获取时间
+    expires_at: datetime | None = None  # 过期时间
 
 
 class NormalizedPoi(BaseModel):
     """封装 `NormalizedPoi` 的核心数据与行为。"""
 
-    poi_id: str
-    rating: float | None = None
-    opening_hours: str | None = None
-    name: str
-    address: str | None = None
-    city: str | None = None
-    district: str | None = None
-    category: str | None = None
-    longitude: float | None = None
-    latitude: float | None = None
-    source: ExternalFact
+    poi_id: str  # POI ID
+    rating: float | None = None  # 评分
+    opening_hours: str | None = None  # 开放时间
+    name: str  # 名称
+    address: str | None = None  # 地址
+    city: str | None = None  # 城市
+    district: str | None = None  # 区域
+    category: str | None = None  # 类别
+    longitude: float | None = None  # 经度
+    latitude: float | None = None  # 纬度
+    source: ExternalFact  # 来源
 
 
 class NormalizedGeocode(BaseModel):
     """封装 `NormalizedGeocode` 的核心数据与行为。"""
 
-    address: str
-    formatted_address: str | None = None
-    city: str | None = None
-    district: str | None = None
-    adcode: str | None = None
-    longitude: float | None = None
-    latitude: float | None = None
-    source: ExternalFact
+    address: str  # 地址
+    formatted_address: str | None = None  # 格式化地址
+    city: str | None = None  # 城市
+    district: str | None = None  # 区域
+    adcode: str | None = None  # 行政区划代码
+    longitude: float | None = None  # 经度
+    latitude: float | None = None  # 纬度
+    source: ExternalFact  # 来源
 
 
 class NormalizedRouteStep(BaseModel):
     """封装 `NormalizedRouteStep` 的核心数据与行为。"""
 
-    instruction: str | None = None
-    distance_meters: int | None = None
-    duration_seconds: int | None = None
+    instruction: str | None = None  # 指引
+    distance_meters: int | None = None  # 距离
+    duration_seconds: int | None = None  # 耗时
 
 
 class NormalizedRoute(BaseModel):
     """封装 `NormalizedRoute` 的核心数据与行为。"""
 
-    origin: str
-    destination: str
-    mode: str = "transit"
-    distance_meters: int | None = None
-    duration_seconds: int | None = None
-    walking_distance_meters: int | None = None
-    steps: list[NormalizedRouteStep] = Field(default_factory=list)
-    source: ExternalFact
+    origin: str  # 起点
+    destination: str  # 终点
+    mode: str = "transit"  # 交通方式
+    distance_meters: int | None = None  # 距离
+    duration_seconds: int | None = None  # 耗时
+    walking_distance_meters: int | None = None  # 步行距离
+    steps: list[NormalizedRouteStep] = Field(default_factory=list)  # 步骤
+    source: ExternalFact  # 来源
 
 
 class NormalizedTrainStation(BaseModel):
     """封装 `NormalizedTrainStation` 的核心数据与行为。"""
 
-    station_name: str
-    station_code: str | None = None
-    pinyin: str | None = None
-    source: ExternalFact
+    station_name: str  # 站名
+    station_code: str | None = None  # 车站代码
+    pinyin: str | None = None  # 拼音
+    source: ExternalFact  # 来源
 
 
 class NormalizedTrainSeat(BaseModel):
     """封装 `NormalizedTrainSeat` 的核心数据与行为。"""
 
-    seat_class: str
-    value: str
+    seat_class: str  # 席别
+    value: str  # 余票/价格文本
 
 
 class NormalizedTrainTicket(BaseModel):
     """封装 `NormalizedTrainTicket` 的核心数据与行为。"""
 
-    train_no: str
-    departure_station: str
-    departure_station_code: str | None = None
-    arrival_station: str | None = None
-    arrival_station_code: str | None = None
-    departure_time: str | None = None
-    arrival_time: str | None = None
-    duration: str | None = None
-    seats: list[NormalizedTrainSeat] = Field(default_factory=list)
-    source: ExternalFact
+    train_no: str  # 车次
+    departure_station: str  # 出发站
+    departure_station_code: str | None = None  # 出发站代码
+    arrival_station: str | None = None  # 到达站
+    arrival_station_code: str | None = None  # 到达站代码
+    departure_time: str | None = None  # 出发时间
+    arrival_time: str | None = None  # 到达时间
+    duration: str | None = None  # 历时
+    seats: list[NormalizedTrainSeat] = Field(default_factory=list)  # 席别列表
+    source: ExternalFact  # 来源
 
 
 class NormalizedWeatherDay(BaseModel):
     """封装 `NormalizedWeatherDay` 的核心数据与行为。"""
 
-    date: str
-    weather: str
-    min_temperature: float | None = None
-    max_temperature: float | None = None
-    precipitation: float | None = None
+    date: str  # 日期
+    weather: str  # 天气
+    min_temperature: float | None = None  # 最低温
+    max_temperature: float | None = None  # 最高温
+    precipitation: float | None = None  # 降水量
 
 
 class NormalizedWeather(BaseModel):
     """封装 `NormalizedWeather` 的核心数据与行为。"""
 
-    location: str
-    latitude: float | None = None
-    longitude: float | None = None
-    days: list[NormalizedWeatherDay] = Field(default_factory=list)
-    source: ExternalFact
+    location: str  # 地点
+    latitude: float | None = None  # 纬度
+    longitude: float | None = None  # 经度
+    days: list[NormalizedWeatherDay] = Field(default_factory=list)  # 每日天气
+    source: ExternalFact  # 来源
 
 
 def parse_poi_response(data: Any, provider: str = "amap") -> list[NormalizedPoi]:

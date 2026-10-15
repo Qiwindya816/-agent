@@ -20,12 +20,12 @@ class MCPClient:
 
     def __init__(
         self,
-        url: str,
+        url: str,  # MCP 服务地址
         *,
-        token: str | None = None,
-        timeout_seconds: float = 30,
-        sse_read_timeout_seconds: float = 300,
-        server: Any | None = None,
+        token: str | None = None,  # 鉴权 Token
+        timeout_seconds: float = 30,  # 请求超时秒数
+        sse_read_timeout_seconds: float = 300,  # SSE 读取超时秒数
+        server: Any | None = None,  # 进程内 MCP Server
     ) -> None:
         """初始化 MCPClient 及其运行依赖。"""
         self.url = url

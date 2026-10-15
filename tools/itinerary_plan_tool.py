@@ -13,7 +13,7 @@ class ItineraryPlanTool(BaseTool):
     name = "plan_itinerary"
     description = "根据用户需求规划新的旅行行程。"
 
-    def __init__(self, llm_service: LLMService | None = None) -> None:
+    def __init__(self, llm_service: LLMService | None = None) -> None:  # LLM 服务
         """初始化行程规划工具及其语言模型服务。"""
         self.llm_service = llm_service or LLMService()
 

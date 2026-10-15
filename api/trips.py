@@ -153,24 +153,24 @@ def enrich_trip_map(
 
 class ActivityEditRequest(BaseModel):
     """定义 活动、编辑 请求的数据结构。"""
-    action: str
-    activity_id: str | None = None
-    day: int | None = 1
-    start_time: str | None = None
-    end_time: str | None = None
-    name: str | None = None
-    estimated_cost: float | None = Field(default=None, ge=0)
-    notes: str | None = None
-    activity: dict | None = None
-    ordered_activity_ids: list[str] | None = None
+    action: str  # 编辑动作：remove/update/add/reorder
+    activity_id: str | None = None  # 目标活动 ID
+    day: int | None = 1  # 目标天数
+    start_time: str | None = None  # 更新后的开始时间
+    end_time: str | None = None  # 更新后的结束时间
+    name: str | None = None  # 更新后的活动名称
+    estimated_cost: float | None = Field(default=None, ge=0)  # 更新后的预估费用
+    notes: str | None = None  # 活动备注
+    activity: dict | None = None  # 新增活动对象
+    ordered_activity_ids: list[str] | None = None  # 重排后的活动 ID 顺序
 
 
 class FeedbackRequest(BaseModel):
     """定义 反馈 请求的数据结构。"""
-    feedback_type: str
-    reason: str | None = None
-    activity_id: str | None = None
-    version_id: str | None = None
+    feedback_type: str  # 反馈类型：accept/reject/modify
+    reason: str | None = None  # 反馈原因
+    activity_id: str | None = None  # 针对的活动 ID
+    version_id: str | None = None  # 针对的行程版本 ID
 
 
 @router.post("/{trip_id}/activities/edit")

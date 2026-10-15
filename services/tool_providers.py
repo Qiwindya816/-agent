@@ -31,9 +31,9 @@ class _UnavailableTool(BaseTool):
 class ToolProvider:
     """封装 `ToolProvider` 的核心数据与行为。"""
 
-    name: str
-    gateways: dict[str, ToolGateway]
-    configured: bool = True
+    name: str  # Provider 名
+    gateways: dict[str, ToolGateway]  # 工具网关映射
+    configured: bool = True  # 是否已配置
 
     def health(self) -> dict[str, Any]:
         """检查 API 进程及数据库连接的健康状态。"""

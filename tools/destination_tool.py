@@ -11,7 +11,7 @@ class DestinationTool(BaseTool):
     name = "recommend_destination"
     description = "根据用户偏好推荐旅行目的地。"
 
-    def __init__(self, llm_service: LLMService | None = None) -> None:
+    def __init__(self, llm_service: LLMService | None = None) -> None:  # LLM 服务
         """初始化目的地推荐工具及其语言模型服务。"""
         self.llm_service = llm_service or LLMService()
 

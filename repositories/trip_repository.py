@@ -9,7 +9,7 @@ from db.models import Trip, TripPlanVersion
 class TripRepository:
     """封装 `TripRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 TripRepository 及其运行依赖。"""
         self.session = session
 
@@ -68,7 +68,7 @@ class TripRepository:
 class PlanVersionRepository:
     """封装 `PlanVersionRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 PlanVersionRepository 及其运行依赖。"""
         self.session = session
 
@@ -121,7 +121,7 @@ class PlanVersionRepository:
 class ItineraryVersionService:
     """提供 `ItineraryVersionService` 对应领域能力的统一服务。"""
 
-    def __init__(self, database) -> None:
+    def __init__(self, database) -> None:  # 数据库引擎
         """初始化 ItineraryVersionService 及其运行依赖。"""
         self.database = database
 

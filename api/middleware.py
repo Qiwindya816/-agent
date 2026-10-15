@@ -90,7 +90,7 @@ class RateLimitExceeded(Exception):
 class RateLimiter:
     """封装 `RateLimiter` 的核心数据与行为。"""
 
-    def __init__(self, requests_per_minute: int = 120) -> None:
+    def __init__(self, requests_per_minute: int = 120) -> None:  # 每分钟最大请求数
         """初始化 RateLimiter 及其运行依赖。"""
         self.requests_per_minute = requests_per_minute
         self.counts: dict[tuple[str, int], int] = {}

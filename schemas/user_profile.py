@@ -18,15 +18,15 @@ class UserProfile(BaseModel):
     travel_days: int | None = Field(default=None, exclude=True)
     budget: float | None = Field(default=None, exclude=True)
     currency: str | None = Field(default=None, exclude=True)
-    interests: list[str] = Field(default_factory=list)
-    travel_style: str | None = None
-    avoid: list[str] = Field(default_factory=list)
-    accommodation_preference: str | None = None
-    food_preference: str | None = None
-    transport_preference: str | None = None
-    dietary_restrictions: list[str] = Field(default_factory=list)
-    mobility_constraints: list[str] = Field(default_factory=list)
-    visited_destinations: list[str] = Field(default_factory=list)
+    interests: list[str] = Field(default_factory=list)  # 长期兴趣
+    travel_style: str | None = None  # 长期旅行风格
+    avoid: list[str] = Field(default_factory=list)  # 长期避免项
+    accommodation_preference: str | None = None  # 住宿偏好
+    food_preference: str | None = None  # 餐饮偏好
+    transport_preference: str | None = None  # 交通偏好
+    dietary_restrictions: list[str] = Field(default_factory=list)  # 饮食限制
+    mobility_constraints: list[str] = Field(default_factory=list)  # 行动限制
+    visited_destinations: list[str] = Field(default_factory=list)  # 去过的目的地
 
     def merge_non_empty(self, updates: "UserProfile") -> "UserProfile":
         """合并非空画像字段，并对列表字段去重且保留原顺序。"""
@@ -77,12 +77,12 @@ class UserProfile(BaseModel):
 class ProfileExtraction(BaseModel):
     """描述一轮对话对长期画像、当前旅行和长期记忆分别产生的增量更新。"""
 
-    profile_updates: UserProfile = Field(default_factory=UserProfile)
-    trip_updates: TravelRequest = Field(default_factory=TravelRequest)
-    clear_profile_fields: list[str] = Field(default_factory=list)
-    clear_trip_fields: list[str] = Field(default_factory=list)
-    remove_profile_items: dict[str, list[Any]] = Field(default_factory=dict)
-    remove_trip_items: dict[str, list[Any]] = Field(default_factory=dict)
-    start_new_trip: bool = False
-    memory_candidates: list[dict[str, Any]] = Field(default_factory=list)
-    memory_extraction_status: str = "completed"
+    profile_updates: UserProfile = Field(default_factory=UserProfile)  # 长期画像更新
+    trip_updates: TravelRequest = Field(default_factory=TravelRequest)  # 本次旅行更新
+    clear_profile_fields: list[str] = Field(default_factory=list)  # 清空画像字段
+    clear_trip_fields: list[str] = Field(default_factory=list)  # 清空旅行字段
+    remove_profile_items: dict[str, list[Any]] = Field(default_factory=dict)  # 删除画像列表项
+    remove_trip_items: dict[str, list[Any]] = Field(default_factory=dict)  # 删除旅行列表项
+    start_new_trip: bool = False  # 是否开始新行程
+    memory_candidates: list[dict[str, Any]] = Field(default_factory=list)  # 长期记忆候选
+    memory_extraction_status: str = "completed"  # 记忆提取状态

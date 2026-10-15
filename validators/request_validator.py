@@ -4,6 +4,7 @@ from schemas.travel_request import TravelRequest
 
 
 class RequestValidationResult(BaseModel):
+    """请求校验结果：is_complete 表示是否完整，missing_fields 为缺失字段，invalid_fields 为非法字段，warnings 为警告。"""
     """承载 请求、校验 的结构化结果。"""
     is_complete: bool
     missing_fields: list[str] = Field(default_factory=list)

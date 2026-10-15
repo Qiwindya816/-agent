@@ -46,12 +46,13 @@ class CoordinatorAgent:
 
 
 class FeedbackAgent:
+    """Feedback Agent：提取长期偏好、本次旅行约束和长期记忆候选。构造参数：extractor 为偏好提取器，memory_pipeline 为记忆写入管线。"""
     """识别当前旅行约束、长期偏好、长期记忆以及开始新旅行的反馈。"""
 
     def __init__(
         self,
-        extractor: Callable[..., ProfileExtraction] | None = None,
-        memory_pipeline: MemoryPipeline | None = None,
+        extractor: Callable[..., ProfileExtraction] | None = None,  # 偏好与记忆提取器
+        memory_pipeline: MemoryPipeline | None = None,  # 长期记忆写入管线
     ) -> None:
         """初始化 FeedbackAgent 及其运行依赖。"""
         self.extractor = extractor or extract_profile_updates
@@ -74,17 +75,20 @@ class FeedbackAgent:
             agent_state.budget_plan = None
             agent_state.weather_info = None
             agent_state.exchange_info = None
+        "'更新用户画像'"
         agent_state.user_profile = update_user_profile(
             updates.profile_updates,
             agent_state.user_id,
             clear_fields=updates.clear_profile_fields,
             remove_items=updates.remove_profile_items,
         )
+        "'更新旅行需求'"
         agent_state.travel_request = agent_state.travel_request.apply_update(
             updates.trip_updates,
             clear_fields=updates.clear_trip_fields,
             remove_items=updates.remove_trip_items,
         )
+        "'写入长期记忆'"
         try:
             memory_result = self.memory_pipeline.ingest_candidates(
                 updates.memory_candidates,
@@ -114,6 +118,7 @@ class FeedbackAgent:
 
 
 class PlannerAgent:
+    """Planner Agent：调用任务规划器生成工具计划。构造参数：router 为 TravelRouter。"""
     """把用户目标分解成有依赖关系的工具执行计划。"""
 
     def __init__(self, router: TravelRouter | None = None) -> None:
@@ -123,7 +128,7 @@ class PlannerAgent:
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
         """执行 PlannerAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
-        plan = self.router.route(state["user_input"], agent_state)
+        plan = self.router.route(state["user_input"], agent_state) # 生成工具调用计划
         agent_state.route_confidence = plan.confidence
         agent_state.last_intent = plan.primary.intent
         agent_state.last_tool_name = plan.primary.tool_name
@@ -149,7 +154,7 @@ class ToolExecutionAgent:
         """执行 ToolExecutionAgent 节点并返回本轮状态更新。"""
         agent_state = AgentState.model_validate(state["agent_state"])
         plan = RoutePlan.model_validate(state["route_plan"])
-        started = perf_counter()
+        started = perf_counter() # 开始计时
 
         def update_after_each(route: RouteResult, result: ToolResult) -> None:
             """在每个工具步骤结束后同步最新 AgentState。"""
@@ -169,6 +174,7 @@ class ToolExecutionAgent:
             elif route.tool_name == "convert_currency":
                 agent_state.exchange_info = {"result": result.data, "metadata": result.metadata}
 
+        # 按照plan按顺序调用工具，并在每次调用后更新state
         completed = self.executor.execute_plan(
             plan,
             state["user_input"],
@@ -202,6 +208,7 @@ class ToolExecutionAgent:
 
 
 class SummarizerAgent:
+    """Summarizer Agent：合并工具结果并生成用户回复。构造参数：response_generator 为回复生成器。"""
     """把多个工具结果合并成最终回复，并保存会话状态。"""
 
     def __init__(self, response_generator: ResponseGenerator | None = None) -> None:

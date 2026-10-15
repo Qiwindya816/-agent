@@ -12,14 +12,14 @@ from schemas.memory import MemoryCandidate, MemoryWriteDecision
 @dataclass
 class MemoryPolicyResult:
     """承载 记忆、策略 的结构化结果。"""
-    decision: MemoryWriteDecision
-    existing_memory_id: str | None = None
+    decision: MemoryWriteDecision  # 写入决策
+    existing_memory_id: str | None = None  # 已存在记忆 ID
 
 
 class MemoryWritePolicy:
     """封装 `MemoryWritePolicy` 的核心数据与行为。"""
 
-    def __init__(self, repository: MemoryRepository) -> None:
+    def __init__(self, repository: MemoryRepository) -> None:  # 记忆仓储
         """初始化 MemoryWritePolicy 及其运行依赖。"""
         self.repository = repository
         self.settings = get_settings()

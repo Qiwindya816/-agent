@@ -10,6 +10,7 @@ from schemas.itinerary import Activity, Itinerary
 
 
 class ItineraryValidationResult(BaseModel):
+    """行程校验结果：is_valid 表示是否有效，errors 为错误，warnings 为警告。"""
     """承载 行程、校验 的结构化结果。"""
     is_valid: bool
     errors: list[str] = Field(default_factory=list)

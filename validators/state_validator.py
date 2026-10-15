@@ -4,6 +4,7 @@ from schemas.agent_state import AgentState
 
 
 class StateValidationResult(BaseModel):
+    """状态校验结果：is_valid 表示是否有效，errors 为错误。"""
     """承载 状态、校验 的结构化结果。"""
     is_valid: bool
     errors: list[str] = Field(default_factory=list)

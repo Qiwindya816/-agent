@@ -11,9 +11,9 @@ from typing import Any
 class RagChunkInput:
     """封装 `RagChunkInput` 的核心数据与行为。"""
 
-    chunk_text: str
-    chunk_type: str
-    metadata: dict[str, Any] = field(default_factory=dict)
+    chunk_text: str  # 切块文本
+    chunk_type: str  # 切块类型
+    metadata: dict[str, Any] = field(default_factory=dict)  # 元数据
 
 
 class RagChunker:

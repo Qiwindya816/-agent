@@ -13,9 +13,9 @@ from schemas.travel_request import TravelRequest
 class ContextSection:
     """封装 `ContextSection` 的核心数据与行为。"""
 
-    name: str
-    content: str
-    priority: int
+    name: str  # 分区名
+    content: str  # 内容
+    priority: int  # 优先级
 
 
 class ContextBuilder:
@@ -24,8 +24,8 @@ class ContextBuilder:
     def __init__(
         self,
         *,
-        recent_turns: int = 8,
-        max_context_tokens: int = 6000,
+        recent_turns: int = 8,  # 保留最近对话轮数
+        max_context_tokens: int = 6000,  # 上下文 Token 上限
     ) -> None:
         """初始化 ContextBuilder 及其运行依赖。"""
         self.recent_turns = recent_turns
@@ -139,7 +139,7 @@ class ContextBuilder:
 class ConversationSummarizer:
     """封装 `ConversationSummarizer` 的核心数据与行为。"""
 
-    def __init__(self, *, summary_after_turns: int = 12, summary_max_tokens: int = 800) -> None:
+    def __init__(self, *, summary_after_turns: int = 12, summary_max_tokens: int = 800) -> None:  # 摘要最大 Token
         """初始化 ConversationSummarizer 及其运行依赖。"""
         self.summary_after_turns = summary_after_turns
         self.summary_max_tokens = summary_max_tokens

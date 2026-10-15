@@ -1,6 +1,5 @@
 import json
 import re
-
 from schemas.route import RouteResult
 from schemas.tool import ToolResult
 from schemas.itinerary import Itinerary

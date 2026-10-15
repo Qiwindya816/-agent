@@ -53,16 +53,16 @@ class ToolGateway:
 
     def __init__(
         self,
-        tool: BaseTool,
-        provider: str,
+        tool: BaseTool,  # 被包装工具
+        provider: str,  # 提供方
         *,
-        failure_threshold: float = 0.5,
-        database: DatabaseEngine | None = None,
-        cache_ttl_seconds: int = 0,
-        result_expires_in_seconds: int | None = None,
-        max_cache_entries: int = 256,
-        retry_count: int = 0,
-        retry_delay_seconds: float = 0.0,
+        failure_threshold: float = 0.5,  # 失败率阈值
+        database: DatabaseEngine | None = None,  # 数据库引擎
+        cache_ttl_seconds: int = 0,  # 缓存 TTL
+        result_expires_in_seconds: int | None = None,  # 结果有效期
+        max_cache_entries: int = 256,  # 缓存容量
+        retry_count: int = 0,  # 重试次数
+        retry_delay_seconds: float = 0.0,  # 重试延迟
     ) -> None:
         """初始化 ToolGateway 及其运行依赖。"""
         self.tool = tool

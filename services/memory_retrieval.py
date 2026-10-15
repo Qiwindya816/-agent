@@ -18,8 +18,8 @@ class MemoryRetrievalService:
 
     def __init__(
         self,
-        database: DatabaseEngine | None = None,
-        embedding_service: EmbeddingService | None = None,
+        database: DatabaseEngine | None = None,  # 数据库引擎
+        embedding_service: EmbeddingService | None = None,  # 向量服务
     ) -> None:
         """初始化 MemoryRetrievalService 及其运行依赖。"""
         self.database = database or get_database_engine()

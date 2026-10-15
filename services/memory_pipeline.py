@@ -23,11 +23,11 @@ SENSITIVE_MARKERS = ("身份证", "护照", "银行卡", "密码", "病历", "�
 class MemoryPipelineResult:
     """承载 `MemoryPipelineResult` 对应的结构化结果及元数据。"""
 
-    created: list[str] = field(default_factory=list)
-    merged: list[str] = field(default_factory=list)
-    deferred: list[str] = field(default_factory=list)
-    rejected: list[str] = field(default_factory=list)
-    errors: list[str] = field(default_factory=list)
+    created: list[str] = field(default_factory=list)  # 新建记忆 ID
+    merged: list[str] = field(default_factory=list)  # 合并证据记忆 ID
+    deferred: list[str] = field(default_factory=list)  # 暂缓写入项
+    rejected: list[str] = field(default_factory=list)  # 拒绝项
+    errors: list[str] = field(default_factory=list)  # 错误
 
 
 class MemoryPipeline:
@@ -35,8 +35,8 @@ class MemoryPipeline:
 
     def __init__(
         self,
-        database: DatabaseEngine | None = None,
-        embedding_service: EmbeddingService | None = None,
+        database: DatabaseEngine | None = None,  # 数据库引擎
+        embedding_service: EmbeddingService | None = None,  # 向量服务
     ) -> None:
         """初始化 MemoryPipeline 及其运行依赖。"""
         self.database = database or get_database_engine()

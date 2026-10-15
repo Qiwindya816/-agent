@@ -16,8 +16,8 @@ class WeatherTool(BaseTool):
 
     def __init__(
         self,
-        weather_service: WeatherService | None = None,
-        llm_service: LLMService | None = None,
+        weather_service: WeatherService | None = None,  # 天气服务
+        llm_service: LLMService | None = None,  # LLM 服务
     ) -> None:
         """初始化天气查询服务和用于参数提取的语言模型服务。"""
         self.weather_service = weather_service or WeatherService()

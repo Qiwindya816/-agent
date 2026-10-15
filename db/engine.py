@@ -1,4 +1,4 @@
-﻿"""提供 数据库模型、连接与初始化；本文件负责 `engine` 相关实现。"""
+"""提供 数据库模型、连接与初始化；本文件负责 `engine` 相关实现。"""
 
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -12,7 +12,7 @@ from config.settings import get_settings
 class DatabaseEngine:
     """封装 `DatabaseEngine` 的核心数据与行为。"""
 
-    def __init__(self, database_url: str | None = None, *, echo: bool | None = None) -> None:
+    def __init__(self, database_url: str | None = None, *, echo: bool | None = None) -> None:  # 是否打印 SQL
         """初始化 DatabaseEngine 及其运行依赖。"""
         settings = get_settings()
         self.url = database_url or settings.database_url

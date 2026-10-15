@@ -82,7 +82,7 @@ class TravelRouter:
                     depends_on=_valid_dependencies(_string_list(raw.get("depends_on")), steps),
                     arguments=raw.get("arguments") if isinstance(raw.get("arguments"), dict) else {},
                 )
-            )
+            ) # 由字典转化为RouteResult类
         if not steps:
             return None
         steps = _normalize_step_order(steps)
@@ -264,6 +264,7 @@ def _normalize_step_order(steps: list[RouteResult]) -> list[RouteResult]:
         (step.tool_name for step in normalized if step.tool_name in {"plan_itinerary", "refine_itinerary"}),
         None,
     )
+    # "'确保行程规划在预算估计之前'"
     if itinerary_step:
         for step in normalized:
             if step.tool_name == "estimate_budget" and itinerary_step not in step.depends_on:

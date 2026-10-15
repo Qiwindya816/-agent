@@ -29,7 +29,7 @@ class MCPCaller(Protocol):
 class RemoteMCPTool(BaseTool):
     """把一个白名单内的远端 MCP 工具暴露为本地 ToolRegistry 工具。"""
 
-    def __init__(self, name: str, remote_name: str, client: MCPCaller) -> None:
+    def __init__(self, name: str, remote_name: str, client: MCPCaller) -> None:  # MCP 客户端
         """初始化 RemoteMCPTool 及其运行依赖。"""
         self.name = name
         self.remote_name = remote_name

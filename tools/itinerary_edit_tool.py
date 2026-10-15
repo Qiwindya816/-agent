@@ -1,4 +1,4 @@
-﻿"""提供 工作流可调用工具；本文件负责 `itinerary_edit_tool` 相关实现。"""
+"""提供 工作流可调用工具；本文件负责 `itinerary_edit_tool` 相关实现。"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ class ItineraryEditTool(BaseTool):
     name = "edit_itinerary_activity"
     description = "基于 activity_id 局部修改行程，不重写整份行程。"
 
-    def __init__(self, editor: ItineraryEditor | None = None) -> None:
+    def __init__(self, editor: ItineraryEditor | None = None) -> None:  # 行程局部编辑器
         """初始化 ItineraryEditTool 及其运行依赖。"""
         self.editor = editor or ItineraryEditor()
 

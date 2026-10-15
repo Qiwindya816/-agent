@@ -14,7 +14,7 @@ from repositories.user_repository import UserRepository
 class AgentStateRepository:
     """封装 `AgentStateRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, database: DatabaseEngine | None = None) -> None:
+    def __init__(self, database: DatabaseEngine | None = None) -> None:  # 数据库引擎
         """初始化 AgentStateRepository 及其运行依赖。"""
         self.database = database or get_database_engine()
 

@@ -1,4 +1,4 @@
-﻿"""提供 核心领域服务和外部服务适配；本文件负责 `rag_retrieval` 相关实现。"""
+"""提供 核心领域服务和外部服务适配；本文件负责 `rag_retrieval` 相关实现。"""
 
 from __future__ import annotations
 
@@ -17,27 +17,27 @@ from services.embedding_service import EmbeddingService
 class RetrievedChunk:
     """承载 `RetrievedChunk` 对应的结构化结果及元数据。"""
 
-    chunk_id: str
-    document_id: str
-    owner_user_id: str | None
-    chunk_text: str
-    chunk_type: str
-    score: float
-    rank: int
-    city: str | None = None
-    theme: str | None = None
-    travel_days: int | None = None
-    audience: str | None = None
-    source_name: str | None = None
-    source_url: str | None = None
-    source_authorization_status: str | None = None
-    published_at: str | None = None
-    fetched_at: str | None = None
-    social_platform: str | None = None
-    likes: int | None = None
-    collects: int | None = None
-    comments: int | None = None
-    shares: int | None = None
+    chunk_id: str  # Chunk ID
+    document_id: str  # 文档 ID
+    owner_user_id: str | None  # 所属用户
+    chunk_text: str  # 文本
+    chunk_type: str  # 类型
+    score: float  # 融合得分
+    rank: int  # 排名
+    city: str | None = None  # 城市
+    theme: str | None = None  # 主题
+    travel_days: int | None = None  # 天数
+    audience: str | None = None  # 人群
+    source_name: str | None = None  # 来源名
+    source_url: str | None = None  # 来源链接
+    source_authorization_status: str | None = None  # 来源授权状态
+    published_at: str | None = None  # 发布时间
+    fetched_at: str | None = None  # 抓取时间
+    social_platform: str | None = None  # 社交平台
+    likes: int | None = None  # 点赞
+    collects: int | None = None  # 收藏
+    comments: int | None = None  # 评论
+    shares: int | None = None  # 分享
 
 
 class RagRetrievalService:
@@ -45,8 +45,8 @@ class RagRetrievalService:
 
     def __init__(
         self,
-        database: DatabaseEngine | None = None,
-        embedding_service: EmbeddingService | None = None,
+        database: DatabaseEngine | None = None,  # 数据库引擎
+        embedding_service: EmbeddingService | None = None,  # 向量服务
     ) -> None:
         """初始化 RagRetrievalService 及其运行依赖。"""
         self.database = database or get_database_engine()

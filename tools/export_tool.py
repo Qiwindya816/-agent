@@ -10,7 +10,7 @@ class ExportTool(BaseTool):
     name = "finalize_plan"
     description = "导出最终旅行方案。"
 
-    def __init__(self, export_service: ExportService | None = None) -> None:
+    def __init__(self, export_service: ExportService | None = None) -> None:  # 导出服务
         """初始化最终方案导出工具及其导出服务。"""
         self.export_service = export_service or ExportService()
 

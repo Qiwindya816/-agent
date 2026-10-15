@@ -4,6 +4,7 @@ from schemas.budget import BudgetPlan
 
 
 class BudgetValidationResult(BaseModel):
+    """预算校验结果：is_valid 表示是否有效，errors 为错误，warnings 为警告。"""
     """承载 预算、校验 的结构化结果。"""
     is_valid: bool
     errors: list[str] = Field(default_factory=list)

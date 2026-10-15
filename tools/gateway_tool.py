@@ -13,7 +13,7 @@ from tools.base import BaseTool
 class GatewayTool(BaseTool):
     """实现 `GatewayTool` 对应能力的工作流工具。"""
 
-    def __init__(self, gateway: ToolGateway) -> None:
+    def __init__(self, gateway: ToolGateway) -> None:  # 工具网关
         """初始化 GatewayTool 及其运行依赖。"""
         self.gateway = gateway
         self.name = gateway.name

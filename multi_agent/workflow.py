@@ -13,10 +13,10 @@ class MultiAgentTravelWorkflow:
 
     def __init__(
         self,
-        user_id: str = "default_user",
-        session_id: str | None = None,
+        user_id: str = "default_user",  # 用户 ID
+        session_id: str | None = None,  # 会话 ID；为空时自动生成
         *,
-        graph: Any | None = None,
+        graph: Any | None = None,  # 可注入的 LangGraph 图
     ) -> None:
         """初始化 MultiAgentTravelWorkflow 及其运行依赖。"""
         self.user_id = validate_user_id(user_id)

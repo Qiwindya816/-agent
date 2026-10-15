@@ -11,7 +11,7 @@ class BudgetTool(BaseTool):
     name = "estimate_budget"
     description = "估算旅行预算。"
 
-    def __init__(self, llm_service: LLMService | None = None) -> None:
+    def __init__(self, llm_service: LLMService | None = None) -> None:  # LLM 服务
         """初始化预算工具及其语言模型服务。"""
         self.llm_service = llm_service or LLMService()
 

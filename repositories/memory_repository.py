@@ -1,4 +1,4 @@
-﻿"""提供 带用户隔离的数据访问；本文件负责 `memory_repository` 相关实现。"""
+"""提供 带用户隔离的数据访问；本文件负责 `memory_repository` 相关实现。"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from schemas.memory import MemoryCandidate, RetrievedMemory
 class MemoryRepository:
     """封装 `MemoryRepository` 对应实体的数据访问和作用域隔离。"""
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session) -> None:  # 数据库会话
         """初始化 MemoryRepository 及其运行依赖。"""
         self.session = session
 
