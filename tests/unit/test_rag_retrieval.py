@@ -7,6 +7,7 @@ import pytest
 from db.engine import DatabaseEngine
 from services.rag_ingestion import RagIngestionService
 from services.rag_retrieval import RagRetrievalService
+from services.rerank_service import RerankResult
 
 
 @pytest.fixture()
@@ -88,3 +89,80 @@ def test_dense_recall_uses_embedding_service(database: DatabaseEngine, source) -
     # Dense SQL is PostgreSQL-specific; verify that embedding was persisted and service is injected.
     assert chunks[0].embedding == [0.1] * 1024
     assert retrieval.embedding_service is not None
+
+
+def test_search_reranks_rrf_candidates(database: DatabaseEngine, monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeReranker:
+        def rerank(self, query: str, documents: list[str], *, top_n: int | None = None) -> list[RerankResult]:
+            assert query == "不要爬山的北京行程"
+            assert documents == ["长城登山路线", "故宫无障碍路线"]
+            assert top_n == 2
+            return [RerankResult(index=1, relevance_score=0.95), RerankResult(index=0, relevance_score=0.10)]
+
+    retrieval = RagRetrievalService(database, rerank_service=FakeReranker())
+    monkeypatch.setattr(retrieval, "_templates", lambda *args, **kwargs: ["chunk_a", "chunk_b"])
+    monkeypatch.setattr(
+        retrieval,
+        "_load_chunks",
+        lambda user_id, chunk_ids: {
+            "chunk_a": _retrieved_row("chunk_a", "长城登山路线"),
+            "chunk_b": _retrieved_row("chunk_b", "故宫无障碍路线"),
+        },
+    )
+
+    results = retrieval.search("user_a", "不要爬山的北京行程", city="北京", top_k=2)
+
+    assert [item.chunk_id for item in results] == ["chunk_b", "chunk_a"]
+    assert results[0].score == pytest.approx(0.95)
+    assert results[0].rerank_score == pytest.approx(0.95)
+    assert results[0].rrf_score is not None
+
+
+def test_search_falls_back_to_rrf_when_reranker_fails(
+    database: DatabaseEngine,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FailingReranker:
+        def rerank(self, query: str, documents: list[str], *, top_n: int | None = None) -> list[RerankResult]:
+            raise RuntimeError("temporary rerank outage")
+
+    retrieval = RagRetrievalService(database, rerank_service=FailingReranker())
+    monkeypatch.setattr(retrieval, "_templates", lambda *args, **kwargs: ["chunk_a", "chunk_b"])
+    monkeypatch.setattr(
+        retrieval,
+        "_load_chunks",
+        lambda user_id, chunk_ids: {
+            "chunk_a": _retrieved_row("chunk_a", "候选 A"),
+            "chunk_b": _retrieved_row("chunk_b", "候选 B"),
+        },
+    )
+
+    results = retrieval.search("user_a", "北京行程", city="北京", top_k=2)
+
+    assert [item.chunk_id for item in results] == ["chunk_a", "chunk_b"]
+    assert all(item.rerank_score is None for item in results)
+    assert all(item.score == item.rrf_score for item in results)
+
+
+def _retrieved_row(chunk_id: str, chunk_text: str) -> dict[str, object]:
+    return {
+        "chunk_id": chunk_id,
+        "document_id": f"doc_{chunk_id}",
+        "owner_user_id": None,
+        "chunk_text": chunk_text,
+        "chunk_type": "template",
+        "city": "北京",
+        "theme": None,
+        "travel_days": 2,
+        "audience": None,
+        "source_name": "测试来源",
+        "source_url": None,
+        "source_authorization_status": "authorized",
+        "published_at": None,
+        "fetched_at": None,
+        "social_platform": None,
+        "likes": None,
+        "collects": None,
+        "comments": None,
+        "shares": None,
+    }

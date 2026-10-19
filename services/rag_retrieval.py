@@ -11,6 +11,11 @@ from sqlalchemy.orm import Session
 from config.settings import get_settings
 from db.engine import DatabaseEngine, get_database_engine
 from services.embedding_service import EmbeddingService
+from services.rerank_service import Reranker, RerankService
+from utils.logger import get_logger
+
+
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -22,8 +27,10 @@ class RetrievedChunk:
     owner_user_id: str | None  # 所属用户
     chunk_text: str  # 文本
     chunk_type: str  # 类型
-    score: float  # 融合得分
+    score: float  # 当前最终排序分数；启用 Rerank 时为精排分数，否则为 RRF 分数
     rank: int  # 排名
+    rrf_score: float | None = None  # RRF 融合得分
+    rerank_score: float | None = None  # 精排相关性得分
     city: str | None = None  # 城市
     theme: str | None = None  # 主题
     travel_days: int | None = None  # 天数
@@ -47,11 +54,15 @@ class RagRetrievalService:
         self,
         database: DatabaseEngine | None = None,  # 数据库引擎
         embedding_service: EmbeddingService | None = None,  # 向量服务
+        rerank_service: Reranker | None = None,  # 精排服务
     ) -> None:
         """初始化 RagRetrievalService 及其运行依赖。"""
         self.database = database or get_database_engine()
         self.embedding_service = embedding_service
         self.settings = get_settings()
+        self.rerank_service = rerank_service
+        if self.rerank_service is None and self.settings.rag_rerank_enabled:
+            self.rerank_service = RerankService()
 
     def search(
         self,
@@ -68,7 +79,9 @@ class RagRetrievalService:
     ) -> list[RetrievedChunk]:
         """检索 `search` 对应的数据和流程，返回该步骤的处理结果。"""
         settings = self.settings
-        final_k = top_k or settings.rag_rrf_top_k
+        rerank_enabled = self.rerank_service is not None
+        final_k = top_k or (settings.rag_rerank_top_k if rerank_enabled else settings.rag_rrf_top_k)
+        candidate_k = max(final_k, settings.rag_rerank_candidate_k) if rerank_enabled else final_k
         dense_ids: list[str] = []
         if self.embedding_service is not None and not self.database.url.startswith("sqlite"):
             query_vector = self.embedding_service.embed_query(query)
@@ -90,8 +103,17 @@ class RagRetrievalService:
         fused = self._rrf([dense_ids, bm25_ids, geo_ids, template_ids])
         if not fused:
             return []
-        limited = [chunk_id for chunk_id, _ in fused[:final_k]]
+        limited = [chunk_id for chunk_id, _ in fused[:candidate_k]]
         rows = self._load_chunks(user_id, limited)
+        candidates = [
+            (chunk_id, rrf_score, row)
+            for chunk_id, rrf_score in fused[:candidate_k]
+            if (row := rows.get(chunk_id)) is not None
+        ]
+        ranked = self._rerank(query, candidates, final_k) if rerank_enabled else [
+            (chunk_id, rrf_score, rrf_score, None, row)
+            for chunk_id, rrf_score, row in candidates[:final_k]
+        ]
         return [
             RetrievedChunk(
                 chunk_id=row["chunk_id"],
@@ -101,6 +123,8 @@ class RagRetrievalService:
                 chunk_type=row["chunk_type"],
                 score=score,
                 rank=rank,
+                rrf_score=rrf_score,
+                rerank_score=rerank_score,
                 city=row["city"],
                 theme=row["theme"],
                 travel_days=row["travel_days"],
@@ -116,9 +140,43 @@ class RagRetrievalService:
                 comments=row.get("comments"),
                 shares=row.get("shares"),
             )
-            for rank, (chunk_id, score) in enumerate(fused[:final_k], start=1)
-            if (row := rows.get(chunk_id)) is not None
+            for rank, (chunk_id, score, rrf_score, rerank_score, row) in enumerate(ranked, start=1)
         ]
+
+    def _rerank(
+        self,
+        query: str,
+        candidates: list[tuple[str, float, dict[str, Any]]],
+        top_k: int,
+    ) -> list[tuple[str, float, float, float | None, dict[str, Any]]]:
+        """精排 RRF 候选；服务异常或返回空结果时保持 RRF 顺序。"""
+        fallback = [
+            (chunk_id, rrf_score, rrf_score, None, row)
+            for chunk_id, rrf_score, row in candidates[:top_k]
+        ]
+        if self.rerank_service is None or not candidates:
+            return fallback
+        try:
+            results = self.rerank_service.rerank(
+                query,
+                [row["chunk_text"] for _, _, row in candidates],
+                top_n=top_k,
+            )
+            if not results:
+                return fallback
+            return [
+                (
+                    candidates[result.index][0],
+                    result.relevance_score,
+                    candidates[result.index][1],
+                    result.relevance_score,
+                    candidates[result.index][2],
+                )
+                for result in results
+            ]
+        except Exception:
+            logger.warning("rag_rerank_failed_fallback_to_rrf", exc_info=True)
+            return fallback
 
     def _dense(self, user_id: str, query_vector: list[float], top_k: int) -> list[str]:
         """按向量相似度召回候选知识切片。"""

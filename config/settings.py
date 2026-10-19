@@ -57,6 +57,12 @@ class Settings(BaseSettings):
     rag_geo_top_k: int = Field(default=20, gt=0, alias="RAG_GEO_TOP_K")  # 地理召回数量
     rag_template_top_k: int = Field(default=20, gt=0, alias="RAG_TEMPLATE_TOP_K")  # 模板召回数量
     rag_rrf_top_k: int = Field(default=15, gt=0, alias="RAG_RRF_TOP_K")  # RRF 融合数量
+    rag_rerank_enabled: bool = Field(default=False, alias="RAG_RERANK_ENABLED")  # 是否启用 Rerank 精排
+    rag_rerank_base_url: str | None = Field(default=None, alias="RAG_RERANK_BASE_URL")  # Rerank 完整接口 URL
+    rag_rerank_model: str = Field(default="qwen3-rerank", alias="RAG_RERANK_MODEL")  # Rerank 模型
+    rag_rerank_candidate_k: int = Field(default=15, gt=0, alias="RAG_RERANK_CANDIDATE_K")  # 精排候选数
+    rag_rerank_top_k: int = Field(default=6, gt=0, alias="RAG_RERANK_TOP_K")  # 精排保留数
+    rag_rerank_timeout_seconds: float = Field(default=5.0, gt=0, alias="RAG_RERANK_TIMEOUT_SECONDS")  # 精排超时
     rag_min_relevance: float = Field(default=0.0, ge=0, le=1, alias="RAG_MIN_RELEVANCE")  # RAG 最低相关度
     xhs_pilot_user_id: str = Field(default="demo_traveler", alias="XHS_PILOT_USER_ID")  # 试点数据所属用户
     xhs_pilot_notes_per_cell: int = Field(default=10, gt=0, le=50, alias="XHS_PILOT_NOTES_PER_CELL")  # 每个搜索单元抓取笔记数

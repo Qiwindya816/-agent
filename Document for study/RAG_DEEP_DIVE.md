@@ -1,6 +1,6 @@
 ﻿# TravelMind RAG 深度解析：从文档到生成上下文
 
-> 本文档汇总项目内所有 RAG 相关实现的完整知识链：数据分块、向量存储、多路召回、RRF 融合、用户隔离、与 Agent 衔接。
+> 本文档汇总项目内所有 RAG 相关实现的完整知识链：数据分块、向量存储、多路召回、RRF 融合、可选 Rerank 精排、用户隔离、与 Agent 衔接。
 > 所有代码引用均以当前工作区为准；本文会帮助你一次性把 RAG 全链路弄明白。
 
 ---
@@ -44,6 +44,10 @@ RagChunk 落库
               └─────────────────────────────┼─────────────────────────────┘
                                             │
                                             ▼
+                            可选 Rerank 精排（默认关闭）
+                         query 与候选 chunk 联合相关性打分
+                                             │
+                                             ▼
                                 RagRetrievalService.search()
                                             │
                                             ▼
@@ -465,7 +469,7 @@ CREATE INDEX ix_rag_chunks_tsv_gin
 
 ---
 
-## 6. 数据检索：RagRetrievalService 多路召回 + RRF 融合
+## 6. 数据检索：多路召回 + RRF 融合 + 可选 Rerank
 
 文件：`services/rag_retrieval.py`
 
@@ -485,10 +489,12 @@ def search(
 ```text
 search()
   ├─ 1. Dense 召回（向量语义） ─┐
-  ├─ 2. BM25 召回（关键词）  ─┤→ RRF 融合 → 加载完整元数据 → RetrivedChunk list
+  ├─ 2. BM25 召回（关键词）  ─┤→ RRF 融合 → 加载完整元数据 → 可选 Rerank → RetrievedChunk list
   ├─ 3. Geo 召回（地理距离） ─┤
   ├─ 4. Template 召回 ─────────┘
 ```
+
+其中“多路召回 + RRF”是基础主链路；Rerank 已作为可选精排层接入，默认关闭。开启后由 `services/rerank_service.py` 调用文本排序接口，失败或超时时自动回退到原始 RRF 顺序。
 
 ### 6.2 四路召回详解
 
@@ -598,7 +604,63 @@ def _rrf(candidate_lists, *, k=60):
     return sorted(scores.items(), key=lambda item: (-item[1], item[0]))
 ```
 
-### 6.4 用户隔离：私有 vs 公共
+### 6.4 Rerank：对 RRF 候选进行二次精排
+
+#### 为什么 RRF 后还需要 Rerank？
+
+RRF 擅长合并多路召回结果，但它只使用候选在各召回器中的**名次**，并不直接理解查询与 chunk 之间的细粒度语义。例如用户询问“适合老人、不要爬山的北京两日游”，向量召回可能因为“老人、北京、两日游”等词语召回包含登长城的内容，RRF 也可能因为它在多路结果中排名靠前而保留它。Reranker 会重新阅读完整的“查询 + 候选文本”，理解“不要爬山”这一否定约束，并把不符合条件的内容降权。
+
+Embedding 召回通常采用双塔结构：查询和文档分别编码成向量，可以预先计算文档向量，因此速度快，适合从大规模知识库中粗筛。Reranker 通常采用交叉编码方式：将查询和一个候选 chunk 一起送入模型，让两段文本充分交互后输出相关性分数，因此判断更准确，但每次查询都要逐条计算候选，延迟和成本更高。二者的分工是：
+
+```text
+Embedding / BM25 / Geo / Template：高召回，尽量不要漏掉答案
+RRF：合并不同量纲、不同来源的候选排名
+Reranker：高精度，从少量候选中选出最相关内容
+```
+
+#### 在本项目中的推荐位置
+
+```text
+四路各召回 Top 20
+        ↓
+RRF 融合并截取 Top 15
+        ↓
+加载候选 chunk_text 和必要元数据
+        ↓
+Reranker(query, candidates) 逐条打分
+        ↓
+按 rerank_score 降序排列，保留 Top 6
+        ↓
+结合上下文预算，最终向 ContextBuilder 注入约 4 条
+```
+
+Rerank 必须放在权限和硬条件过滤之后。`owner_user_id`、授权状态、城市、旅行天数等约束不能交给模型“软判断”；否则即使 Reranker 相关性很高，也可能返回用户无权查看或业务条件不满足的内容。Reranker 主要负责语义相关性，时效性、来源可信度、地理距离和互动热度可以作为独立业务信号，与模型分数进行可解释组合：
+
+```text
+final_score = rerank_score
+            + freshness_weight
+            + source_quality_weight
+            + popularity_weight
+```
+
+第一版建议只使用 `rerank_score` 排序并保留原始 RRF 分数用于观测，避免在没有离线评测前引入过多人工权重。若 Rerank 服务超时、报错或被关闭，应直接退回 RRF 顺序，保证检索链路可用。
+
+#### 实现方式与验收条件
+
+项目将 Reranker 封装在 `services/rerank_service.py`，输入 `query` 和候选 chunk 列表，输出与候选一一对应的原始索引和相关性分数；检索层负责调用、排序和降级。当前使用 DashScope 文本排序 HTTP 协议，默认模型为 `qwen3-rerank`，接口 URL 通过配置传入，因此运行代码不绑定具体业务空间。
+
+| 配置 | 默认值 | 说明 |
+|------|--------|------|
+| `RAG_RERANK_ENABLED` | `false` | 是否启用精排，可灰度开启 |
+| `RAG_RERANK_BASE_URL` | 空 | 百炼业务空间对应的完整文本排序接口 URL |
+| `RAG_RERANK_MODEL` | `qwen3-rerank` | Rerank 模型名称 |
+| `RAG_RERANK_CANDIDATE_K` | 15 | 从 RRF 送入精排的候选数 |
+| `RAG_RERANK_TOP_K` | 6 | 精排后保留数量 |
+| `RAG_RERANK_TIMEOUT_SECONDS` | 5 秒 | 超时后回退 RRF 排名 |
+
+正式开启前，应使用 `evaluation/datasets/rag_golden.json` 比较开启前后的 Recall@K、MRR、nDCG 和最终答案引用准确率，同时记录 P95 延迟、失败率和单次查询成本。只有相关性收益明显且延迟、成本可接受时，才适合默认开启。开发计划中的目标值也是“Rerank Top-K 6、最终上下文数量 4”。
+
+### 6.5 用户隔离：私有 vs 公共
 
 四路召回的 SQL 都带统一过滤：
 
@@ -771,7 +833,13 @@ if self.embedding_service is not None and not self.database.url.startswith("sqli
 | `RAG_BM25_TOP_K` | 20 | BM25/文本召回数 |
 | `RAG_GEO_TOP_K` | 20 | 地理召回数 |
 | `RAG_TEMPLATE_TOP_K` | 20 | 模板召回数 |
-| `RAG_RRF_TOP_K` | 15 | RRF 融合后返回的最终条数 |
+| `RAG_RRF_TOP_K` | 15 | 未启用 Rerank 时的最终返回数量 |
+| `RAG_RERANK_ENABLED` | `false` | 是否启用精排 |
+| `RAG_RERANK_BASE_URL` | 空 | 文本排序服务的完整接口 URL |
+| `RAG_RERANK_MODEL` | `qwen3-rerank` | 精排模型 |
+| `RAG_RERANK_CANDIDATE_K` | 15 | RRF 送入精排的候选数量 |
+| `RAG_RERANK_TOP_K` | 6 | 精排后默认返回数量 |
+| `RAG_RERANK_TIMEOUT_SECONDS` | 5 | 精排请求超时秒数；失败后回退 RRF |
 | `RAG_MIN_RELEVANCE` | 0.0 | 相关性最低阈值（0 = 不过滤） |
 | `EMBEDDING_MODEL` | `text-embedding-v3` | 向量模型 |
 | `EMBEDDING_DIMENSIONS` | 1024 | 向量维度（必须与模型一致） |
@@ -794,6 +862,10 @@ if self.embedding_service is not None and not self.database.url.startswith("sqli
   - `likes` / `collects` 等社交指标只是附加在 `RetrievedChunk` 上返回，目前不影响 RRF 得分；
   - 可以演进为在 `final_score = semantic + freshness + quality + log(1 + likes/collects)` 中引入热度权重。
 
+5. **Rerank 依赖外部服务且默认关闭**
+  - 开启前必须配置 `DASHSCOPE_API_KEY` 和业务空间对应的 `RAG_RERANK_BASE_URL`；
+  - 当前已经实现开关、超时和异常回退，但生产环境仍需补充 P95 延迟、失败率和调用成本监控。
+
 
 ---
 
@@ -805,7 +877,8 @@ if self.embedding_service is not None and not self.database.url.startswith("sqli
 |------|------|
 | `services/rag_chunker.py` | 按事实/攻略/模板三种规则切块 |
 | `services/rag_ingestion.py` | 建Source、去重、切块、归档、落库 |
-| `services/rag_retrieval.py` | dense/BM25/geo/template四路召回 + RRF |
+| `services/rag_retrieval.py` | dense/BM25/geo/template 四路召回、RRF 融合与可选 Rerank 编排 |
+| `services/rerank_service.py` | 调用文本排序接口、校验响应并返回精排索引与分数 |
 | `services/embedding_service.py` | 向量化，调用 OpenAI 兼容 API |
 | `services/mcp_client.py` | MCP 客户端封装（小红书数据采集） |
 | `services/xhs_ingestion.py` | 小红书笔记采集、去重、入库 |
@@ -913,12 +986,16 @@ FAISS 更适合纯向量检索但不方便做多条件 JOIN。
 - LLM 只能依靠内部知识和当前会话输入；
 - prompt 中也不会出现「检索到的参考知识」段落。
 
+**Q5：RRF 和 Reranker 是不是重复排序？**
+
+不是。RRF 使用各召回器给出的名次进行低成本融合，解决向量分数、BM25 分数和地理距离不能直接相加的问题；Reranker 则重新联合阅读查询与候选文本，判断细粒度语义相关性。前者负责形成稳定候选集，后者负责精排少量候选。没有 Reranker 时系统仍可使用 RRF 正常工作；启用 Reranker 后，RRF 排名也应保留用于降级和效果对照。
+
 ---
 
 ## 13. 总结：RAG 在本项目的本质
 
 ```text
-RAG = 先检索（4路召回 + RRF）
+RAG = 先检索（4路召回 + RRF + 可选 Rerank）
      再增强（RetrievedChunk + source/时间/互动指标）
      再生成（ContextBuilder 注入 LLM prompt）
 ```
@@ -928,6 +1005,7 @@ RAG = 先检索（4路召回 + RRF）
 - **分层数据模型**（Source → Document → Chunk）；
 - **多样化召回策略**（向量 / 文本 / 地理 / 模板）；
 - **可解释的融合方式**（RRF，无归一化问题）；
+- **可选精排能力**（Rerank 默认关闭，调用异常时回退 RRF）；
 - **权限隔离**（owner_user_id 公共/私有）；
 - **溯源能力**（source_url + published_at + fetched_at）；
 - **可观测指标**（Recall / Precision / nDCG / 引用准确率 / 来源可追溯率）；
