@@ -103,7 +103,8 @@ def load_user_profile(user_id: str = "default_user") -> UserProfile:
     store = _state_store()
     try:
         return store.load_user_profile(user_id)
-    except LookupError:
+    except Exception:
+        # 数据库未初始化或暂时不可用时，继续使用本地兼容存档。
         return _load_model(_profile_path(user_id), UserProfile)
 
 
@@ -112,7 +113,7 @@ def save_user_profile(profile: UserProfile, user_id: str = "default_user") -> No
     _save_model(_profile_path(user_id), profile)
     try:
         _state_store().save_user_profile(profile, user_id)
-    except LookupError:
+    except Exception:
         # 新用户由 initialize_session 或 save_agent_state 创建。
         return
 
@@ -139,7 +140,7 @@ def load_agent_state(session_id: str = "default_session", user_id: str | None = 
     normalized_user_id = validate_user_id(user_id or "default_user")
     try:
         return _state_store().load_agent_state(session_id, normalized_user_id)
-    except (LookupError, ValueError, ValidationError, OSError):
+    except Exception:
         pass
     return _load_legacy_agent_state(session_id, user_id)
 
@@ -186,7 +187,11 @@ def initialize_session(user_id: str, session_id: str | None = None) -> AgentStat
 def save_agent_state(state: AgentState) -> None:
     """以数据库为主存，JSON 存档作为迁移与离线兜底。"""
     state.user_id = validate_user_id(state.user_id)
-    _state_store().save_agent_state(state)
+    try:
+        _state_store().save_agent_state(state)
+    except Exception:
+        # 数据库故障时仍保留 JSON 状态，使本地会话可以继续。
+        pass
     _save_model(_profile_path(state.user_id), state.user_profile)
     _save_model(_session_path(state.session_id), state)
     _sync_trip_state(state)

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
+from config.settings import get_settings
 from schemas.memory import MemoryDecision, RetrievedMemory
 
 
@@ -32,7 +34,37 @@ class MemoryConflictResolver:
             reason = self._reason(memory)
             decisions.append(MemoryDecision(memory=memory, priority=priority, reason=reason))
 
-        return sorted(decisions, key=lambda item: item.priority, reverse=True)[:5]
+        ranked = sorted(decisions, key=lambda item: item.priority, reverse=True)
+        selected: list[MemoryDecision] = []
+        current_polarity = self._context_polarity(current_context)
+        current_key = self._canonical(str(current_context or ""))
+        for decision in ranked:
+            memory = decision.memory
+            key = self._canonical(memory.statement)
+            if (
+                current_polarity
+                and key
+                and key in current_key
+                and memory.polarity in {"positive", "negative"}
+                and memory.polarity != current_polarity
+            ):
+                # 本轮明确要求永远高于历史记忆。
+                continue
+
+            conflict = next(
+                (
+                    existing
+                    for existing in selected
+                    if self._conflicts(existing.memory, memory)
+                ),
+                None,
+            )
+            if conflict is not None:
+                decision.suppressed_by = conflict.memory.memory_id
+                continue
+            selected.append(decision)
+
+        return selected[: get_settings().memory_injection_top_k]
 
     @staticmethod
     def _priority(memory: RetrievedMemory, scope: str | None) -> float:
@@ -55,3 +87,32 @@ class MemoryConflictResolver:
             f"{memory.memory_type} 记忆，置信度 {memory.confidence:.2f}，"
             f"证据数 {memory.evidence_count}，作用域 {memory.scope}。"
         )
+
+    @classmethod
+    def _conflicts(cls, left: RetrievedMemory, right: RetrievedMemory) -> bool:
+        """识别同一主题上正负倾向相反的记忆，保留排序更高的一条。"""
+        if left.polarity not in {"positive", "negative"} or right.polarity not in {"positive", "negative"}:
+            return False
+        if left.polarity == right.polarity:
+            return False
+        if left.scope != right.scope and "global" not in {left.scope, right.scope}:
+            return False
+        left_key = cls._canonical(left.statement)
+        right_key = cls._canonical(right.statement)
+        return bool(left_key and right_key and (left_key in right_key or right_key in left_key))
+
+    @staticmethod
+    def _canonical(text: str) -> str:
+        normalized = text.lower()
+        for marker in ("用户", "本人", "我", "不喜欢", "不要", "避免", "讨厌", "喜欢", "偏好", "希望", "请记住"):
+            normalized = normalized.replace(marker, "")
+        return re.sub(r"[^0-9a-z\u4e00-\u9fff]+", "", normalized)
+
+    @staticmethod
+    def _context_polarity(context: Any | None) -> str | None:
+        text = str(context or "")
+        if any(marker in text for marker in ("不喜欢", "不要", "避免", "讨厌")):
+            return "negative"
+        if any(marker in text for marker in ("喜欢", "希望", "想要")):
+            return "positive"
+        return None

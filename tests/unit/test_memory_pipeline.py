@@ -132,6 +132,70 @@ def test_deterministic_memory_extraction_detects_explicit_instruction() -> None:
     assert candidates[0]["confidence"] == 0.98
 
 
+def test_llm_extraction_preserves_memory_candidates() -> None:
+    from tools.profile_tool import _build_extraction
+
+    extraction = _build_extraction(
+        {
+            "profile_updates": {},
+            "trip_updates": {},
+            "memory_candidates": [candidate_data()],
+            "memory_extraction_status": "completed",
+        }
+    )
+
+    assert extraction.memory_candidates == [candidate_data()]
+
+
+def test_rule_fallback_emits_explicit_memory_candidate() -> None:
+    from tools.profile_tool import extract_profile_updates
+
+    extraction = extract_profile_updates("请记住我喜欢博物馆", use_llm=False)
+
+    assert extraction.memory_extraction_status == "rule_fallback"
+    assert extraction.memory_candidates[0]["memory_type"] == "explicit"
+
+
+def test_deferred_memory_is_promoted_after_repeated_evidence(database: DatabaseEngine) -> None:
+    from services.memory_pipeline import MemoryPipeline
+
+    pipeline = MemoryPipeline(database)
+    raw = candidate_data(memory_type="semantic", confidence=0.6, statement="用户可能喜欢慢节奏")
+    first = pipeline.ingest_candidates([raw], user_id="memory_user")
+
+    with database.session() as session:
+        pending = MemoryRepository(session).list_items("memory_user", status="pending")
+        assert len(pending) == 1
+        assert pending[0].evidence_count == 1
+        assert MemoryRepository(session).list_items("memory_user") == []
+
+    second = pipeline.ingest_candidates([raw], user_id="memory_user")
+
+    assert first.deferred
+    assert second.merged
+    with database.session() as session:
+        active = MemoryRepository(session).list_items("memory_user")
+        assert len(active) == 1
+        assert active[0].evidence_count == 2
+
+
+def test_pipeline_generates_embedding_for_new_memory(database: DatabaseEngine) -> None:
+    from services.memory_pipeline import MemoryPipeline
+
+    class StubEmbedding:
+        def embed_query(self, text: str) -> list[float]:
+            return [0.1, 0.2, 0.3]
+
+    MemoryPipeline(database, StubEmbedding()).ingest_candidates(
+        [candidate_data()],
+        user_id="memory_user",
+    )
+
+    with database.session() as session:
+        item = MemoryRepository(session).list_items("memory_user")[0]
+        assert list(item.embedding) == [0.1, 0.2, 0.3]
+
+
 def test_user_can_disable_long_term_memory(database: DatabaseEngine) -> None:
     from repositories.user_repository import UserRepository
     from services.memory_pipeline import MemoryPipeline

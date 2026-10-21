@@ -36,7 +36,11 @@ def extract_profile_updates(
         except Exception:
             pass
 
-    return _extract_with_rules(user_input)
+    extraction = _extract_with_rules(user_input)
+    # LLM 不可用时也要保留用户明确提出的“请记住”指令。
+    extraction.memory_candidates = extract_memory_candidates_from_text(user_input)
+    extraction.memory_extraction_status = "rule_fallback"
+    return extraction
 
 
 def extract_user_profile(user_input: str, *, use_llm: bool = True) -> UserProfile:
@@ -132,6 +136,8 @@ def _build_extraction(data: dict[str, Any]) -> ProfileExtraction:
         remove_profile_items=dict(data.get("remove_profile_items") or {}),
         remove_trip_items=dict(data.get("remove_trip_items") or {}),
         start_new_trip=bool(data.get("start_new_trip")),
+        memory_candidates=[item for item in (data.get("memory_candidates") or []) if isinstance(item, dict)],
+        memory_extraction_status=str(data.get("memory_extraction_status") or "completed"),
     )
 
 

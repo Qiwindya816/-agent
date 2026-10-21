@@ -40,7 +40,8 @@ class MemoryPipeline:
     ) -> None:
         """初始化 MemoryPipeline 及其运行依赖。"""
         self.database = database or get_database_engine()
-        self.embedding_service = embedding_service
+        # EmbeddingService 延迟创建网络客户端；没有配置或调用失败时仍会安全降级。
+        self.embedding_service = embedding_service or EmbeddingService()
 
     def ingest_candidates(
         self,
@@ -81,13 +82,24 @@ class MemoryPipeline:
                 action = policy_result.decision.action
                 if action == "merge" and policy_result.existing_memory_id:
                     repository.add_evidence(policy_result.existing_memory_id, candidate)
+                    existing = repository.get_item(user_id, policy_result.existing_memory_id)
+                    if (
+                        existing is not None
+                        and existing.status == "pending"
+                        and existing.evidence_count >= policy_result.decision.required_evidence_count
+                    ):
+                        embedding = self._embedding(existing.statement)
+                        repository.activate_item(user_id, existing.memory_id)
+                        existing.embedding = embedding
                     result.merged.append(policy_result.existing_memory_id)
                 elif action == "create":
                     embedding = self._embedding(candidate.statement)
                     item = repository.create_item(candidate, embedding=embedding)
                     result.created.append(item.memory_id)
                 elif action == "defer":
-                    result.deferred.append(candidate.statement)
+                    # 暂缓不再等于丢弃：保存为 pending，后续相同证据可累计并晋升。
+                    item = repository.create_item(candidate, status="pending")
+                    result.deferred.append(item.memory_id)
                 else:
                     result.rejected.append(candidate.statement)
         return result

@@ -65,6 +65,7 @@ def test_executor_injects_long_term_memory_into_generator_context(database: Data
     executor = ToolExecutor(
         registry,
         memory_retrieval=retrieval,
+        database=database,
     )
     state = AgentState(user_id="memory_user", session_id="session_memory")
 
@@ -94,6 +95,7 @@ def test_executor_respects_personalization_disabled(database: DatabaseEngine) ->
     executor = ToolExecutor(
         registry,
         memory_retrieval=_StubMemoryRetrieval(),
+        database=database,
     )
     state = AgentState(user_id="memory_user", session_id="session_memory")
 

@@ -104,3 +104,32 @@ def test_conflict_resolver_prioritizes_explicit_and_scope(database: DatabaseEngi
 
         assert decisions[0].memory.memory_id == explicit.memory_id
         assert decisions[0].priority > decisions[1].priority
+
+
+def test_conflict_resolver_suppresses_opposite_memory_and_respects_current_input(database: DatabaseEngine) -> None:
+    with database.session() as session:
+        repository = MemoryRepository(session)
+        positive = repository.create_item(
+            candidate(memory_type="explicit", statement="用户喜欢博物馆", polarity="positive")
+        )
+        negative = repository.create_item(
+            candidate(memory_type="semantic", statement="用户不喜欢博物馆", polarity="negative")
+        )
+        memories = [MemoryRepository.to_retrieved(item) for item in [positive, negative]]
+
+    decisions = MemoryConflictResolver().resolve(memories)
+    assert [item.memory.memory_id for item in decisions] == [positive.memory_id]
+
+    current = MemoryConflictResolver().resolve(memories, current_context="这次我不喜欢博物馆")
+    assert [item.memory.memory_id for item in current] == [negative.memory_id]
+
+
+def test_write_policy_merges_near_duplicate_statements(database: DatabaseEngine) -> None:
+    with database.session() as session:
+        repository = MemoryRepository(session)
+        first = repository.create_item(candidate(statement="用户喜欢博物馆"))
+
+        result = MemoryWritePolicy(repository).evaluate(candidate(statement="用户很喜欢参观博物馆"))
+
+        assert result.decision.action == "merge"
+        assert result.existing_memory_id == first.memory_id

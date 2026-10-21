@@ -1,7 +1,9 @@
-from schemas.agent_state import AgentState
 from collections.abc import Callable
 from typing import Any
 
+from config.settings import get_settings
+from db.engine import DatabaseEngine, get_database_engine
+from schemas.agent_state import AgentState
 from schemas.route import RoutePlan, RouteResult
 from schemas.tool import ToolResult
 from services.context_builder import ContextBuilder
@@ -28,15 +30,25 @@ class ToolExecutor:
         memory_retrieval: MemoryRetrievalService | None = None,  # 长期记忆检索服务
         memory_resolver: MemoryConflictResolver | None = None,  # 记忆冲突解析器
         ranking_service: PersonalizationRankingService | None = None,  # 个性化排序服务
+        database: DatabaseEngine | None = None,  # 用户设置与记忆共用的数据库
     ) -> None:
         """初始化执行器；未传入注册表时创建默认工具注册表。"""
         self.registry = registry or build_default_registry()
-        self.context_builder = context_builder or ContextBuilder()
+        settings = get_settings()
+        self.settings = settings
+        self.context_builder = context_builder or ContextBuilder(
+            recent_turns=settings.memory_recent_turns,
+            max_context_tokens=settings.memory_max_context_tokens,
+        )
         self.enricher = enricher or ItineraryEnricher()
         self.map_service = ItineraryMapService()
         self.rag_retrieval = rag_retrieval or RagRetrievalService()
         from services.embedding_service import EmbeddingService
-        self.memory_retrieval = memory_retrieval or MemoryRetrievalService(embedding_service=EmbeddingService())
+        self.database = database or getattr(memory_retrieval, "database", None) or get_database_engine()
+        self.memory_retrieval = memory_retrieval or MemoryRetrievalService(
+            database=self.database,
+            embedding_service=EmbeddingService(),
+        )
         self.memory_resolver = memory_resolver or MemoryConflictResolver()
         self.ranking_service = ranking_service or PersonalizationRankingService()
 
@@ -52,18 +64,33 @@ class ToolExecutor:
             )
 
         # 检索长期记忆
-        memory_results = self.memory_resolver.resolve(
-            self.memory_retrieval.retrieve(state.user_id, user_input)
-        ) if self._personalization_enabled(state.user_id) else []
+        scope = str(route.arguments.get("scope") or "").strip() or None
+        memory_results = []
+        if self._personalization_enabled(state.user_id):
+            try:
+                recalled = self.memory_retrieval.retrieve(state.user_id, user_input, scope=scope)
+                memory_results = self.memory_resolver.resolve(
+                    recalled,
+                    current_context=user_input,
+                    scope=scope,
+                )
+            except Exception:
+                # 记忆服务不可用不应阻断核心旅行规划。
+                memory_results = []
 
         # RAG检索知识
-        rag_results = self.rag_retrieval.search(
-            state.user_id,
-            user_input,
-            city=state.travel_request.destination,
-            theme=state.travel_request.travel_style,
-            travel_days=state.travel_request.travel_days,
-        ) if route.tool_name in {"plan_itinerary", "refine_itinerary", "recommend_destination", "estimate_budget"} else []
+        rag_results = []
+        if route.tool_name in {"plan_itinerary", "refine_itinerary", "recommend_destination", "estimate_budget"}:
+            try:
+                rag_results = self.rag_retrieval.search(
+                    state.user_id,
+                    user_input,
+                    city=state.travel_request.destination,
+                    theme=state.travel_request.travel_style,
+                    travel_days=state.travel_request.travel_days,
+                )
+            except Exception:
+                rag_results = []
         # 构建工具输入
         tool_input = {
             "user_input": user_input,
@@ -79,21 +106,20 @@ class ToolExecutor:
         }
         result = tool.run(tool_input)
 
-        # 把检索的长期记忆写入AgentState，只取前5个
-        if memory_results:
-            state.active_memories = [
-                {
-                    "memory_type": decision.memory.memory_type,
-                    "category": decision.memory.category,
-                    "statement": decision.memory.statement,
-                    "structured_value": decision.memory.structured_value,
-                    "scope": decision.memory.scope,
-                    "confidence": decision.memory.confidence,
-                    "evidence_count": decision.memory.evidence_count,
-                    "reason": decision.reason,
-                }
-                for decision in memory_results[:5]
-            ]
+        # 把本轮实际注入的长期记忆同步回 AgentState。
+        state.active_memories = [
+            {
+                "memory_type": decision.memory.memory_type,
+                "category": decision.memory.category,
+                "statement": decision.memory.statement,
+                "structured_value": decision.memory.structured_value,
+                "scope": decision.memory.scope,
+                "confidence": decision.memory.confidence,
+                "evidence_count": decision.memory.evidence_count,
+                "reason": decision.reason,
+            }
+            for decision in memory_results[: self.settings.memory_injection_top_k]
+        ]
 
         # 行程生成并进行地图增强
         ranking_explanation = ""
@@ -207,15 +233,12 @@ class ToolExecutor:
         parts.append(f"用户本轮输入：{user_input}")
         return "\n\n".join(parts)
 
-    @staticmethod
-    def _personalization_enabled(user_id: str) -> bool:
+    def _personalization_enabled(self, user_id: str) -> bool:
         """处理 `_personalization_enabled` 对应的数据和流程，返回该步骤的处理结果。"""
-        from config.settings import get_settings
-        from db.engine import get_database_engine
         from db.models import User
 
         try:
-            with get_database_engine().session() as session:
+            with self.database.session() as session:
                 user = session.get(User, user_id)
                 return bool(user is None or user.personalization_enabled)
         except Exception:

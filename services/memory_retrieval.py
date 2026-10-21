@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy import text
@@ -38,7 +39,10 @@ class MemoryRetrievalService:
         if self.embedding_service is None or self.database.url.startswith("sqlite"):
             return self._metadata_retrieval(user_id, query, scope, memory_types)
 
-        query_vector = self.embedding_service.embed_query(query)
+        try:
+            query_vector = self.embedding_service.embed_query(query)
+        except Exception:
+            return self._metadata_retrieval(user_id, query, scope, memory_types)
         vector_text = "[" + ",".join(str(value) for value in query_vector) + "]"
         sql = text(
             """
@@ -47,27 +51,43 @@ class MemoryRetrievalService:
             where user_id = :user_id
               and status = 'active'
               and embedding is not null
+              and (expires_at is null or expires_at > now())
+              and (:scope is null or scope = 'global' or scope = :scope)
             order by embedding <=> cast(:vector as vector)
             limit :top_k
             """
         )
-        with self.database.session() as session:
-            rows = session.execute(sql, {"user_id": user_id, "vector": vector_text, "top_k": self.settings.memory_retrieval_top_k}).mappings().all()
-            repository = MemoryRepository(session)
-            results = []
-            for row in rows:
-                item = repository.get_item(user_id, row["memory_id"])
-                if item is None:
-                    continue
-                if memory_types and item.memory_type not in memory_types:
-                    continue
-                if scope and item.scope != scope:
-                    continue
-                similarity = float(row["similarity"])
-                if similarity < self.settings.memory_min_relevance:
-                    continue
-                results.append(MemoryRepository.to_retrieved(item, similarity))
-            return results
+        try:
+            with self.database.session() as session:
+                rows = session.execute(
+                    sql,
+                    {
+                        "user_id": user_id,
+                        "vector": vector_text,
+                        "scope": scope,
+                        "top_k": self.settings.memory_retrieval_top_k,
+                    },
+                ).mappings().all()
+                repository = MemoryRepository(session)
+                results = []
+                for row in rows:
+                    item = repository.get_item(user_id, row["memory_id"])
+                    if item is None:
+                        continue
+                    if memory_types and item.memory_type not in memory_types:
+                        continue
+                    similarity = float(row["similarity"])
+                    if similarity < self.settings.memory_min_relevance:
+                        continue
+                    results.append(MemoryRepository.to_retrieved(item, similarity))
+        except Exception:
+            return self._metadata_retrieval(user_id, query, scope, memory_types)
+
+        # 兼容历史无向量记录和暂时无法补向量的记录。
+        metadata_results = self._metadata_retrieval(user_id, query, scope, memory_types)
+        seen = {item.memory_id for item in results}
+        results.extend(item for item in metadata_results if item.memory_id not in seen)
+        return results[: self.settings.memory_retrieval_top_k]
 
     def _metadata_retrieval(
         self,
@@ -80,11 +100,21 @@ class MemoryRetrievalService:
         normalized_query = query.lower()
         with self.database.session() as session:
             repository = MemoryRepository(session)
-            items = repository.list_items(user_id, scope=scope)
+            items = repository.list_items(user_id)
+            now = datetime.now(timezone.utc)
             matched = [
                 MemoryRepository.to_retrieved(item, 1.0 if any(word in item.statement.lower() for word in normalized_query.split()) else 0.0)
                 for item in items
                 if (not memory_types or item.memory_type in memory_types)
+                and (not scope or item.scope in {"global", scope})
+                and (item.expires_at is None or self._is_future(item.expires_at, now))
                 and any(word in item.statement.lower() for word in normalized_query.split())
             ]
             return matched[: self.settings.memory_retrieval_top_k]
+
+    @staticmethod
+    def _is_future(value: datetime, now: datetime) -> bool:
+        """兼容 SQLite 返回的无时区时间并判断记忆是否仍有效。"""
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        return value > now

@@ -25,6 +25,7 @@ export const api = {
   editActivity: (tripId:string, sessionId:string, payload:Record<string,unknown>) => request(`/trips/${tripId}/activities/edit?session_id=${encodeURIComponent(sessionId)}`, {method:'POST',body:JSON.stringify(payload)}),
   feedback: (tripId:string, sessionId:string, payload:Record<string,unknown>) => request(`/trips/${tripId}/feedback?session_id=${encodeURIComponent(sessionId)}`, {method:'POST',body:JSON.stringify(payload)}),
   memories: () => request<MemoryItem[]>('/memory'),
+  exportMemories: () => request<Array<Record<string,unknown>>>('/memory/export'),
   memorySettings: () => request<{personalization_enabled:boolean;long_term_memory_enabled:boolean}>('/memory/settings'),
   updateMemorySettings: (payload:Record<string,boolean>) => request<{personalization_enabled:boolean;long_term_memory_enabled:boolean}>('/memory/settings',{method:'POST',body:JSON.stringify(payload)}),
   updateMemory: (id:string, statement:string) => request<MemoryItem>(`/memory/${id}`,{method:'PATCH',body:JSON.stringify({statement})}),

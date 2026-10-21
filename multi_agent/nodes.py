@@ -9,7 +9,7 @@ from typing import Any
 from multi_agent.executor import ToolExecutor
 from multi_agent.planner import TravelRouter
 from multi_agent.summarizer import ResponseGenerator
-from memory.memory_manager import load_agent_state, save_agent_state, update_user_profile
+from memory.memory_manager import load_agent_state, save_agent_state, save_user_profile
 from multi_agent.state import TravelGraphState
 from schemas.agent_state import AgentState, ChatMessage
 from schemas.itinerary import Itinerary
@@ -20,6 +20,7 @@ from schemas.user_profile import ProfileExtraction
 from tools.profile_tool import extract_profile_updates
 from services.itinerary_renderer import render_itinerary_markdown
 from services.memory_pipeline import MemoryPipeline
+from services.context_builder import ConversationSummarizer
 from utils.ids import new_request_id, new_trip_id
 
 
@@ -76,12 +77,16 @@ class FeedbackAgent:
             agent_state.weather_info = None
             agent_state.exchange_info = None
         "'更新用户画像'"
-        agent_state.user_profile = update_user_profile(
+        agent_state.user_profile = agent_state.user_profile.apply_update(
             updates.profile_updates,
-            agent_state.user_id,
             clear_fields=updates.clear_profile_fields,
             remove_items=updates.remove_profile_items,
         )
+        try:
+            save_user_profile(agent_state.user_profile, agent_state.user_id)
+        except Exception:
+            # 当前 AgentState 仍持有更新；最终状态保存阶段会再次持久化。
+            pass
         "'更新旅行需求'"
         agent_state.travel_request = agent_state.travel_request.apply_update(
             updates.trip_updates,
@@ -214,6 +219,7 @@ class SummarizerAgent:
     def __init__(self, response_generator: ResponseGenerator | None = None) -> None:
         """初始化 SummarizerAgent 及其运行依赖。"""
         self.response_generator = response_generator or ResponseGenerator()
+        self.conversation_summarizer = ConversationSummarizer()
 
     def __call__(self, state: TravelGraphState) -> dict[str, Any]:
         """执行 SummarizerAgent 节点并返回本轮状态更新。"""
@@ -233,6 +239,8 @@ class SummarizerAgent:
                 user_input=state["user_input"],
             )
         agent_state.chat_history.append(ChatMessage(role="assistant", content=response))
+        if self.conversation_summarizer.should_summarize(agent_state):
+            agent_state.conversation_summary = self.conversation_summarizer.build_summary_text(agent_state)
         save_agent_state(agent_state)
         return {
             "agent_state": agent_state.model_dump(mode="json"),

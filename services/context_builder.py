@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from config.settings import get_settings
 from schemas.agent_state import AgentState
 from schemas.travel_request import TravelRequest
 
@@ -24,12 +25,13 @@ class ContextBuilder:
     def __init__(
         self,
         *,
-        recent_turns: int = 8,  # 保留最近对话轮数
-        max_context_tokens: int = 6000,  # 上下文 Token 上限
+        recent_turns: int | None = None,  # 保留最近对话轮数
+        max_context_tokens: int | None = None,  # 上下文 Token 上限
     ) -> None:
         """初始化 ContextBuilder 及其运行依赖。"""
-        self.recent_turns = recent_turns
-        self.max_context_tokens = max_context_tokens
+        settings = get_settings()
+        self.recent_turns = recent_turns or settings.memory_recent_turns
+        self.max_context_tokens = max_context_tokens or settings.memory_max_context_tokens
 
     def build(self, state: AgentState, user_input: str, **extra: Any) -> str:
         """构建 `build` 对应的数据和流程，返回该步骤的处理结果。"""
@@ -44,6 +46,8 @@ class ContextBuilder:
             ContextSection("recent_chat", self._format_recent_chat(state.chat_history), 60),
             ContextSection("user_profile", self._format_profile(state.user_profile), 50),
         ]
+        if state.conversation_summary:
+            sections.append(ContextSection("conversation_summary", state.conversation_summary, 65))
         memory_results = extra.get("memory_results")
         if memory_results:
             sections.append(ContextSection("long_term_memory", self._format_memory_results(memory_results), 48))
@@ -139,10 +143,11 @@ class ContextBuilder:
 class ConversationSummarizer:
     """封装 `ConversationSummarizer` 的核心数据与行为。"""
 
-    def __init__(self, *, summary_after_turns: int = 12, summary_max_tokens: int = 800) -> None:  # 摘要最大 Token
+    def __init__(self, *, summary_after_turns: int | None = None, summary_max_tokens: int | None = None) -> None:  # 摘要最大 Token
         """初始化 ConversationSummarizer 及其运行依赖。"""
-        self.summary_after_turns = summary_after_turns
-        self.summary_max_tokens = summary_max_tokens
+        settings = get_settings()
+        self.summary_after_turns = summary_after_turns or settings.memory_summary_after_turns
+        self.summary_max_tokens = summary_max_tokens or settings.memory_summary_max_tokens
 
     def should_summarize(self, state: AgentState) -> bool:
         """判断当前状态是否满足summarize条件。"""

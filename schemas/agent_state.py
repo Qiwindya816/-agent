@@ -52,6 +52,7 @@ class AgentState(BaseModel):
     user_profile: UserProfile = Field(default_factory=UserProfile)  # 长期用户画像
     travel_request: TravelRequest = Field(default_factory=TravelRequest)  # 本次旅行约束
     chat_history: list[ChatMessage] = Field(default_factory=list)  # 聊天历史
+    conversation_summary: str | None = None  # 长对话的结构化摘要
     output_version: int = 0  # 输出版本号
     last_memory_result: dict | None = None  # 最近一轮记忆写入结果
     active_memories: list[dict] = Field(default_factory=list)  # 当前注入的长期记忆

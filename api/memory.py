@@ -9,6 +9,7 @@ from db.engine import DatabaseEngine
 from repositories.memory_repository import MemoryRepository
 from repositories.user_repository import UserRepository
 from schemas.api import MemoryResponse, MemorySettingsRequest, MemoryUpdateRequest, UserContext
+from services.embedding_service import EmbeddingService
 
 router = APIRouter(prefix="/memory", tags=["memory"])
 
@@ -60,6 +61,16 @@ def get_settings(
     }
 
 
+@router.get("/export")
+def export_memories(
+    user: UserContext = Depends(get_current_user),
+    database: DatabaseEngine = Depends(get_database),
+) -> list[dict]:
+    """导出当前用户的完整长期记忆及其证据链。"""
+    with database.session() as session:
+        return MemoryRepository(session).export_items(user.user_id)
+
+
 @router.patch("/{memory_id}", response_model=MemoryResponse)
 def update_memory(
     memory_id: str,
@@ -69,7 +80,22 @@ def update_memory(
 ) -> MemoryResponse:
     """更新记忆，并保持相关状态或持久化数据一致。"""
     with database.session() as session:
-        item = MemoryRepository(session).update_statement(user.user_id, memory_id, request.statement)
+        if MemoryRepository(session).get_item(user.user_id, memory_id) is None:
+            raise HTTPException(status_code=404, detail="Memory not found")
+
+    embedding = None
+    try:
+        embedding = EmbeddingService().embed_query(request.statement)
+    except Exception:
+        # 向量服务暂时不可用时仍允许用户修正文本；后续可通过维护脚本补齐向量。
+        pass
+    with database.session() as session:
+        item = MemoryRepository(session).update_statement(
+            user.user_id,
+            memory_id,
+            request.statement,
+            embedding=embedding,
+        )
         if item is None:
             raise HTTPException(status_code=404, detail="Memory not found")
         return _memory_response(item)

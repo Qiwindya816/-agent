@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+from difflib import SequenceMatcher
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from uuid import uuid4
@@ -18,7 +21,13 @@ class MemoryRepository:
         """初始化 MemoryRepository 及其运行依赖。"""
         self.session = session
 
-    def create_item(self, candidate: MemoryCandidate, embedding: list[float] | None = None) -> MemoryItem:
+    def create_item(
+        self,
+        candidate: MemoryCandidate,
+        embedding: list[float] | None = None,
+        *,
+        status: str = "active",
+    ) -> MemoryItem:
         """创建记录，并保持相关状态或持久化数据一致。"""
         user = self.session.get(User, candidate.user_id)
         if user is None:
@@ -36,15 +45,15 @@ class MemoryRepository:
             polarity=candidate.polarity,
             importance=candidate.importance,
             confidence=candidate.confidence,
-            evidence_count=1,
+            evidence_count=0,
             source_type="explicit" if candidate.evidence_type == "explicit_statement" else "inferred",
+            status=status,
             embedding=embedding,
             embedding_text=candidate.statement,
         )
         self.session.add(item)
         self.session.flush()
         self.add_evidence(item.memory_id, candidate)
-        item.evidence_count = 1
         return item
 
     def get_item(self, user_id: str, memory_id: str) -> MemoryItem | None:
@@ -60,25 +69,61 @@ class MemoryRepository:
         *,
         memory_type: str | None = None,
         scope: str | None = None,
-        status: str = "active",
+        status: str | None = "active",
     ) -> list[MemoryItem]:
         """列出记录列表并返回符合当前作用域的结果。"""
-        statement = select(MemoryItem).where(MemoryItem.user_id == user_id, MemoryItem.status == status)
+        statement = select(MemoryItem).where(MemoryItem.user_id == user_id)
+        if status is not None:
+            statement = statement.where(MemoryItem.status == status)
         if memory_type:
             statement = statement.where(MemoryItem.memory_type == memory_type)
         if scope:
             statement = statement.where(MemoryItem.scope == scope)
         return list(self.session.scalars(statement.order_by(MemoryItem.last_confirmed_at.desc())))
 
-    def find_similar_statements(self, user_id: str, statement: str, memory_type: str) -> list[MemoryItem]:
-        # 写入阶段采用确定性的精确匹配合并；向量相似度只用于召回。
-        """查找同一用户和记忆类型下陈述相同的现有记忆。"""
-        normalized = statement.strip().lower()
+    def find_similar_statements(
+        self,
+        user_id: str,
+        statement: str,
+        memory_type: str,
+        *,
+        polarity: str | None = None,
+        scope: str | None = None,
+    ) -> list[MemoryItem]:
+        """查找同类型、同倾向且文本相同或高度近似的已有记忆。"""
+        normalized = self._normalize_statement(statement)
+        canonical = self._canonical_statement(statement)
         return [
             item
-            for item in self.list_items(user_id, memory_type=memory_type)
-            if item.statement.strip().lower() == normalized
+            for item in self.list_items(user_id, memory_type=memory_type, status=None)
+            if item.status in {"active", "pending"}
+            if polarity is None or item.polarity == polarity
+            if scope is None or item.scope == scope
+            if self._is_similar_statement(item.statement, normalized, canonical)
         ]
+
+    @staticmethod
+    def _normalize_statement(statement: str) -> str:
+        return re.sub(r"\s+", "", statement.strip().lower())
+
+    @classmethod
+    def _canonical_statement(cls, statement: str) -> str:
+        normalized = cls._normalize_statement(statement)
+        for marker in ("用户", "本人", "我", "非常", "很", "比较", "偏好", "喜欢", "希望", "参观"):
+            normalized = normalized.replace(marker, "")
+        return re.sub(r"[^0-9a-z\u4e00-\u9fff]+", "", normalized)
+
+    @classmethod
+    def _is_similar_statement(cls, existing: str, normalized: str, canonical: str) -> bool:
+        existing_normalized = cls._normalize_statement(existing)
+        if existing_normalized == normalized:
+            return True
+        existing_canonical = cls._canonical_statement(existing)
+        if min(len(existing_canonical), len(canonical)) >= 3 and (
+            existing_canonical in canonical or canonical in existing_canonical
+        ):
+            return True
+        return SequenceMatcher(None, existing_normalized, normalized).ratio() >= 0.9
 
     def add_evidence(self, memory_id: str, candidate: MemoryCandidate) -> MemoryEvidence:
         """添加证据，并保持相关状态或持久化数据一致。"""
@@ -98,20 +143,27 @@ class MemoryRepository:
         )
         item.evidence_count += 1
         item.last_confirmed_at = utc_now()
-        if item.evidence_count <= 1:
-            item.evidence_count = 1
+        item.confidence = max(item.confidence, candidate.confidence)
+        item.importance = max(item.importance, candidate.importance)
         self.session.add(evidence)
         self.session.flush()
         return evidence
 
-    def update_statement(self, user_id: str, memory_id: str, statement: str) -> MemoryItem | None:
+    def update_statement(
+        self,
+        user_id: str,
+        memory_id: str,
+        statement: str,
+        *,
+        embedding: list[float] | None = None,
+    ) -> MemoryItem | None:
         """更新陈述，并保持相关状态或持久化数据一致。"""
         item = self.get_item(user_id, memory_id)
         if item is None:
             return None
         item.statement = statement
         item.embedding_text = statement
-        item.embedding = None
+        item.embedding = embedding
         self.session.flush()
         return item
 
@@ -124,11 +176,21 @@ class MemoryRepository:
 
     def clear_items(self, user_id: str) -> int:
         """清空 `clear_items` 对应的数据和流程，返回该步骤的处理结果。"""
-        items = self.list_items(user_id, status="active")
+        items = self.list_items(user_id, status=None)
         for item in items:
             self.session.delete(item)
         self.session.flush()
         return len(items)
+
+    def activate_item(self, user_id: str, memory_id: str) -> MemoryItem | None:
+        """把累计到足够证据的候选记忆晋升为可召回的长期记忆。"""
+        item = self.get_item(user_id, memory_id)
+        if item is None:
+            return None
+        item.status = "active"
+        item.last_confirmed_at = utc_now()
+        self.session.flush()
+        return item
 
     def export_items(self, user_id: str) -> list[dict]:
         """导出 `export_items` 对应的数据和流程，返回该步骤的处理结果。"""

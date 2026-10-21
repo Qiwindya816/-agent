@@ -30,10 +30,17 @@ class MemoryWritePolicy:
             candidate.user_id,
             candidate.statement,
             candidate.memory_type,
+            polarity=candidate.polarity,
+            scope=candidate.scope,
         )
         if existing:
             return MemoryPolicyResult(
-                decision=MemoryWriteDecision(action="merge", memory_id=existing[0].memory_id, reason="相同陈述已有记忆，合并证据。"),
+                decision=MemoryWriteDecision(
+                    action="merge",
+                    memory_id=existing[0].memory_id,
+                    reason="相同陈述已有记忆，合并证据。",
+                    required_evidence_count=self.settings.memory_min_evidence_count,
+                ),
                 existing_memory_id=existing[0].memory_id,
             )
 
